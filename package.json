@@ -1,0 +1,46 @@
+{
+  "name": "thunderdrome",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint": "yarn lint:js",
+    "test": "yarn test:unit && yarn test:e2e",
+    "test:unit": "cross-env TEST=unit ava ./test/specs/**/*",
+    "test:e2e": "cross-env TEST=e2e ava ./test/e2e/**/*"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/pwa": "^3.3.5",
+    "core-js": "^3.15.1",
+    "date-fns": "^2.25.0",
+    "nuxt": "^2.15.7",
+    "nuxt-buefy": "^0.4.8",
+    "vue-howler": "^0.7.0"
+  },
+  "devDependencies": {
+    "@ava/babel": "^1.0.1",
+    "@babel/eslint-parser": "^7.14.7",
+    "@nuxt/types": "~2.15.0",
+    "@nuxtjs/eslint-config": "^6.0.1",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@vue/test-utils": "^1.2.1",
+    "ava": "^3.15.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.29.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-vue": "^7.12.1",
+    "fibers": "^5.0.0",
+    "jsdom-global": "^3.0.2",
+    "require-extension-hooks": "^0.3.3",
+    "require-extension-hooks-babel": "^1.0.0",
+    "require-extension-hooks-vue": "^3.0.0",
+    "sass": "^1.43.3",
+    "sass-loader": "10"
+  }
+}
