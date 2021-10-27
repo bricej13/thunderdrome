@@ -15,10 +15,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ],
-    htmlAttrs: {
-      class: ['has-navbar-fixed-top', 'has-navbar-fixed-bottom']
-    }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

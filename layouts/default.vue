@@ -3,11 +3,7 @@
     <b-navbar type="is-primary is-fixed-top">
       <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
-            src="~assets/buefy.png"
-            alt="Buefy"
-            height="28"
-          >
+          <span class="is-size-4 has-text-weight-bold">Thunderdrome</span>
         </b-navbar-item>
       </template>
 
@@ -44,6 +40,13 @@ export default {
   components: { Sidebar },
   data () {
     return {
+    }
+  },
+  head () {
+    return {
+      htmlAttrs: {
+        class: ['has-navbar-fixed-top', 'has-navbar-fixed-bottom']
+      }
     }
   },
   methods: {

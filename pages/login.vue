@@ -1,34 +1,32 @@
 <template>
-  <div class="is-flex is-flex-direction-column is-justify-content-center" style="height: 100vh">
-    <section class="hero is-small is-link">
-      <div class="hero-body">
-        <section class="section">
-          <b-field
-            label="Navidrome URL"
-            horizontal
-          >
-            <b-input v-model="creds.baseUrl" />
+  <div>
+    <div class="is-flex is-justify-content-center is-flex-direction-column" style="height: 100vh">
+      <div class="columns">
+        <div class="column is-one-third is-offset-one-third">
+          <div class="is-size-2 has-text-weight-bold has-text-centered">
+            Welcome to the Thunderdrome
+          </div>
+          <b-field>
+            <b-input v-model="creds.baseUrl" placeholder="Navidrome URL" autofocus />
           </b-field>
-          <b-field
-            label="Username"
-            horizontal
-          >
-            <b-input v-model="creds.username" />
+          <b-field>
+            <b-input v-model="creds.username" placeholder="Username" />
           </b-field>
-
-          <b-field label="Password" horizontal>
+          <b-field>
             <b-input
               v-model="creds.password"
               type="password"
               password-reveal
+              placeholder="Password"
             />
           </b-field>
-          <b-button :loading="loading" @click="login">
+          <b-button :loading="loading" :disabled="!canSubmit" @click="login">
             Login
           </b-button>
-        </section>
+        </div>
       </div>
-    </section>
+      <rainbow />
+    </div>
   </div>
 </template>
 
@@ -45,6 +43,11 @@ export default {
         password: '',
         baseUrl: ''
       }
+    }
+  },
+  computed: {
+    canSubmit () {
+      return this.creds.username.length > 0 && this.creds.password.length > 0 && this.creds.baseUrl.length > 0
     }
   },
   methods: {

@@ -33,6 +33,11 @@ $table-row-hover-background-color: $ui3-yellow;
 $table-cell-border: 1px solid $black;
 
 
+// Typography
+* {
+  letter-spacing: -.08rem;
+  font-weight: 600;
+}
 
 // Lists and maps
 $custom-colors: null !default;
