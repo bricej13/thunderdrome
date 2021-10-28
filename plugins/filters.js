@@ -6,3 +6,8 @@ Vue.filter('tracktime', (v) => {
   d.setSeconds(v)
   return format(d, 'm:ss')
 })
+Vue.filter('playlisttime', (v) => {
+  const d = new Date(0)
+  d.setSeconds(v)
+  return format(d, 'h:m:ss')
+})
