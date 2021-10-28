@@ -27,14 +27,14 @@
 
       <div class="pl-2 pr-4">
         <div class="level">
-          <div class="p-1" :disabled="!hasPrev" @click="$store.commit('player/prevTrack')">
+          <div class="p-1 is-clickable" :disabled="!hasPrev" @click="prevTrack">
             <b-icon
               icon="skip-previous"
             />
           </div>
 
           <div
-            class="p-1"
+            class="p-1 is-clickable"
             @click="togglePlay"
           >
             <b-icon
@@ -42,7 +42,7 @@
               size="is-large"
             />
           </div>
-          <div class="p-1" :disabled="!hasNext" @click="$store.commit('player/nextTrack')">
+          <div class="p-1 is-clickable" :disabled="!hasNext" @click="nextTrack">
             <b-icon
               icon="skip-next"
             />
@@ -54,13 +54,14 @@
       ref="player"
       autoplay
       :src="currentStream"
-      @playing="$store.commit('player/setPlay', true)"
-      @play="$store.commit('player/setPlay', true)"
-      @pause="$store.commit('player/setPlay', false)"
-      @timeupdate="$store.commit('player/setCurrentTime', $refs.player.currentTime)"
-      @durationchange="$store.commit('player/setTrackDuration', $refs.player.duration)"
+      @playing="setPlay(true)"
+      @play="setPlay(true)"
+      @pause="setPlay(false)"
+      @timeupdate="setCurrentTime($refs.player.currentTime)"
+      @durationchange="setTrackDuration($refs.player.duration)"
       @error="log('error', $event)"
       @load="log('load', $event)"
+      @ended="nextTrack"
     >
       Your browser does not support the
       <code>audio</code> element.
@@ -68,7 +69,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'AudioPlayer',
@@ -91,6 +92,13 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations('player', [
+      'setPlay',
+      'setCurrentTime',
+      'setTrackDuration',
+      'nextTrack',
+      'prevTrack'
+    ]),
     togglePlay () {
       this.playing
         ? this.$refs.player.pause()

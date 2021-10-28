@@ -5,12 +5,32 @@
         <page-title :text="playlist.name" />
       </div>
       <div class="level-right">
-        <button class="button is-primary mx-1" @click="$store.commit('player/startPlaylist', tracks)">
-          Play
-        </button>
-        <button class="button is-primary mx-1" @click="$store.commit('player/shufflePlaylist', tracks)">
-          Shuffle
-        </button>
+        <b-tooltip
+          :label="`play ${playlist.name}`"
+          position="is-left"
+          type="is-dark"
+          square
+        >
+          <div
+            class="p-1 is-clickable"
+            @click="$store.commit('player/startPlaylist', tracks)"
+          >
+            <b-icon icon="play" size="is-large" />
+          </div>
+        </b-tooltip>
+        <b-tooltip
+          :label="`shuffle ${playlist.name}`"
+          position="is-left"
+          type="is-dark"
+          square
+        >
+          <div
+            class="p-1 is-clickable"
+            @click="$store.commit('player/shufflePlaylist', tracks)"
+          >
+            <b-icon icon="shuffle" size="is-large" />
+          </div>
+        </b-tooltip>
       </div>
     </div>
     <b-table

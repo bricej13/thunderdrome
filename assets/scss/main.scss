@@ -29,9 +29,13 @@ $text: $black;
 
 
 $family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+body, button, input, optgroup, select, textarea {
+  font-family: $family-sans-serif;
+}
 $background: $ui3-lightYellow;
+$navbar-background-color: $background;
 $body-background-color: $ui3-lightYellow;
-$menu-item-hover-background-color: findLightColor($primary);
+$menu-item-hover-background-color: $ui3-beet;
 $progress-border-radius: 0;
 
 // Table

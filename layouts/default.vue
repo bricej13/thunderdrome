@@ -1,7 +1,7 @@
 <template>
   <div class="default-layout">
-    <div class="Header">
-      <b-navbar type="is-primary">
+    <div class="header">
+      <b-navbar type="is-transparent">
         <template #brand>
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
             <span class="is-size-4 has-text-weight-bold">Thunderdrome</span>
@@ -11,7 +11,7 @@
         <template #end>
           <b-navbar-item tag="div">
             <div class="buttons">
-              <a class="button is-primary" @click.prevent="logout">
+              <a class="is-primary" @click.prevent="logout">
                 <strong>Log out {{ $store.state.user.name }}</strong>
               </a>
             </div>
@@ -19,14 +19,16 @@
         </template>
       </b-navbar>
     </div>
-    <div class="Menu">
+    <div class="side-menu">
       <Sidebar />
     </div>
-    <div class="Content">
+    <div class="page-content">
       <Nuxt />
     </div>
-    <div class="Play-Queue" />
-    <div class="Player">
+    <div class="play-queue">
+      <play-queue />
+    </div>
+    <div class="player">
       <audio-player />
     </div>
   </div>
@@ -66,18 +68,18 @@ export default {
   gap: 0px 5px;
   grid-auto-flow: row;
   grid-template-areas:
-    "Header Header Header"
-    "Menu Content Play-Queue"
-    "Player Player Player";
+    "header header header"
+    "side-menu page-content play-queue"
+    "player player player";
 }
 
-.Header { grid-area: Header; }
+.header { grid-area: header; }
 
-.Menu { grid-area: Menu; }
+.side-menu { grid-area: side-menu; overflow-y: auto; }
 
-.Play-Queue { grid-area: Play-Queue; }
+.play-queue { grid-area: play-queue; overflow-y: auto;}
 
-.Content { grid-area: Content; overflow-y: auto; }
+.page-content { grid-area: page-content; overflow-y: auto; }
 
-.Player { grid-area: Player; }
+.player { grid-area: player; }
 </style>

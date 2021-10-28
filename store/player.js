@@ -39,6 +39,9 @@ export const mutations = {
       state.playlistIndex = state.playlistIndex + 1
     }
   },
+  setTrack (state, i) {
+    state.playlistIndex = i
+  },
   setCurrentTime (state, payload) {
     state.currentTime = payload
   },

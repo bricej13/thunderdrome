@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="">
     Songs
   </section>
 </template>

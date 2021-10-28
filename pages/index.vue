@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="">
     <div class="columns is-mobile">
       <card
         title="Free"

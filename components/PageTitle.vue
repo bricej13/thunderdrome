@@ -21,6 +21,7 @@ export default {
   font-weight: 700;
   font-size: 4rem;
   letter-spacing: -3px;
+  line-height: 0;
 }
 
 </style>

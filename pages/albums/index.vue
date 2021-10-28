@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="">
     <h1>Albums</h1>
     <pre>{{ $route.query }}</pre>
     <div class="columns is-multiline">
