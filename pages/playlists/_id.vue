@@ -19,11 +19,10 @@
       :checked-rows.sync="checked"
       hoverable
     >
-      <b-table-column v-slot="props" :visible="false" field="id">
-        {{ props.row.id }}
-      </b-table-column>
       <b-table-column v-slot="props" field="title" label="Title">
-        {{ props.row.title }}
+        <span class="is-uppercase">
+          {{ props.row.title }}
+        </span>
       </b-table-column>
       <b-table-column v-slot="props" field="artist" label="Artist">
         {{ props.row.artist }}

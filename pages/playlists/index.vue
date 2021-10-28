@@ -1,6 +1,9 @@
 <template>
   <section class="section">
     Playlists
+    <NuxtLink v-for="playlist in $store.state.playlists" :key="playlist.id" :to="`/playlists/${playlist.id}`">
+      {{ playlist.name }}
+    </NuxtLink>
   </section>
 </template>
 

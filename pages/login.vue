@@ -18,8 +18,12 @@
               type="password"
               password-reveal
               placeholder="Password"
+              @keypress.enter="login"
             />
           </b-field>
+          <div v-if="error">
+            {{ error }}
+          </div>
           <b-button :loading="loading" :disabled="!canSubmit" @click="login">
             Login
           </b-button>
@@ -38,6 +42,7 @@ export default {
   data () {
     return {
       loading: false,
+      error: null,
       creds: {
         username: '',
         password: '',
@@ -51,21 +56,17 @@ export default {
     }
   },
   methods: {
-    // eslint-disable-next-line require-await
-    async login () {
-      try {
-        this.loading = true
-        this.$axios.setBaseURL(this.baseUrl)
-        this.$store.dispatch('user/login', this.creds)
-          .then(() => {
-            this.loading = false
-            this.$router.push('/')
-          })
-        // const response = await this.$auth.loginWith('local', { data: this.creds })
-        // console.log(response)
-      } catch (err) {
-        console.log(err)
-      }
+    login () {
+      this.loading = true
+      this.$axios.setBaseURL(this.baseUrl)
+      this.$store.dispatch('user/login', this.creds)
+        .then(() => {
+          this.$router.push('/')
+        }).catch((err) => {
+          this.error = err
+        }).finally(() => {
+          this.loading = false
+        })
     }
   }
 }

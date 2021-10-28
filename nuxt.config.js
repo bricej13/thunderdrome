@@ -14,7 +14,13 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500;600;700;800&display=swap'
+      },
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: true }
     ]
   },
 
@@ -24,7 +30,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/filters.js',
-    '~/plugins/navidrome-auth.js'
+    '~/plugins/navidrome-auth.js',
+    { src: '~/plugins/vuex-persist', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,34 +53,6 @@ export default {
   axios: {
     // baseURL: 'http://localhost:4533'
   },
-  // auth: {
-  //   strategies: {
-  //     local: {
-  //       token: {
-  //         property: 'token',
-  //         global: true,
-  //         required: true,
-  //         name: 'x-nd-authorization',
-  //         type: 'Bearer'
-  //       },
-  //       user: {
-  //         property: '0',
-  //         autoFetch: false
-  //       },
-  //       endpoints: {
-  //         login: { url: '/auth/login', method: 'post' },
-  //         logout: false,
-  //         user: { url: '/api/user', method: 'get' }
-  //       }
-  //     }
-  //   },
-  //   redirect: {
-  //     login: '/login',
-  //     logout: '/login',
-  //     callback: '/login',
-  //     home: '/'
-  //   }
-  // },
   router: {
   },
   pwa: {

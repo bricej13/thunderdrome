@@ -1,38 +1,55 @@
 <template>
-  <aside class="menu p-2">
-    <p class="menu-label">
-      General
-    </p>
-    <ul class="menu-list">
-      <li v-for="(item, key) of items" :key="key">
-        <NuxtLink :to="item.to" exact-active-class="is-active">
-          <b-icon :icon="item.icon" />
-          {{ item.title }}
-        </NuxtLink>
-        <ul v-if="item.children != null" class="menu-list">
-          <li v-for="(child, key2) of item.children" :key="key2">
-            <NuxtLink :to="child.to" exact-active-class="is-active">
-              <b-icon :icon="child.icon" />
-              {{ child.title }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <NuxtLink to="playlists" exact-active-class="is-active">
-          <b-icon icon="playlist-music" />
-          Playlists
-        </NuxtLink>
-        <ul class="menu-list">
-          <li v-for="playlist of $store.state.playlists" :key="playlist.id">
-            <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">
-              {{ playlist.name }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <aside class="block">
+    <div v-for="(item, key) of items" :key="key" class="menu-item">
+      <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">
+        <div class="level">
+          <div class="level-left">
+            <b-icon :icon="item.icon" />
+            {{ item.title }}
+          </div>
+        </div>
+      </NuxtLink>
+    </div>
+    <!--    <div v-for="playlist of $store.state.playlists" :key="playlist.id" class="menu-item">-->
+    <!--      <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">-->
+    <!--        {{ playlist.name }}-->
+    <!--      </NuxtLink>-->
+    <!--    </div>-->
   </aside>
+<!--  <aside class="menu p-2">-->
+<!--    <p class="menu-label">-->
+<!--      General-->
+<!--    </p>-->
+<!--    <ul class="menu-list">-->
+<!--      <li v-for="(item, key) of items" :key="key">-->
+<!--        <NuxtLink :to="item.to" exact-active-class="is-active">-->
+<!--          <b-icon :icon="item.icon" />-->
+<!--          {{ item.title }}-->
+<!--        </NuxtLink>-->
+<!--        <ul v-if="item.children != null" class="menu-list">-->
+<!--          <li v-for="(child, key2) of item.children" :key="key2">-->
+<!--            <NuxtLink :to="child.to" exact-active-class="is-active">-->
+<!--              <b-icon :icon="child.icon" />-->
+<!--              {{ child.title }}-->
+<!--            </NuxtLink>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <NuxtLink to="playlists" exact-active-class="is-active">-->
+<!--          <b-icon icon="playlist-music" />-->
+<!--          Playlists-->
+<!--        </NuxtLink>-->
+<!--        <ul class="menu-list">-->
+<!--          <li v-for="playlist of $store.state.playlists" :key="playlist.id">-->
+<!--            <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">-->
+<!--              {{ playlist.name }}-->
+<!--            </NuxtLink>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </aside>-->
 </template>
 <script>
 export default {
@@ -76,6 +93,16 @@ export default {
           title: 'Songs',
           icon: 'music-note',
           to: { name: 'songs' }
+        },
+        {
+          title: 'Playlists',
+          icon: 'playlist-music',
+          to: { name: 'playlists' }
+        },
+        {
+          title: 'Settings',
+          icon: 'cog-outline',
+          to: { name: 'settings' }
         }
       ]
     }
@@ -85,3 +112,40 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import "~/assets/scss/main.scss";
+
+.menu-item {
+  a {
+    color: $black !important;
+    display: block;
+
+    &:hover {
+      color: white !important;
+    }
+
+    &.is-active {
+      text-decoration: underline;
+    }
+  }
+
+  &:nth-child(1) {
+    background-color: $ui3-yellow;
+  }
+  &:nth-child(2) {
+    background-color: $ui3-orange;
+  }
+  &:nth-child(3) {
+    background-color: $ui3-red;
+  }
+  &:nth-child(4) {
+    background-color: $ui3-beet;
+  }
+  &:nth-child(5) {
+    background-color: $ui3-fuchsia;
+  }
+  &:hover {
+  }
+}
+
+</style>

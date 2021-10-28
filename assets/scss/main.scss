@@ -1,5 +1,11 @@
 @import "~bulma/sass/utilities/_all";
 
+@font-face {
+  font-family: "Karla";
+  font-weight: 700;
+  src: url("~/assets/scss/Karla-VariableFont_wght.ttf") format("truetype");
+}
+
 $ui3-lightYellow: #fefbe5;
 $ui3-yellow: #feb601;
 $ui3-orange: #fc3b00;
@@ -22,6 +28,7 @@ $text: $black;
 
 
 
+$family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 $background: $ui3-lightYellow;
 $body-background-color: $ui3-lightYellow;
 $menu-item-hover-background-color: findLightColor($primary);
@@ -31,6 +38,9 @@ $progress-border-radius: 0;
 $table-background-color: $ui3-lightYellow;
 $table-row-hover-background-color: $ui3-yellow;
 $table-cell-border: 1px solid $black;
+tr > td:first-child, tr > th:first-child {
+  padding-left: 0;
+}
 
 
 // Typography

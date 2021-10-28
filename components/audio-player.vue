@@ -8,7 +8,7 @@
       </div>
       <div class="px-2">
         <div v-if="currentTrack">
-          <div class="is-size-6 has-text-weight-bold" style="line-height: 1.5rem">
+          <div class="is-size-6 is-uppercase has-text-weight-bold" style="line-height: 1.5rem">
             {{ currentTrack.title }}
           </div>
           <div class="is-size-7">
@@ -97,7 +97,7 @@ export default {
         : this.$refs.player.play()
     },
     log (type, event) {
-      console.log(type, event)
+      // console.log(type, event)
     }
   }
 }

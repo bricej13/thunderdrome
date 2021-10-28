@@ -9,52 +9,42 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setBaseUrl (state, payload) {
-    state.baseUrl = payload
+  login (state, payload) {
+    state.baseUrl = payload.baseUrl
+    state.id = payload.id
+    state.name = payload.username
+    state.token = payload.token
+    state.isAdmin = payload.isAdmin
+    state.subsonicToken = payload.subsonicToken
+    state.subsonicSalt = payload.subsonicSalt
   },
-  setId (state, payload) {
-    state.id = payload
-  },
-  setName (state, payload) {
-    state.name = payload
-  },
-  setIsAdmin (state, payload) {
-    state.isAdmin = payload
-  },
-  setToken (state, payload) {
-    state.token = payload
-  },
-  setSubsonicToken (state, payload) {
-    state.subsonicToken = payload
-  },
-  setSubsonicSalt (state, payload) {
-    state.subsonicSalt = payload
+  logout (state) {
+    state.baseUrl = null
+    state.id = null
+    state.name = null
+    state.token = null
+    state.isAdmin = false
+    state.subsonicToken = null
+    state.subsonicSalt = null
   }
 }
 
 export const actions = {
   login ({ commit, dispatch }, { baseUrl, username, password }) {
-    return this.$axios.$post(baseUrl + '/auth/login', { username, password })
-      .then((res) => {
-        this.$axios.setBaseURL(baseUrl)
-        commit('setBaseUrl', baseUrl)
-        commit('setId', res.id)
-        commit('setName', res.username)
-        commit('setToken', res.token)
-        commit('setIsAdmin', res.isAdmin)
-        commit('setSubsonicToken', res.subsonicToken)
-        commit('setSubsonicSalt', res.subsonicSalt)
-      }).catch(() => dispatch('logout'))
+    return new Promise((resolve, reject) => {
+      this.$axios.$post(baseUrl + '/auth/login', { username, password })
+        .then((res) => {
+          this.$axios.setBaseURL(baseUrl)
+          commit('login', Object.assign(res, { baseUrl }))
+          resolve(res)
+        }).catch((err) => {
+          dispatch('logout')
+          reject(err)
+        })
+    })
   },
   logout (context) {
-    context.commit('baseUrl', null)
-    context.commit('setId', null)
-    context.commit('setUser', null)
-    context.commit('setToken', null)
-    context.commit('setIsAdmin', false)
-    context.commit('setSubsonicToken', null)
-    context.commit('setIsAdmin', null)
-    context.commit('setName', null)
+    context.commit('logout')
   }
 }
 export const getters = {
