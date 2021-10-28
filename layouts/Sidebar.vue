@@ -1,15 +1,38 @@
 <template>
   <aside class="block">
-    <div v-for="(item, key) of items" :key="key" class="menu-item">
-      <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">
-        <div class="level">
-          <div class="level-left">
-            <b-icon :icon="item.icon" />
-            {{ item.title }}
+    <b-collapse
+      v-for="(item, key) of items"
+      :key="key"
+      :open="isOpen === key"
+      animation="slide"
+      class="menu-item"
+      @open="isOpen = key"
+    >
+      <template #trigger="props">
+        <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">
+          <div class="level">
+            <div class="level-left">
+              <b-icon :icon="item.icon" />
+              {{ item.title }}
+              <b-icon
+                v-if="item.children.length > 0"
+                :icon="props.open ? 'menu-down' : 'menu-up'"
+              />
+            </div>
           </div>
-        </div>
-      </NuxtLink>
-    </div>
+        </NuxtLink>
+      </template>
+      <div v-for="(child, key2) of item.children" :key="key2">
+        <NuxtLink :to="child.to" exact-active-class="is-active" class="py-2 pl-5">
+          <div class="level">
+            <div class="level-left">
+              <b-icon v-if="child.icon" :icon="child.icon" />
+              {{ child.title }}
+            </div>
+          </div>
+        </NuxtLink>
+      </div>
+    </b-collapse>
     <!--    <div v-for="playlist of $store.state.playlists" :key="playlist.id" class="menu-item">-->
     <!--      <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">-->
     <!--        {{ playlist.name }}-->
@@ -56,6 +79,7 @@ export default {
   name: 'Sidebar',
   data () {
     return {
+      isOpen: 3,
       items: [
         {
           title: 'Albums',
@@ -87,28 +111,44 @@ export default {
         {
           title: 'Artists',
           icon: 'microphone-outline',
-          to: { name: 'artists' }
+          to: { name: 'artists' },
+          children: []
         },
         {
           title: 'Songs',
           icon: 'music-note',
-          to: { name: 'songs' }
+          to: { name: 'songs' },
+          children: []
         },
         {
           title: 'Playlists',
           icon: 'playlist-music',
-          to: { name: 'playlists' }
+          to: { name: 'playlists' },
+          children: []
         },
         {
           title: 'Settings',
           icon: 'cog-outline',
-          to: { name: 'settings' }
+          to: { name: 'settings' },
+          children: []
         }
       ]
     }
   },
   mounted () {
     this.$store.dispatch('loadPlaylists')
+      .then(() => {
+        const playlistLinks = this.$store.state.playlists
+          .map((p) => {
+            return {
+              title: p.name,
+              // icon: 'playlist-music',
+              to: { name: 'playlists-id', params: { id: p.id } }
+            }
+          })
+        this.items[3].children = playlistLinks
+        console.log(playlistLinks)
+      })
   }
 }
 </script>

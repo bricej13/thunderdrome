@@ -21,7 +21,7 @@ export const mutations = {
 
 export const actions = {
   loadPlaylists (context) {
-    this.$axios.$get('api/playlist?_end=0&_sort=name&_start=-100').then(res =>
+    return this.$axios.$get('api/playlist?_end=0&_sort=name&_start=-100').then(res =>
       context.commit('setPlaylists', res)
     )
   }

@@ -28,7 +28,7 @@
     <div class="play-queue">
       <play-queue />
     </div>
-    <div class="player">
+    <div v-if="$store.getters['player/hasQueue']" class="player">
       <audio-player />
     </div>
   </div>
@@ -63,9 +63,9 @@ export default {
 .default-layout {
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-columns: 1fr 4fr auto;
   grid-template-rows: auto 1fr auto;
-  gap: 0px 5px;
+  gap: 0 0;
   grid-auto-flow: row;
   grid-template-areas:
     "header header header"
@@ -77,7 +77,7 @@ export default {
 
 .side-menu { grid-area: side-menu; overflow-y: auto; }
 
-.play-queue { grid-area: play-queue; overflow-y: auto;}
+.play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw;}
 
 .page-content { grid-area: page-content; overflow-y: auto; }
 

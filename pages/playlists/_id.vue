@@ -4,34 +4,7 @@
       <div class="level-left">
         <page-title :text="playlist.name" />
       </div>
-      <div class="level-right">
-        <b-tooltip
-          :label="`play ${playlist.name}`"
-          position="is-left"
-          type="is-dark"
-          square
-        >
-          <div
-            class="p-1 is-clickable"
-            @click="$store.commit('player/startPlaylist', tracks)"
-          >
-            <b-icon icon="play" size="is-large" />
-          </div>
-        </b-tooltip>
-        <b-tooltip
-          :label="`shuffle ${playlist.name}`"
-          position="is-left"
-          type="is-dark"
-          square
-        >
-          <div
-            class="p-1 is-clickable"
-            @click="$store.commit('player/shufflePlaylist', tracks)"
-          >
-            <b-icon icon="shuffle" size="is-large" />
-          </div>
-        </b-tooltip>
-      </div>
+      <play-controls :tracks="tracks" :name="playlist.name" />
     </div>
     <b-table
       class="mb-6"
@@ -50,20 +23,20 @@
       <b-table-column v-slot="props" field="album" label="Album">
         {{ props.row.album }}
       </b-table-column>
-      <!--      <b-table-column v-slot="props" field="year" label="Year">-->
-      <!--        {{ props.row.year }}-->
-      <!--      </b-table-column>-->
-      <!--      <b-table-column v-slot="props" field="duration" label="Duration">-->
-      <!--        {{ props.row.duration | tracktime }}-->
-      <!--      </b-table-column>-->
     </b-table>
   </div>
 </template>
 
 <script>
+import PlayControls from '~/pages/playlists/PlayControls'
+
 export default {
   name: 'Playlist',
+  components: { PlayControls },
   async asyncData ({ $axios, store, params }) {
+    if (store.state.playlists.length === 0) {
+      await store.dispatch('loadPlaylists')
+    }
     const playlist = store.getters.playlist(params.id)
     const tracks = await $axios.$get(
       `api/playlist/${params.id}/tracks`

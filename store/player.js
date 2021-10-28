@@ -54,6 +54,7 @@ export const actions = {
 }
 export const getters = {
   playlist: state => state.playlist,
+  hasQueue: state => state.playlist.length > 0,
   i: state => state.playlistIndex,
   streamList: (state, getters, rootState, rootGetters) => {
     return state.playlist
