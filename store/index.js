@@ -27,7 +27,7 @@ export const actions = {
   }
 }
 export const getters = {
-  playlist: state => (id) => {
+  getPlaylist: state => (id) => {
     return state.playlists.find(p => p.id === id)
   }
 }

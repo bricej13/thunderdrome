@@ -37,7 +37,7 @@ export default {
     if (store.state.playlists.length === 0) {
       await store.dispatch('loadPlaylists')
     }
-    const playlist = store.getters.playlist(params.id)
+    const playlist = store.getters.getPlaylist(params.id)
     const tracks = await $axios.$get(
       `api/playlist/${params.id}/tracks`
     )
