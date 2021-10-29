@@ -16,7 +16,7 @@
       {{ props.row.album }}
     </b-table-column>
     <b-table-column v-slot="props" field="id">
-      <div class="is-flex">
+      <div class="is-flex play-controls">
         <b-tooltip
           label="play"
           position="is-top"
@@ -67,3 +67,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+tr .play-controls {
+  visibility: hidden;
+}
+tr:hover .play-controls {
+  visibility: visible;
+}
+
+</style>
