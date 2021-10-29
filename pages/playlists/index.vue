@@ -39,6 +39,11 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Playlists',
+  head () {
+    return {
+      title: 'Thunderdrome - Playlists'
+    }
+  },
   computed: {
     ...mapGetters(['getPlaylist'])
   },

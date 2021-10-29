@@ -26,6 +26,11 @@ export default {
       albums: []
     }
   },
+  head () {
+    return {
+      title: 'Thunderdrome - Albums'
+    }
+  },
   mounted () {
     this.loadData()
   },

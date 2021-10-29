@@ -53,6 +53,11 @@ export default {
       ]
     }
   },
+  head () {
+    return {
+      title: `Thunderdrome - ${this.playlist.name}`
+    }
+  },
   computed: {
     playlistDuration () {
       return this.tracks.reduce((acc, cur) => acc + cur.duration, 0)

@@ -50,10 +50,32 @@ export const mutations = {
 }
 
 export const actions = {
-  startPlaylist ({ commit, getters, state }, payload) {
+  loadAudioSrc ({ state, getters, dispatch }) {
+    state.audioControl.src = getters.currentStream
+    if ('mediaSession' in navigator) {
+      // eslint-disable-next-line no-undef
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: getters.currentTrack.title,
+        artist: getters.currentTrack.artist,
+        album: getters.currentTrack.album,
+        artwork: [
+          { src: getters.albumArt, sizes: '300x300', type: 'image/jpeg' }
+        ]
+      })
+      navigator.mediaSession.setActionHandler('play', function () { state.audioControl.play() })
+      navigator.mediaSession.setActionHandler('pause', function () { state.audioControl.pause() })
+      navigator.mediaSession.setActionHandler('stop', function () { state.audioControl.pause() })
+      navigator.mediaSession.setActionHandler('seekbackward', function () { /* Code excerpted. */ })
+      navigator.mediaSession.setActionHandler('seekforward', function () { /* Code excerpted. */ })
+      navigator.mediaSession.setActionHandler('seekto', function () { /* Code excerpted. */ })
+      navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
+      navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('nextTrack') })
+    }
+  },
+  startPlaylist ({ commit, getters, state, dispatch }, payload) {
     commit('startPlaylist', payload)
     commit('setPlay', true)
-    state.audioControl.src = getters.currentStream
+    dispatch('loadAudioSrc')
   },
   appendToPlaylist (store, tracks) {
     store.commit('appendToPlaylist', tracks)
@@ -73,9 +95,9 @@ export const actions = {
       dispatch('setTrack', state.playlistIndex + 1)
     }
   },
-  setTrack ({ state, commit, getters }, i) {
+  setTrack ({ state, commit, getters, dispatch }, i) {
     commit('setTrack', i)
-    state.audioControl.src = getters.currentStream
+    dispatch('loadAudioSrc')
   }
 
 }

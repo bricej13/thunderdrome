@@ -35,6 +35,11 @@ export default {
       `api/song/?_start=0&_end=0&_sort=album&album_id=${params.id}`
     )
     return { album, tracks }
+  },
+  head () {
+    return {
+      title: `Thunderdrome - ${this.album.name}`
+    }
   }
 }
 </script>

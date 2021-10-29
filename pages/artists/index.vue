@@ -35,13 +35,6 @@
 <script>
 export default {
   name: 'Artists',
-  // async asyncData ({ $axios, store, params }) {
-  //   const artists = await $axios.$get(
-  //     // `api/playlist/${params.id}/tracks`
-  //     'api/artist?_end=15&_order=ASC&_sort=name&_start=0'
-  //   )
-  //   return { artists }
-  // },
   data () {
     return {
       data: [],
@@ -52,6 +45,18 @@ export default {
       defaultSortOrder: 'desc',
       page: 1,
       perPage: 20
+    }
+  },
+  // async asyncData ({ $axios, store, params }) {
+  //   const artists = await $axios.$get(
+  //     // `api/playlist/${params.id}/tracks`
+  //     'api/artist?_end=15&_order=ASC&_sort=name&_start=0'
+  //   )
+  //   return { artists }
+  // },
+  head () {
+    return {
+      title: 'Thunderdrome - Artists'
     }
   },
   mounted () {

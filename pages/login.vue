@@ -61,7 +61,7 @@ export default {
       this.$axios.setBaseURL(this.baseUrl)
       this.$store.dispatch('user/login', this.creds)
         .then(() => {
-          this.$router.push('/')
+          this.$router.push('/albums')
         }).catch((err) => {
           this.error = err
         }).finally(() => {

@@ -13,6 +13,11 @@ export default {
       `api/playlist/${params.id}/tracks`
     )
     return { tracks }
+  },
+  head () {
+    return {
+      title: 'Thunderdrome - Artists'
+    }
   }
 }
 </script>
