@@ -4,24 +4,23 @@ export const state = () => ({
   volume: 0.5,
   playing: false,
   trackDuration: 0,
-  currentTime: 0
+  currentTime: 0,
+  audioControl: null
 })
 
 export const mutations = {
   setPlaylist (state, payload) {
     state.playlist = payload
   },
+  setAudioControl (state, payload) {
+    state.audioControl = payload
+  },
   startPlaylist (state, payload) {
     state.playlist = payload
     state.playlistIndex = 0
-    state.playing = true
   },
-  shufflePlaylist (state, payload) {
-    const shuffled = [...payload]
-    shuffled.sort((a, b) => 0.5 - Math.random())
-    state.playlist = shuffled
-    state.playlistIndex = 0
-    state.playing = true
+  appendToPlaylist (state, tracks) {
+    state.playlist = state.playlist.concat(tracks)
   },
   setPlay (state, payload) {
     state.playing = payload
@@ -51,6 +50,34 @@ export const mutations = {
 }
 
 export const actions = {
+  startPlaylist ({ commit, getters, state }, payload) {
+    commit('startPlaylist', payload)
+    commit('setPlay', true)
+    state.audioControl.src = getters.currentStream
+  },
+  appendToPlaylist (store, tracks) {
+    store.commit('appendToPlaylist', tracks)
+  },
+  shufflePlaylist ({ dispatch }, payload) {
+    const shuffled = [...payload]
+    shuffled.sort((a, b) => 0.5 - Math.random())
+    dispatch('startPlaylist', shuffled)
+  },
+  prevTrack ({ state, dispatch }) {
+    if (state.playlistIndex > 0) {
+      dispatch('setTrack', state.playlistIndex - 1)
+    }
+  },
+  nextTrack ({ state, dispatch }) {
+    if (state.playlistIndex < state.playlist.length) {
+      dispatch('setTrack', state.playlistIndex + 1)
+    }
+  },
+  setTrack ({ state, commit, getters }, i) {
+    commit('setTrack', i)
+    state.audioControl.src = getters.currentStream
+  }
+
 }
 export const getters = {
   playlist: state => state.playlist,

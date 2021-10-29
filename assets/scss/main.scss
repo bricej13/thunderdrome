@@ -1,5 +1,4 @@
-@import "~bulma/sass/utilities/_all";
-
+@import "~bulma/sass/utilities/derived-variables";
 @font-face {
   font-family: "Karla";
   font-weight: 700;
@@ -48,9 +47,15 @@ tr > td:first-child, tr > th:first-child {
 
 
 // Typography
+$title-color: $black;
+$title-size: 4rem;
+$title-weight: $weight-bold;
 * {
   letter-spacing: -.08rem;
   font-weight: 600;
+}
+.title {
+  letter-spacing: -3px;
 }
 
 // Lists and maps
@@ -122,5 +127,6 @@ $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
 // Import Bulma and Buefy styles
+@import "~bulma/sass/utilities/_all";
 @import "~bulma";
 @import "~buefy/src/scss/buefy";

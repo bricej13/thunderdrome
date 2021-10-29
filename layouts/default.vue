@@ -4,7 +4,7 @@
       <b-navbar type="is-transparent">
         <template #brand>
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
-            <span class="is-size-4 has-text-weight-bold">Thunderdrome</span>
+            <span class="is-size-4 has-text-weight-bold is-uppercase">Thunderdrome</span>
           </b-navbar-item>
         </template>
 
@@ -28,7 +28,7 @@
     <div class="play-queue">
       <play-queue />
     </div>
-    <div v-if="$store.getters['player/hasQueue']" class="player">
+    <div class="player">
       <audio-player />
     </div>
   </div>
@@ -75,9 +75,9 @@ export default {
 
 .header { grid-area: header; }
 
-.side-menu { grid-area: side-menu; overflow-y: auto; }
+.side-menu { grid-area: side-menu; overflow-y: auto; border-right: 3px solid black; }
 
-.play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw;}
+.play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw; border-left: 3px solid black;}
 
 .page-content { grid-area: page-content; overflow-y: auto; }
 

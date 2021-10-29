@@ -1,5 +1,5 @@
 <template>
-  <div class="audio-player">
+  <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
     <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
       <div class="pl-4 p-2">
         <figure class="image is-64x64">
@@ -17,8 +17,11 @@
         </div>
       </div>
 
-      <div class="is-flex-grow-1 px-2">
+      <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
         <progress-bar :value="progress" />
+        <div v-if="currentTrack">
+          {{ currentTrack.mediaFileId }}
+        </div>
       </div>
 
       <div class="px-2 has-text-grey">
@@ -53,7 +56,6 @@
     <audio
       ref="player"
       autoplay
-      :src="currentStream"
       @playing="setPlay(true)"
       @play="setPlay(true)"
       @pause="setPlay(false)"
@@ -69,7 +71,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'AudioPlayer',
@@ -84,6 +86,7 @@ export default {
       'streamList',
       'hasNext',
       'hasPrev',
+      'hasQueue',
       'currentTime',
       'duration',
       'progress',
@@ -91,13 +94,15 @@ export default {
       'albumArt'
     ])
   },
+  mounted () {
+    this.setAudioControl(this.$refs.player)
+  },
   methods: {
     ...mapMutations('player', [
-      'setPlay',
-      'setCurrentTime',
-      'setTrackDuration',
-      'nextTrack',
-      'prevTrack'
+      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl'
+    ]),
+    ...mapActions('player', [
+      'setTrack', 'nextTrack', 'prevTrack'
     ]),
     togglePlay () {
       this.playing

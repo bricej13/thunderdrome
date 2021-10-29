@@ -2,37 +2,20 @@
   <div v-if="tracks != null" class="playlist-view">
     <div class="level">
       <div class="level-left">
-        <page-title :text="playlist.name" />
+        <div class="title">
+          {{ playlist.name }}
+        </div>
       </div>
       <play-controls :tracks="tracks" :name="playlist.name" />
     </div>
-    <b-table
-      class="mb-6"
-      :data="tracks"
-      :checked-rows.sync="checked"
-      hoverable
-    >
-      <b-table-column v-slot="props" field="title" label="Title">
-        <span class="is-uppercase">
-          {{ props.row.title }}
-        </span>
-      </b-table-column>
-      <b-table-column v-slot="props" field="artist" label="Artist">
-        {{ props.row.artist }}
-      </b-table-column>
-      <b-table-column v-slot="props" field="album" label="Album">
-        {{ props.row.album }}
-      </b-table-column>
-    </b-table>
+    <TrackList :tracks="tracks" />
   </div>
 </template>
 
 <script>
-import PlayControls from '~/pages/playlists/PlayControls'
 
 export default {
   name: 'Playlist',
-  components: { PlayControls },
   async asyncData ({ $axios, store, params }) {
     if (store.state.playlists.length === 0) {
       await store.dispatch('loadPlaylists')

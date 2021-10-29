@@ -1,6 +1,8 @@
 <template>
   <section class="">
-    Songs
+    <div class="title">
+      Songs
+    </div>
   </section>
 </template>
 

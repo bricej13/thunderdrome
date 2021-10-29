@@ -147,7 +147,6 @@ export default {
             }
           })
         this.items[3].children = playlistLinks
-        console.log(playlistLinks)
       })
   }
 }

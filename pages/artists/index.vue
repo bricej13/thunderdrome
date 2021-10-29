@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <div class="is-size-1">
+    <div class="title">
       Artists
     </div>
     <b-table

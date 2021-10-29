@@ -1,6 +1,8 @@
 <template>
-  <section class="">
-    Playlists
+  <div>
+    <div class="level">
+      <page-title text="Playlists" class="column" />
+    </div>
     <div v-for="playlist in $store.state.playlists" :key="playlist.id" class="columns is-vcentered">
       <div class="column">
         <NuxtLink :to="`/playlists/${playlist.id}`" class="is-size-2">
@@ -29,11 +31,11 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Playlists',
@@ -44,14 +46,18 @@ export default {
     this.$store.dispatch('loadPlaylists')
   },
   methods: {
+    ...mapActions('player', [
+      'startPlaylist', 'shufflePlaylist', 'appendToPlaylist'
+    ]),
+    ...mapActions(['loadPlaylists']),
     async startPlaylist (id, shuffle) {
       const tracks = await this.$axios.$get(
         `api/playlist/${id}/tracks`
       )
       if (shuffle) {
-        this.$store.commit('player/startPlaylist', tracks)
+        await this.$store.dispatch('player/startPlaylist', tracks)
       } else {
-        this.$store.commit('player/shufflePlaylist', tracks)
+        await this.$store.dispatch('player/shufflePlaylist', tracks)
       }
     }
   }
