@@ -1,7 +1,7 @@
 <template>
   <div class="play-queue-wrapper">
     <div />
-    <div v-for="(track, j) in playlist" :key="track.mediaFileId + j" class="pb-1 pl-1 play-queue-track is-clickable" :class="{'active': i === j}" @click="setTrack(j)">
+    <div v-for="(track, j) in playlist" :key="(track.mediaFileId || track.id) + j" class="pb-1 pl-1 play-queue-track is-clickable" :class="{'active': i === j}" @click="setTrack(j)">
       <div class="is-uppercase">
         {{ track.title }}
       </div>

@@ -62,20 +62,30 @@ export const actions = {
           { src: getters.albumArt, sizes: '300x300', type: 'image/jpeg' }
         ]
       })
-      navigator.mediaSession.setActionHandler('play', function () { state.audioControl.play() })
-      navigator.mediaSession.setActionHandler('pause', function () { state.audioControl.pause() })
-      navigator.mediaSession.setActionHandler('stop', function () { state.audioControl.pause() })
-      navigator.mediaSession.setActionHandler('seekbackward', function () { /* Code excerpted. */ })
-      navigator.mediaSession.setActionHandler('seekforward', function () { /* Code excerpted. */ })
-      navigator.mediaSession.setActionHandler('seekto', function () { /* Code excerpted. */ })
+      navigator.mediaSession.setActionHandler('play', function () { dispatch('setPlay', true) })
+      navigator.mediaSession.setActionHandler('pause', function () { dispatch('setPlay', false) })
+      navigator.mediaSession.setActionHandler('stop', function () { dispatch('setPlay', false) })
+      navigator.mediaSession.setActionHandler('seekbackward', function (a) { console.log('seekbackward', a) })
+      navigator.mediaSession.setActionHandler('seekforward', function (a) { console.log('seekforward', a) })
+      navigator.mediaSession.setActionHandler('seekto', function (seek) { dispatch('seekTo', seek.seekTime) })
       navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
       navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('nextTrack') })
     }
   },
+  setPlay ({ state, commit }, payload) {
+    if (payload) {
+      state.audioControl.play()
+      navigator.mediaSession.playbackState = 'playing'
+    } else {
+      state.audioControl.pause()
+      navigator.mediaSession.playbackState = 'paused'
+    }
+    commit('setPlay', payload)
+  },
   startPlaylist ({ commit, getters, state, dispatch }, payload) {
     commit('startPlaylist', payload)
-    commit('setPlay', true)
     dispatch('loadAudioSrc')
+    dispatch('setPlay', true)
   },
   appendToPlaylist (store, tracks) {
     store.commit('appendToPlaylist', tracks)
@@ -98,6 +108,13 @@ export const actions = {
   setTrack ({ state, commit, getters, dispatch }, i) {
     commit('setTrack', i)
     dispatch('loadAudioSrc')
+  },
+  seekTo ({ state }, time) {
+    state.audioControl.currentTime = time
+  },
+  seekToPct ({ state }, pct) {
+    console.log(pct, state.trackDuration)
+    state.audioControl.currentTime = state.trackDuration * pct
   }
 
 }

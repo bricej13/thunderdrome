@@ -19,9 +19,6 @@
 
       <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
         <progress-bar :value="progress" />
-        <div v-if="currentTrack">
-          {{ currentTrack.mediaFileId }}
-        </div>
       </div>
 
       <div class="px-2 has-text-grey">
