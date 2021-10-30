@@ -1,7 +1,7 @@
 @import "~bulma/sass/utilities/derived-variables";
 @font-face {
   font-family: "Karla";
-  font-weight: 700;
+  font-weight: 200 800;
   src: url("~/assets/scss/Karla-VariableFont_wght.ttf") format("truetype");
 }
 
@@ -28,9 +28,8 @@ $text: $black;
 
 
 $family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-body, button, input, optgroup, select, textarea {
-  font-family: $family-sans-serif;
-}
+$family-primary: $family-sans-serif;
+
 $background: $ui3-lightYellow;
 $navbar-background-color: $background;
 $body-background-color: $ui3-lightYellow;
@@ -49,10 +48,9 @@ tr > td:first-child, tr > th:first-child {
 // Typography
 $title-color: $black;
 $title-size: 4rem;
-$title-weight: $weight-bold;
+$title-weight: 800;
 * {
   letter-spacing: -.08rem;
-  font-weight: 600;
 }
 .title {
   letter-spacing: -3px;

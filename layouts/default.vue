@@ -4,7 +4,7 @@
       <b-navbar type="is-transparent">
         <template #brand>
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
-            <span class="is-size-4 has-text-weight-bold is-uppercase">Thunderdrome</span>
+            <span class="is-size-4 title is-uppercase">Thunderdrome</span>
           </b-navbar-item>
         </template>
 

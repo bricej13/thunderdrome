@@ -28,7 +28,7 @@ export default {
 @import "~/assets/scss/main.scss";
 
 .pbar {
-  height: 10px;
+  height: 20px;
   width: 100%;
   background-color: $primary;
 }

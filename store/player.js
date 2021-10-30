@@ -9,34 +9,30 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setPlaylist (state, payload) {
-    state.playlist = payload
-  },
   setAudioControl (state, payload) {
     state.audioControl = payload
   },
   startPlaylist (state, payload) {
-    state.playlist = payload
+    state.playlist = payload.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
     state.playlistIndex = 0
   },
   appendToPlaylist (state, tracks) {
-    state.playlist = state.playlist.concat(tracks)
+    state.playlist = state.playlist.concat(tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t)))
+  },
+  removeFromPlaylist (state, index) {
+    const newList = state.playlist.filter((t, i) => i !== index)
+    if (index > state.playlistIndex) {
+      state.playlist = newList
+    } else {
+      state.playlist = newList
+      state.playlistIndex = state.playlistIndex - 1
+    }
   },
   setPlay (state, payload) {
     state.playing = payload
   },
   setVolume (state, payload) {
     state.volume = payload
-  },
-  prevTrack (state) {
-    if (state.playlistIndex > 0) {
-      state.playlistIndex = state.playlistIndex - 1
-    }
-  },
-  nextTrack (state) {
-    if (state.playlistIndex < state.playlist.length) {
-      state.playlistIndex = state.playlistIndex + 1
-    }
   },
   setTrack (state, i) {
     state.playlistIndex = i
@@ -73,12 +69,15 @@ export const actions = {
     }
   },
   setPlay ({ state, commit }, payload) {
-    if (payload) {
+    if (payload === true) {
       state.audioControl.play()
       navigator.mediaSession.playbackState = 'playing'
-    } else {
+    } else if (payload === false) {
       state.audioControl.pause()
       navigator.mediaSession.playbackState = 'paused'
+    } else {
+      state.audioControl.src = null
+      navigator.mediaSession.playbackState = 'none'
     }
     commit('setPlay', payload)
   },
@@ -87,8 +86,15 @@ export const actions = {
     dispatch('loadAudioSrc')
     dispatch('setPlay', true)
   },
-  appendToPlaylist (store, tracks) {
-    store.commit('appendToPlaylist', tracks)
+  appendToPlaylist ({ commit }, tracks) {
+    commit('appendToPlaylist', tracks)
+  },
+  removeFromPlaylist ({ commit }, index) {
+    commit('removeFromPlaylist', index)
+  },
+  clearQueue ({ commit, dispatch }) {
+    dispatch('setPlay', null)
+    commit('startPlaylist', [])
   },
   shufflePlaylist ({ dispatch }, payload) {
     const shuffled = [...payload]
