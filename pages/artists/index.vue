@@ -1,8 +1,5 @@
 <template>
   <section class="">
-    <div class="title">
-      Artists
-    </div>
     <b-table
       :data="artists"
       paginated
@@ -11,6 +8,11 @@
       pagination-position="top"
       pagination-simple
     >
+      <template #top-left>
+        <div class="title">
+          Artists
+        </div>
+      </template>
       <b-table-column v-slot="props" label="Artist" field="name">
         <NuxtLink :to="`/artists/${props.row.id}`">
           {{ props.row.name }}
