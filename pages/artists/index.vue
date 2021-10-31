@@ -4,15 +4,12 @@
       Artists
     </div>
     <b-table
-      :data="data"
-      :loading="loading"
-      per-page="20"
+      :data="artists"
       paginated
-      aria-next-label="Next page"
-      aria-previous-label="Previous page"
-      aria-page-label="Page"
-      aria-current-label="Current page"
-      @page-change="onPageChange"
+      :page-size="20"
+      :current-page.sync="page"
+      pagination-position="top"
+      pagination-simple
     >
       <b-table-column v-slot="props" label="Artist" field="name">
         <NuxtLink :to="`/artists/${props.row.id}`">
@@ -33,13 +30,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Artists',
   data () {
     return {
-      data: [],
-      total: 0,
-      loading: false,
       sortField: 'vote_count',
       sortOrder: 'desc',
       defaultSortOrder: 'desc',
@@ -47,34 +43,23 @@ export default {
       perPage: 20
     }
   },
-  // async asyncData ({ $axios, store, params }) {
-  //   const artists = await $axios.$get(
-  //     // `api/playlist/${params.id}/tracks`
-  //     'api/artist?_end=15&_order=ASC&_sort=name&_start=0'
-  //   )
-  //   return { artists }
-  // },
   head () {
     return {
       title: 'Thunderdrome - Artists'
     }
   },
   mounted () {
-    this.loadData()
+    this.$store.dispatch('artists/loadArtists')
+  },
+  computed: {
+    ...mapGetters('artists', [
+      'artists', 'total', 'loading'
+    ])
   },
   methods: {
-    async loadData () {
-      this.loading = true
-      const artists = await this.$axios.$get(
-        'api/artist?_start=0&_order=ASC&_sort=name'
-      )
-      this.loading = false
-      this.data = artists
-      this.total = artists.length
-    },
     onPageChange (page) {
-      this.page = page
-      this.loadData()
+      // this.page = page
+      console.log(page)
     }
   }
 

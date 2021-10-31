@@ -1,78 +1,82 @@
 <template>
   <aside class="block">
-    <b-collapse
-      v-for="(item, key) of items"
-      :key="key"
-      :open="isOpen === key"
-      animation="slide"
-      class="menu-item"
-      @open="isOpen = key"
-    >
-      <template #trigger="props">
-        <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">
-          <div class="level">
-            <div class="level-left">
-              <b-icon :icon="item.icon" />
-              {{ item.title }}
-              <b-icon
-                v-if="item.children.length > 0"
-                :icon="props.open ? 'menu-down' : 'menu-up'"
-              />
-            </div>
-          </div>
-        </NuxtLink>
-      </template>
-      <div v-for="(child, key2) of item.children" :key="key2">
-        <NuxtLink :to="child.to" exact-active-class="is-active" class="py-2 pl-5">
-          <div class="level">
-            <div class="level-left">
-              <b-icon v-if="child.icon" :icon="child.icon" />
-              {{ child.title }}
-            </div>
-          </div>
-        </NuxtLink>
+    <!--    {-->
+    <!--    title: 'Songs',-->
+    <!--    icon: 'music-note',-->
+    <!--    to: { name: 'songs' },-->
+    <!--    },-->
+    <!--    {-->
+    <!--    title: 'Playlists',-->
+    <!--    icon: 'playlist-music',-->
+    <!--    to: { name: 'playlists' },-->
+    <!--    },-->
+    <NuxtLink :to="{name: 'albums'}" exact-active-class="is-active" class="p-4 menu-item ">
+      <div class="level">
+        <div class="level-left">
+          <b-icon icon="adjust" />
+          Albums
+        </div>
       </div>
-    </b-collapse>
-    <!--    <div v-for="playlist of $store.state.playlists" :key="playlist.id" class="menu-item">-->
-    <!--      <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">-->
-    <!--        {{ playlist.name }}-->
-    <!--      </NuxtLink>-->
-    <!--    </div>-->
+    </NuxtLink>
+    <NuxtLink :to="{name: 'artists'}" exact-active-class="is-active" class="p-4 menu-item ">
+      <div class="level">
+        <div class="level-left">
+          <b-icon icon="microphone-outline" />
+          Artists
+        </div>
+      </div>
+    </NuxtLink>
+    <NuxtLink :to="{name: 'songs'}" exact-active-class="is-active" class="p-4 menu-item ">
+      <div class="level">
+        <div class="level-left">
+          <b-icon icon="music-note" />
+          Songs
+        </div>
+      </div>
+    </NuxtLink>
+    <NuxtLink :to="{name: 'playlists'}" exact-active-class="is-active" class="p-4 menu-item ">
+      <div class="level">
+        <div class="level-left">
+          <b-icon icon="playlist-music" />
+          Playlists
+        </div>
+      </div>
+    </NuxtLink>
+
+    <!--    <b-collapse-->
+    <!--      v-for="(item, key) of items"-->
+    <!--      :key="key"-->
+    <!--      :open="isOpen === key"-->
+    <!--      animation="slide"-->
+    <!--      class="menu-item"-->
+    <!--      @open="isOpen = key"-->
+    <!--    >-->
+    <!--      <template #trigger="props">-->
+    <!--        <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">-->
+    <!--          <div class="level">-->
+    <!--            <div class="level-left">-->
+    <!--              <b-icon :icon="item.icon" />-->
+    <!--              {{ item.title }}-->
+    <!--              <b-icon-->
+    <!--                v-if="item.children.length > 0"-->
+    <!--                :icon="props.open ? 'menu-down' : 'menu-up'"-->
+    <!--              />-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </NuxtLink>-->
+    <!--      </template>-->
+    <!--      <div v-for="(child, key2) of item.children" :key="key2">-->
+    <!--        <NuxtLink :to="child.to" exact-active-class="is-active" class="py-2 pl-5">-->
+    <!--          <div class="level">-->
+    <!--            <div class="level-left">-->
+    <!--              <b-icon v-if="child.icon" :icon="child.icon" />-->
+    <!--              {{ child.title }}-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </NuxtLink>-->
+    <!--      </div>-->
+    <!--    </b-collapse>-->
   </aside>
-<!--  <aside class="menu p-2">-->
-<!--    <p class="menu-label">-->
-<!--      General-->
-<!--    </p>-->
-<!--    <ul class="menu-list">-->
-<!--      <li v-for="(item, key) of items" :key="key">-->
-<!--        <NuxtLink :to="item.to" exact-active-class="is-active">-->
-<!--          <b-icon :icon="item.icon" />-->
-<!--          {{ item.title }}-->
-<!--        </NuxtLink>-->
-<!--        <ul v-if="item.children != null" class="menu-list">-->
-<!--          <li v-for="(child, key2) of item.children" :key="key2">-->
-<!--            <NuxtLink :to="child.to" exact-active-class="is-active">-->
-<!--              <b-icon :icon="child.icon" />-->
-<!--              {{ child.title }}-->
-<!--            </NuxtLink>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <NuxtLink to="playlists" exact-active-class="is-active">-->
-<!--          <b-icon icon="playlist-music" />-->
-<!--          Playlists-->
-<!--        </NuxtLink>-->
-<!--        <ul class="menu-list">-->
-<!--          <li v-for="playlist of $store.state.playlists" :key="playlist.id">-->
-<!--            <NuxtLink :to="`/playlists/${playlist.id}`" exact-active-class="is-active">-->
-<!--              {{ playlist.name }}-->
-<!--            </NuxtLink>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--  </aside>-->
 </template>
 <script>
 export default {
@@ -154,8 +158,7 @@ export default {
 <style lang="scss" scoped>
 @import "~/assets/scss/main.scss";
 
-.menu-item {
-  a {
+a.menu-item {
     color: $black !important;
     display: block;
 
@@ -166,7 +169,6 @@ export default {
     &.is-active {
       text-decoration: underline;
     }
-  }
 
   &:nth-child(1) {
     background-color: $ui3-yellow;

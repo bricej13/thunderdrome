@@ -1,5 +1,5 @@
 <template>
-  <div class="default-layout">
+  <div class="default-layout is-clipped">
     <div class="header">
       <b-navbar type="is-transparent">
         <template #brand>
@@ -82,4 +82,5 @@ export default {
 .page-content { grid-area: page-content; overflow-y: auto; }
 
 .player { grid-area: player; }
+
 </style>

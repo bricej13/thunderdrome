@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="level">
-      <page-title text="Playlists" class="column" />
+      <div class="title">
+        Playlists
+      </div>
     </div>
     <div v-for="playlist in $store.state.playlists" :key="playlist.id" class="columns is-vcentered">
       <div class="column">

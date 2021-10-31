@@ -17,13 +17,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AlbumArt from '~/components/AlbumArt'
 export default {
   name: 'Albums',
   components: { AlbumArt },
   data () {
     return {
-      albums: []
     }
   },
   head () {
@@ -31,15 +31,13 @@ export default {
       title: 'Thunderdrome - Albums'
     }
   },
-  mounted () {
-    this.loadData()
+  computed: {
+    ...mapGetters('albums', [
+      'albums'
+    ])
   },
-  methods: {
-    async loadData () {
-      this.albums = await this.$axios.$get(
-        '/api/album?_end=-100&_order=ASC&_sort=name&_start=0'
-      )
-    }
+  mounted () {
+    this.$store.dispatch('albums/loadAlbums')
   }
 }
 </script>

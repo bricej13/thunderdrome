@@ -56,6 +56,16 @@ $title-weight: 800;
   letter-spacing: -3px;
 }
 
+// page transition
+//page-enter-active, .page-leave-active {
+//  transition: all .20s ease-out;
+//}
+//.page-enter, .page-leave-active {
+//  opacity: 0;
+//  transform-origin: 50% 50%;
+//}
+
+
 // Lists and maps
 $custom-colors: null !default;
 $custom-shades: null !default;
