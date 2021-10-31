@@ -17,15 +17,17 @@
       </div>
     </div>
 
-    <transition-group name="queue">
-      <div
+    <Container group-name="track-target" :get-child-payload="(i) => playlist[i]" @drop="onDrop">
+      <Draggable
         v-for="(track, j) in playlist"
         :key="track.key || ((track.mediaFileId || track.id) + j)"
         class="pb-1 pl-1 play-queue-track is-clickable"
         :class="{'active': i === j}"
-        @click="setTrack(j)"
       >
-        <div class="is-flex is-justify-content-space-between is-align-items-center">
+        <div
+          class="is-flex is-justify-content-space-between is-align-items-center"
+          @click="setTrack(j)"
+        >
           <div>
             <div class="is-uppercase">
               {{ track.title }}
@@ -39,16 +41,18 @@
             <b-icon v-else icon="play" class="px-4" />
           </div>
         </div>
-      </div>
-    </transition-group>
+      </Draggable>
+    </Container>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { Container, Draggable } from 'vue-smooth-dnd'
 
 export default {
   name: 'PlayQueue',
+  components: { Container, Draggable },
   data () {
     return {
       items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8']
@@ -68,11 +72,14 @@ export default {
     ...mapActions('player', [
       'setTrack',
       'clearQueue',
-      'removeFromPlaylist'
+      'removeFromPlaylist',
+      'dragonDrop'
     ]),
     onDrop (dropResult) {
-      // this.items = applyDrag(this.items, dropResult)
       console.log(dropResult)
+      if (dropResult.addedIndex !== dropResult.removedIndex) {
+        this.dragonDrop(dropResult)
+      }
     }
   }
 }
@@ -87,6 +94,7 @@ export default {
     position: sticky;
     background-color: $background;
     top: 0;
+    z-index: 1;
     .title {
       margin-bottom: .5rem;
     }
@@ -126,7 +134,7 @@ export default {
 //}
 
 .play-queue-track {
-  transition: all .3s;
+  //transition: all .3s;
 }
 .queue-enter, .queue-leave-to {
   opacity: 0;

@@ -42,6 +42,17 @@ export const mutations = {
   },
   setTrackDuration (state, payload) {
     state.trackDuration = payload
+  },
+  dragonDrop (state, { addedIndex, removedIndex }) {
+    const moved = state.playlist.splice(removedIndex, 1)[0]
+    state.playlist.splice(addedIndex, 0, moved)
+    if (state.playlistIndex === removedIndex) {
+      state.playlistIndex = addedIndex
+    } else if (addedIndex >= state.playlistIndex && removedIndex < state.playlistIndex) {
+      state.playlistIndex = state.playlistIndex - 1
+    } else if (addedIndex <= state.playlistIndex && removedIndex > state.playlistIndex) {
+      state.playlistIndex = state.playlistIndex + 1
+    }
   }
 }
 
@@ -121,6 +132,9 @@ export const actions = {
   seekToPct ({ state }, pct) {
     console.log(pct, state.trackDuration)
     state.audioControl.currentTime = state.trackDuration * pct
+  },
+  dragonDrop ({ state, commit }, payload) {
+    commit('dragonDrop', payload)
   }
 
 }
