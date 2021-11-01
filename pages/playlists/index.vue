@@ -5,7 +5,7 @@
         Playlists
       </div>
     </div>
-    <div v-for="playlist in $store.state.playlists" :key="playlist.id" class="columns is-vcentered">
+    <div v-for="playlist in playlists" :key="playlist.id" class="columns is-vcentered">
       <div class="column">
         <NuxtLink :to="`/playlists/${playlist.id}`" class="is-size-2">
           {{ playlist.name }}
@@ -23,13 +23,13 @@
         </b-switch>
       </div>
       <div class="column is-narrow">
-        <div class="level">
-          <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, false)">
-            <b-icon icon="play" size="is-large" />
-          </div>
-          <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, true)">
-            <b-icon icon="shuffle" size="is-large" />
-          </div>
+        <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, false)">
+          <b-icon icon="play" size="is-large" />
+        </div>
+      </div>
+      <div class="column is-narrow">
+        <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, true)">
+          <b-icon icon="shuffle" size="is-medium" />
         </div>
       </div>
     </div>
@@ -47,10 +47,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPlaylist'])
+    ...mapGetters('playlists', ['playlists', 'getPlaylist'])
   },
   mounted () {
-    this.$store.dispatch('loadPlaylists')
+    this.$store.dispatch('playlists/loadPlaylists')
   },
   methods: {
     ...mapActions('player', [

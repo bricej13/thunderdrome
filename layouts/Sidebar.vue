@@ -41,6 +41,20 @@
           Playlists
         </div>
       </div>
+      <NuxtLink
+        v-for="playlist of playlistLinks"
+        :key="playlist.id"
+        :to="playlist.to"
+        exact-active-class="is-active"
+        class="py-2 pl-5 menu-item"
+      >
+        <div class="level">
+          <div class="level-left">
+            <b-icon v-if="playlist.icon" :icon="playlist.icon" />
+            {{ playlist.title }}
+          </div>
+        </div>
+      </NuxtLink>
     </NuxtLink>
 
     <!--    <b-collapse-->
@@ -79,6 +93,8 @@
   </aside>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Sidebar',
   data () {
@@ -139,26 +155,21 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters('playlists', [
+      'playlists',
+      'playlistLinks'
+    ])
+  },
   mounted () {
-    this.$store.dispatch('loadPlaylists')
-      .then(() => {
-        const playlistLinks = this.$store.state.playlists
-          .map((p) => {
-            return {
-              title: p.name,
-              // icon: 'playlist-music',
-              to: { name: 'playlists-id', params: { id: p.id } }
-            }
-          })
-        this.items[3].children = playlistLinks
-      })
+    this.$store.dispatch('playlists/loadPlaylists')
   }
 }
 </script>
 <style lang="scss" scoped>
 @import "~/assets/scss/main.scss";
 
-a.menu-item {
+.menu-item {
     color: $black !important;
     display: block;
 
@@ -170,6 +181,9 @@ a.menu-item {
       text-decoration: underline;
     }
 
+}
+
+aside > a.menu-item {
   &:nth-child(1) {
     background-color: $ui3-yellow;
   }
