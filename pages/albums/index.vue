@@ -3,9 +3,14 @@
     <div class="title">
       Albums
     </div>
-    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap">
-      <NuxtLink v-for="album in albums" :key="album.id" :to="{name: 'albums-id', params: {id: album.id}}">
-        <div class="album column">
+    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-around">
+      <NuxtLink
+        v-for="album in albums"
+        :key="album.id"
+        :to="{name: 'albums-id', params: {id: album.id}}"
+        class="flex-grow-1 is-block is-flex is-flex-direction-row is-justify-content-center py-4 px-2 album-link"
+      >
+        <div class="album">
           <album-art :album="album" />
           <div class="is-uppercase is-size-7">
             {{ album.artist }}
@@ -44,11 +49,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/assets/scss/main.scss";
-.album {
+.album-link {
+  transition: background-color 200ms, color 200ms;
+  flex-basis: 0;
   &:hover {
-     background-color: $ui3-beet;
-     color: $white;
-   }
+    background-color: $ui3-beet;
+    color: $white;
+  }
 }
 
 </style>

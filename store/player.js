@@ -16,9 +16,6 @@ export const mutations = {
     state.playlist = payload.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
     state.playlistIndex = 0
   },
-  appendToPlaylist (state, tracks) {
-    // state.playlist = state.playlist.concat(tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t)))
-  },
   addToPlaylist (state, { tracks, index }) {
     const tracksWithKey = tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
     state.playlist.splice(index, 0, ...tracksWithKey)

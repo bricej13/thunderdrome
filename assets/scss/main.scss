@@ -76,6 +76,11 @@ $title-weight: 800;
 $custom-colors: null !default;
 $custom-shades: null !default;
 
+::-webkit-scrollbar {
+  /* This is the magic bit for WebKit */
+  display: none;
+}
+
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(
     (

@@ -17,13 +17,13 @@
           <div class="level">
             <a
               class="p-1 is-clickable"
-              @click="startPlaylist(track)"
+              @click="startPlaylist([track])"
             >
               <b-icon icon="play" size="is-small" />
             </a>
             <a
               class="p-1 is-clickable"
-              @click="appendToPlaylist(track)"
+              @click="appendToPlaylist([track])"
             >
               <b-icon icon="plus" size="is-small" />
             </a>
