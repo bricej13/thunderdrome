@@ -17,7 +17,14 @@ export const mutations = {
     state.playlistIndex = 0
   },
   appendToPlaylist (state, tracks) {
-    state.playlist = state.playlist.concat(tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t)))
+    // state.playlist = state.playlist.concat(tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t)))
+  },
+  addToPlaylist (state, { tracks, index }) {
+    const tracksWithKey = tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
+    state.playlist.splice(index, 0, ...tracksWithKey)
+    if (state.playlistIndex >= index) {
+      state.playlistIndex = state.playlistIndex + tracks.length
+    }
   },
   removeFromPlaylist (state, index) {
     const newList = state.playlist.filter((t, i) => i !== index)
@@ -43,8 +50,8 @@ export const mutations = {
   setTrackDuration (state, payload) {
     state.trackDuration = payload
   },
-  dragonDrop (state, { addedIndex, removedIndex }) {
-    const moved = state.playlist.splice(removedIndex, 1)[0]
+  dragonDrop (state, { addedIndex, removedIndex, payload }) {
+    const moved = removedIndex != null ? state.playlist.splice(removedIndex, 1)[0] : payload
     state.playlist.splice(addedIndex, 0, moved)
     if (state.playlistIndex === removedIndex) {
       state.playlistIndex = addedIndex
@@ -97,8 +104,8 @@ export const actions = {
     dispatch('loadAudioSrc')
     dispatch('setPlay', true)
   },
-  appendToPlaylist ({ commit }, tracks) {
-    commit('appendToPlaylist', tracks)
+  appendToPlaylist ({ commit, state }, tracks) {
+    commit('addToPlaylist', { tracks, index: state.playlist.length })
   },
   removeFromPlaylist ({ commit }, index) {
     commit('removeFromPlaylist', index)

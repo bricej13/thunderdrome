@@ -1,15 +1,5 @@
 <template>
   <aside class="block">
-    <!--    {-->
-    <!--    title: 'Songs',-->
-    <!--    icon: 'music-note',-->
-    <!--    to: { name: 'songs' },-->
-    <!--    },-->
-    <!--    {-->
-    <!--    title: 'Playlists',-->
-    <!--    icon: 'playlist-music',-->
-    <!--    to: { name: 'playlists' },-->
-    <!--    },-->
     <NuxtLink :to="{name: 'albums'}" exact-active-class="is-active" class="p-4 menu-item ">
       <div class="level">
         <div class="level-left">
@@ -41,118 +31,39 @@
           Playlists
         </div>
       </div>
-      <NuxtLink
+      <Container
         v-for="playlist of playlistLinks"
         :key="playlist.id"
-        :to="playlist.to"
-        exact-active-class="is-active"
-        class="py-2 pl-5 menu-item"
+        behaviour="drop-zone"
+        group-name="track-target"
+        drag-class="has-background-info"
+        @drop="onDrop(playlist.id, $event)"
       >
-        <div class="level">
-          <div class="level-left">
-            <b-icon v-if="playlist.icon" :icon="playlist.icon" />
-            {{ playlist.title }}
+        <NuxtLink
+          :to="playlist.to"
+          exact-active-class="is-active"
+          class="py-2 pl-5 menu-item"
+        >
+          <div class="level">
+            <div class="level-left">
+              <b-icon v-if="playlist.icon" :icon="playlist.icon" />
+              {{ playlist.title }}
+            </div>
           </div>
-        </div>
-      </NuxtLink>
+        </NuxtLink>
+      </Container>
     </NuxtLink>
-
-    <!--    <b-collapse-->
-    <!--      v-for="(item, key) of items"-->
-    <!--      :key="key"-->
-    <!--      :open="isOpen === key"-->
-    <!--      animation="slide"-->
-    <!--      class="menu-item"-->
-    <!--      @open="isOpen = key"-->
-    <!--    >-->
-    <!--      <template #trigger="props">-->
-    <!--        <NuxtLink :to="item.to" exact-active-class="is-active" class="p-4">-->
-    <!--          <div class="level">-->
-    <!--            <div class="level-left">-->
-    <!--              <b-icon :icon="item.icon" />-->
-    <!--              {{ item.title }}-->
-    <!--              <b-icon-->
-    <!--                v-if="item.children.length > 0"-->
-    <!--                :icon="props.open ? 'menu-down' : 'menu-up'"-->
-    <!--              />-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--        </NuxtLink>-->
-    <!--      </template>-->
-    <!--      <div v-for="(child, key2) of item.children" :key="key2">-->
-    <!--        <NuxtLink :to="child.to" exact-active-class="is-active" class="py-2 pl-5">-->
-    <!--          <div class="level">-->
-    <!--            <div class="level-left">-->
-    <!--              <b-icon v-if="child.icon" :icon="child.icon" />-->
-    <!--              {{ child.title }}-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--        </NuxtLink>-->
-    <!--      </div>-->
-    <!--    </b-collapse>-->
   </aside>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { Container } from 'vue-smooth-dnd'
 
 export default {
   name: 'Sidebar',
+  components: { Container },
   data () {
     return {
-      isOpen: 3,
-      items: [
-        {
-          title: 'Albums',
-          icon: 'adjust',
-          to: { name: 'albums' },
-          children: [
-            {
-              title: 'All',
-              icon: 'adjust',
-              to: { name: 'albums', query: { sort: 'name', order: 'ASC', filter: {} } }
-            },
-            {
-              title: 'Random',
-              icon: 'shuffle',
-              to: { name: 'albums', query: { sort: 'random', order: 'ASC', filter: {} } }
-            },
-            {
-              title: 'Favorites',
-              icon: 'heart-outline',
-              to: { name: 'albums', query: { sort: 'started_at', order: 'DESC', filter: { starred: true } } }
-            },
-            {
-              title: 'Top Rated',
-              icon: 'star-outline',
-              to: { name: 'albums', query: { sort: 'rating', order: 'DESC', filter: { has_rating: true } } }
-            }
-          ]
-        },
-        {
-          title: 'Artists',
-          icon: 'microphone-outline',
-          to: { name: 'artists' },
-          children: []
-        },
-        {
-          title: 'Songs',
-          icon: 'music-note',
-          to: { name: 'songs' },
-          children: []
-        },
-        {
-          title: 'Playlists',
-          icon: 'playlist-music',
-          to: { name: 'playlists' },
-          children: []
-        },
-        {
-          title: 'Settings',
-          icon: 'cog-outline',
-          to: { name: 'settings' },
-          children: []
-        }
-      ]
     }
   },
   computed: {
@@ -163,6 +74,16 @@ export default {
   },
   mounted () {
     this.$store.dispatch('playlists/loadPlaylists')
+  },
+  methods: {
+    ...mapActions('playlists', ['addTracksToPlaylist']),
+    onDrop (playlistId, dropResult) {
+      if (dropResult.addedIndex != null) {
+        console.log(`adding track ${dropResult.payload.id} to playlist ${playlistId}`)
+        /// why is this failing?
+        this.addTracksToPlaylist({ playlistId, tracks: [dropResult.payload.mediaFileId || dropResult.payload.id] })
+      }
+    }
   }
 }
 </script>

@@ -1,18 +1,21 @@
 <template>
   <div v-if="tracks != null" class="playlist-view">
-    <div class="level">
-      <div class="level-left">
-        <div class="title">
-          {{ playlist.name }}
+    <div class="playlist-header">
+      <div class="level">
+        <div class="level-left">
+          <div class="title">
+            {{ playlist.name }}
+          </div>
         </div>
+        <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
-      <play-controls :tracks="tracks" :name="playlist.name" />
     </div>
     <TrackList :tracks="tracks" />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Playlist',
@@ -25,10 +28,7 @@ export default {
       console.log('loading tracks')
       await store.dispatch('playlists/loadPlaylistTracks', params.id)
     }
-    return {
-      playlist: store.getters['playlists/getPlaylist'](params.id),
-      tracks: store.getters['playlists/getPlaylistTracks'](params.id)
-    }
+    return { playlistId: params.id }
   },
   data () {
     return {
@@ -63,17 +63,29 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('playlists', ['getPlaylist', 'getPlaylistTracks']),
+    playlist () {
+      return this.getPlaylist(this.playlistId)
+    },
+    tracks () {
+      return this.getPlaylistTracks(this.playlistId)
+    },
     playlistDuration () {
-      return this.tracks.reduce((acc, cur) => acc + cur.duration, 0)
+      return this.getPlaylistTracks(this.playlistId).reduce((acc, cur) => acc + cur.duration, 0)
     }
   }
 }
 </script>
 
-<style>
-  .playlist-view table .td {
-    text-overflow: clip;
-    white-space: nowrap;
-    overflow: hidden;
+<style lang="scss">
+  .playlist-view {
+    .playlist-header {
+      position: sticky;
+    }
+    table .td {
+      text-overflow: clip;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
 </style>

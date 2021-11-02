@@ -38,10 +38,16 @@ $progress-border-radius: 0;
 
 // Table
 $table-background-color: $ui3-lightYellow;
-$table-row-hover-background-color: $ui3-yellow;
+$table-row-hover-background-color: $link;
 $table-cell-border: 1px solid $black;
-tr > td:first-child, tr > th:first-child {
-  padding-left: 0;
+//tr > td:first-child, tr > th:first-child {
+//  padding-left: 0;
+//}
+.table.is-hoverable tbody tr:not(.is-selected):hover {
+  color: $white;
+  a {
+    color: $white
+  }
 }
 
 

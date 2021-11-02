@@ -19,12 +19,22 @@
     <!--    <pre>{{ album }}</pre>-->
     </div>
     <track-list :tracks="tracks" />
+    <!--    <Container group-name="track-target" behaviour="move" :get-child-payload="getChildPayload" @drop="onDrop">-->
+    <!--      <Draggable v-for="item in tracks" :key="item.id">-->
+    <!--        <div class="draggable-item">-->
+    <!--          {{ item.title }}-->
+    <!--        </div>-->
+    <!--      </Draggable>-->
+    <!--    </Container>-->
   </div>
 </template>
 
 <script>
+import { Container, Draggable } from 'vue-smooth-dnd'
 export default {
   name: 'Album',
+  // eslint-disable-next-line vue/no-unused-components
+  components: { Container, Draggable },
   async asyncData ({ $axios, store, params }) {
     // https://***REMOVED***/api/album/4b546861fec61762dc0ad781801cd9b4
     const album = await $axios.$get(
@@ -39,6 +49,28 @@ export default {
   head () {
     return {
       title: `Thunderdrome - ${this.album.name}`
+    }
+  },
+  methods: {
+    getChildPayload (index) {
+      return this.tracks[index]
+    },
+    onDrop (dropResult) {
+      const { removedIndex, addedIndex, payload } = dropResult
+      if (removedIndex === null && addedIndex === null) { return this.tracks }
+
+      const result = [...this.tracks]
+      let itemToAdd = payload
+
+      if (removedIndex !== null) {
+        itemToAdd = result.splice(removedIndex, 1)[0]
+      }
+
+      if (addedIndex !== null) {
+        result.splice(addedIndex, 0, itemToAdd)
+      }
+
+      this.tracks = result
     }
   }
 }

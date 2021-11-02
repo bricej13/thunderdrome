@@ -73,7 +73,7 @@ export default {
     "player player player";
 }
 
-.header { grid-area: header; }
+.header { grid-area: header; border-bottom: 2px solid black; }
 
 .side-menu { grid-area: side-menu; overflow-y: auto; border-right: 3px solid black; }
 

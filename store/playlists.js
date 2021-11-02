@@ -24,6 +24,12 @@ export const actions = {
     ).then(tracks =>
       context.commit('setPlaylistTracks', { playlistId, tracks })
     )
+  },
+  addTracksToPlaylist (context, { playlistId, tracks }) {
+    // tracks is a list of track ids
+    // https://navidrome.com/api/playlist/5334f9f2-4617-4a2a-befc-f02d946cefd1/tracks
+    this.$axios.$post(`api/playlist/${playlistId}/tracks`, { ids: tracks })
+      .then(res => context.dispatch('loadPlaylistTracks', playlistId))
   }
 }
 export const getters = {
