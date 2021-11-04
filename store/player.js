@@ -5,12 +5,16 @@ export const state = () => ({
   playing: false,
   trackDuration: 0,
   currentTime: 0,
-  audioControl: null
+  audioControl: null,
+  activeStream: null
 })
 
 export const mutations = {
   setAudioControl (state, payload) {
     state.audioControl = payload
+  },
+  setActiveStream (state, payload) {
+    state.activeStream = payload
   },
   startPlaylist (state, payload) {
     state.playlist = payload.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
@@ -61,8 +65,10 @@ export const mutations = {
 }
 
 export const actions = {
-  loadAudioSrc ({ state, getters, dispatch }) {
-    state.audioControl.src = getters.currentStream
+  loadAudioSrc ({ state, getters, dispatch, commit }) {
+    // state.audioControl.src = getters.currentStream
+    commit('setActiveStream', getters.currentStream)
+
     if ('mediaSession' in navigator) {
       // eslint-disable-next-line no-undef
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -85,13 +91,14 @@ export const actions = {
   },
   setPlay ({ state, commit }, payload) {
     if (payload === true) {
-      state.audioControl.play()
+      // state.audioControl.play()
       navigator.mediaSession.playbackState = 'playing'
     } else if (payload === false) {
-      state.audioControl.pause()
+      // state.audioControl.pause()
       navigator.mediaSession.playbackState = 'paused'
     } else {
-      state.audioControl.src = null
+      // state.audioControl.src = null
+      state.activeStream = null
       navigator.mediaSession.playbackState = 'none'
     }
     commit('setPlay', payload)
@@ -176,5 +183,6 @@ export const getters = {
     if (getters.currentTrack == null) { return null }
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`
   },
-  volume: state => state.volume
+  volume: state => state.volume,
+  activeStream: state => state.activeStream
 }

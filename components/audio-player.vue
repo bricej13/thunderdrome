@@ -18,7 +18,8 @@
       </div>
 
       <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
-        <progress-bar :value="progress" />
+        <!--        <progress-bar :value="progress" />-->
+        <wavesurfer />
       </div>
 
       <div class="px-2 has-text-grey">
@@ -104,15 +105,13 @@ export default {
   },
   methods: {
     ...mapMutations('player', [
-      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl', 'setVolume'
+      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl', 'setVolume', 'setPlay'
     ]),
     ...mapActions('player', [
       'setTrack', 'nextTrack', 'prevTrack', 'volumeUp', 'volumeDown'
     ]),
     togglePlay () {
-      this.playing
-        ? this.$refs.player.pause()
-        : this.$refs.player.play()
+      this.setPlay(!this.playing)
     },
     log (type, event) {
       // console.log(type, event)
