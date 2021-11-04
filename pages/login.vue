@@ -18,7 +18,7 @@
               type="password"
               password-reveal
               placeholder="Password"
-              @keypress.enter="login"
+              @keyup.enter="login"
             />
           </b-field>
           <div v-if="error">

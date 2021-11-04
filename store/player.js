@@ -134,13 +134,23 @@ export const actions = {
     state.audioControl.currentTime = time
   },
   seekToPct ({ state }, pct) {
-    console.log(pct, state.trackDuration)
     state.audioControl.currentTime = state.trackDuration * pct
   },
   dragonDrop ({ state, commit }, payload) {
     commit('dragonDrop', payload)
+  },
+  volumeUp ({ state, commit }) {
+    state.audioControl.volume = Math.min(1, state.audioControl.volume + 0.1).toPrecision(2)
+    commit('setVolume', state.audioControl.volume)
+  },
+  volumeDown ({ state, commit }) {
+    state.audioControl.volume = Math.max(0, state.audioControl.volume - 0.1).toPrecision(2)
+    commit('setVolume', state.audioControl.volume)
+  },
+  volumeTo ({ state, commit }, payload) {
+    state.audioControl.volume = payload.toPrecision(2)
+    commit('setVolume', state.audioControl.volume)
   }
-
 }
 export const getters = {
   playlist: state => state.playlist,
@@ -165,5 +175,6 @@ export const getters = {
   albumArt: (state, getters, rootState, rootGetters) => {
     if (getters.currentTrack == null) { return null }
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`
-  }
+  },
+  volume: state => state.volume
 }

@@ -12,6 +12,12 @@ export default function (context) {
       }
     }
   })
+  context.$axios.onResponseError((err, err2) => {
+    if (err.response.status === 401) {
+      context.store.dispatch('user/logout')
+      context.app.router.push({ name: 'login' })
+    }
+  })
   context.app.router.beforeEach((to, from, next) => {
     if (to.name !== 'login' && !context.store.state.user.token) {
       next({ name: 'login' })

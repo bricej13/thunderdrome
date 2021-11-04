@@ -12,7 +12,10 @@
       >
         <div class="album">
           <album-art :album="album" />
-          <div class="is-uppercase is-size-7">
+          <div class="is-uppercase title has-text-weight-semibold is-size-6">
+            {{ album.name }}
+          </div>
+          <div class="subtitle is-size-7">
             {{ album.artist }}
           </div>
         </div>

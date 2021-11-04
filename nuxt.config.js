@@ -31,7 +31,8 @@ export default {
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/navidrome-auth.js',
-    { src: '~/plugins/vuex-persist', ssr: false }
+    { src: '~/plugins/vuex-persist', ssr: false },
+    { src: '~/plugins/vue-shortkey.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

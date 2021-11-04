@@ -25,16 +25,18 @@
         {{ currentTime | tracktime }} / {{ duration | tracktime }}
       </div>
 
-      <div class="pl-2 pr-4">
+      <div class="pl-2 pr-2">
         <div class="level">
-          <div class="p-1 is-clickable" :disabled="!hasPrev" @click="prevTrack">
+          <div v-shortkey="['arrowleft']" class="p-1 is-clickable" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
             <b-icon
               icon="skip-previous"
             />
           </div>
 
           <div
+            v-shortkey="['space']"
             class="p-1 is-clickable"
+            @shortkey="togglePlay"
             @click="togglePlay"
           >
             <b-icon
@@ -42,12 +44,16 @@
               size="is-large"
             />
           </div>
-          <div class="p-1 is-clickable" :disabled="!hasNext" @click="nextTrack">
+          <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
             <b-icon
               icon="skip-next"
             />
           </div>
         </div>
+      </div>
+
+      <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4" @shortkey="changeVolume">
+        <vertical-progress-bar :value="volume" />
       </div>
     </div>
     <audio
@@ -62,8 +68,7 @@
       @load="log('load', $event)"
       @ended="nextTrack"
     >
-      Your browser does not support the
-      <code>audio</code> element.
+      Your browser does not support the<code>audio</code> element.
     </audio>
   </div>
 </template>
@@ -73,7 +78,9 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'AudioPlayer',
   data () {
-    return {}
+    return {
+      listeners: []
+    }
   },
   computed: {
     ...mapGetters('player', [
@@ -88,7 +95,8 @@ export default {
       'duration',
       'progress',
       'playing',
-      'albumArt'
+      'albumArt',
+      'volume'
     ])
   },
   mounted () {
@@ -96,10 +104,10 @@ export default {
   },
   methods: {
     ...mapMutations('player', [
-      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl'
+      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl', 'setVolume'
     ]),
     ...mapActions('player', [
-      'setTrack', 'nextTrack', 'prevTrack'
+      'setTrack', 'nextTrack', 'prevTrack', 'volumeUp', 'volumeDown'
     ]),
     togglePlay () {
       this.playing
@@ -108,6 +116,16 @@ export default {
     },
     log (type, event) {
       // console.log(type, event)
+    },
+    changeVolume (event) {
+      switch (event.srcKey) {
+        case 'up':
+          this.volumeUp()
+          break
+        case 'down':
+          this.volumeDown()
+          break
+      }
     }
   }
 }

@@ -59,7 +59,10 @@ $title-weight: 800;
   letter-spacing: -.08rem;
 }
 .title {
-  letter-spacing: -3px;
+  letter-spacing: -.3rem;
+  &.is-size-6 {
+    letter-spacing: -.1rem;
+  }
 }
 
 // page transition
