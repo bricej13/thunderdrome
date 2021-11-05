@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="is-flex is-flex-direction-row is-align-items-start">
-      <div class="">
+    <div class="is-flex is-flex-direction-row is-align-items-start mb-4">
+      <div class="m-2">
         <album-art :album="album" />
       </div>
       <div class="is-flex-grow-1 pl-1">
@@ -9,7 +9,9 @@
           {{ album.name }}
         </div>
         <div class="subtitle is-3">
-          {{ album.artist }}
+          <NuxtLink :to="{name: 'artists-id', params: {id: album.artistId}}">
+            {{ album.artist }}
+          </NuxtLink>
         </div>
       </div>
       <div class="">

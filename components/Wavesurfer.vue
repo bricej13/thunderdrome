@@ -41,11 +41,15 @@ export default {
       backend: 'MediaElement'
     })
     this.instance.on('ready', () => {
-      this.setTrackDuration(this.instance.getDuration())
       this.instance.play()
     })
-    this.instance.on('audioprocess', v => this.setCurrentTime(v))
-    this.instance.on('finish', v => this.nextTrack())
+    this.instance.on('audioprocess', (v) => {
+      this.setCurrentTime(v)
+      if (!isNaN(this.instance.getDuration())) {
+        this.setTrackDuration(this.instance.getDuration())
+      }
+    })
+    this.instance.on('finish', () => this.nextTrack())
   },
   beforeDestroy () {
     this.instance.destroy()

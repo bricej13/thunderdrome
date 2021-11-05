@@ -5,14 +5,10 @@ export const state = () => ({
   playing: false,
   trackDuration: 0,
   currentTime: 0,
-  audioControl: null,
   activeStream: null
 })
 
 export const mutations = {
-  setAudioControl (state, payload) {
-    state.audioControl = payload
-  },
   setActiveStream (state, payload) {
     state.activeStream = payload
   },
@@ -66,7 +62,6 @@ export const mutations = {
 
 export const actions = {
   loadAudioSrc ({ state, getters, dispatch, commit }) {
-    // state.audioControl.src = getters.currentStream
     commit('setActiveStream', getters.currentStream)
 
     if ('mediaSession' in navigator) {
@@ -91,13 +86,10 @@ export const actions = {
   },
   setPlay ({ state, commit }, payload) {
     if (payload === true) {
-      // state.audioControl.play()
       navigator.mediaSession.playbackState = 'playing'
     } else if (payload === false) {
-      // state.audioControl.pause()
       navigator.mediaSession.playbackState = 'paused'
     } else {
-      // state.audioControl.src = null
       state.activeStream = null
       navigator.mediaSession.playbackState = 'none'
     }
@@ -129,7 +121,7 @@ export const actions = {
     }
   },
   nextTrack ({ state, dispatch }) {
-    if (state.playlistIndex < state.playlist.length) {
+    if (state.playlistIndex < (state.playlist.length - 1)) {
       dispatch('setTrack', state.playlistIndex + 1)
     }
   },
@@ -137,26 +129,19 @@ export const actions = {
     commit('setTrack', i)
     dispatch('loadAudioSrc')
   },
-  seekTo ({ state }, time) {
-    state.audioControl.currentTime = time
-  },
-  seekToPct ({ state }, pct) {
-    state.audioControl.currentTime = state.trackDuration * pct
-  },
   dragonDrop ({ state, commit }, payload) {
     commit('dragonDrop', payload)
   },
   volumeUp ({ state, commit }) {
-    state.audioControl.volume = Math.min(1, state.audioControl.volume + 0.1).toPrecision(2)
-    commit('setVolume', state.audioControl.volume)
+    commit('setVolume', Math.min(1, state.volume + 0.1))
   },
   volumeDown ({ state, commit }) {
-    state.audioControl.volume = Math.max(0, state.audioControl.volume - 0.1).toPrecision(2)
-    commit('setVolume', state.audioControl.volume)
+    commit('setVolume', Math.max(0, state.volume - 0.1))
   },
   volumeTo ({ state, commit }, payload) {
-    state.audioControl.volume = payload.toPrecision(2)
-    commit('setVolume', state.audioControl.volume)
+    if (payload >= 0 && payload <= 1) {
+      commit('setVolume', payload)
+    }
   }
 }
 export const getters = {

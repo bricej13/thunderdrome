@@ -11,8 +11,16 @@
     <tbody>
       <tr v-for="track in tracks" :key="track.id">
         <td>{{ track.title }}</td>
-        <td>{{ track.artist }}</td>
-        <td>{{ track.album }}</td>
+        <td>
+          <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
+            {{ track.artist }}
+          </NuxtLink>
+        </td>
+        <td>
+          <NuxtLink :to="{name: 'albums-id', params: { id: track.albumId}}">
+            {{ track.album }}
+          </NuxtLink>
+        </td>
         <td>
           <div class="level">
             <a
@@ -28,6 +36,8 @@
               <b-icon icon="plus" size="is-small" />
             </a>
           </div>
+        </td>
+        </nuxtlink>
         </td>
       </tr>
     </tbody>

@@ -1,8 +1,8 @@
 import { VuexPersistence } from 'vuex-persist'
 
 export default function ({ store, $axios }) {
-  const vp = new VuexPersistence({
-    key: 'thunderdrome',
+  const userStorage = new VuexPersistence({
+    key: 'user',
     storage: window.localStorage,
     modules: ['user'],
     restoreState: (key, storage) => {
@@ -19,5 +19,31 @@ export default function ({ store, $axios }) {
     //   return mutation.type === 'user/login' || mutation.type === 'user/logout'
     // }
   })
-  vp.plugin(store)
+  const playerStorage = new VuexPersistence({
+    key: 'player',
+    storage: window.localStorage,
+    modules: ['player'],
+    filter: mutation =>
+      [
+        'player/startPlaylist',
+        'player/addToPlaylist',
+        'player/removeFromPlaylist',
+        'player/setTrack',
+        'player/dragonDrop',
+        'player/setTrack',
+        'player/setVolume',
+        'player/setActiveStream'
+      ].includes(mutation.type),
+    reducer: (state) => {
+      debugger
+      return {
+        activeStream: state.player.activeStream,
+        playlist: state.player.playlist,
+        playlistIndex: state.player.playlistIndex,
+        volume: state.player.volume
+      }
+    }
+  })
+  userStorage.plugin(store)
+  playerStorage.plugin(store)
 }

@@ -2,9 +2,11 @@
   <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
     <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
       <div class="pl-4 p-2">
-        <figure class="image is-64x64">
-          <img :src="albumArt">
-        </figure>
+        <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
+          <figure class="image is-64x64">
+            <img :src="albumArt">
+          </figure>
+        </NuxtLink>
       </div>
       <div class="px-2">
         <div v-if="currentTrack">
@@ -12,7 +14,9 @@
             {{ currentTrack.title }}
           </div>
           <div class="is-size-7">
-            {{ currentTrack.artist }}
+            <NuxtLink :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
+              {{ currentTrack.artist }}
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -57,20 +61,6 @@
         <vertical-progress-bar :value="volume" />
       </div>
     </div>
-    <audio
-      ref="player"
-      autoplay
-      @playing="setPlay(true)"
-      @play="setPlay(true)"
-      @pause="setPlay(false)"
-      @timeupdate="setCurrentTime($refs.player.currentTime)"
-      @durationchange="setTrackDuration($refs.player.duration)"
-      @error="log('error', $event)"
-      @load="log('load', $event)"
-      @ended="nextTrack"
-    >
-      Your browser does not support the<code>audio</code> element.
-    </audio>
   </div>
 </template>
 <script>
@@ -101,11 +91,10 @@ export default {
     ])
   },
   mounted () {
-    this.setAudioControl(this.$refs.player)
   },
   methods: {
     ...mapMutations('player', [
-      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setAudioControl', 'setVolume', 'setPlay'
+      'setPlay', 'setCurrentTime', 'setTrackDuration', 'setVolume', 'setPlay'
     ]),
     ...mapActions('player', [
       'setTrack', 'nextTrack', 'prevTrack', 'volumeUp', 'volumeDown'
