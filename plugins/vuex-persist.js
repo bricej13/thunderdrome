@@ -35,7 +35,6 @@ export default function ({ store, $axios }) {
         'player/setActiveStream'
       ].includes(mutation.type),
     reducer: (state) => {
-      debugger
       return {
         activeStream: state.player.activeStream,
         playlist: state.player.playlist,
