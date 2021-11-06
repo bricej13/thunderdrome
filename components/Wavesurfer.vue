@@ -14,17 +14,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'volume', 'playing'])
+    ...mapGetters('player', ['activeStream', 'volume', 'playing', 'currentTrack'])
   },
   watch: {
     activeStream (v) {
-      this.instance.load(v)
+      this.load(v)
     },
     volume (v) {
       this.instance.setVolume(v)
     },
     playing (playing) {
       if (playing) {
+        // when page is reloaded, but audio has not been loaded yet
+        if (this.instance.backend.buffer === undefined) {
+          this.load(this.activeStream)
+        }
         this.instance.play()
       } else {
         this.instance.pause()
@@ -43,6 +47,9 @@ export default {
     this.instance.on('ready', () => {
       this.instance.play()
     })
+    this.instance.on('waveform-ready', () => {
+      window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
+    })
     this.instance.on('audioprocess', (v) => {
       this.setCurrentTime(v)
       if (!isNaN(this.instance.getDuration())) {
@@ -59,6 +66,14 @@ export default {
     ...mapActions('player', ['nextTrack']),
     togglePlay () {
       this.instance.playPause()
+    },
+    load (url) {
+      const json = window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id)
+      if (json) {
+        this.instance.load(url, JSON.parse(json))
+      } else {
+        this.instance.load(url)
+      }
     }
   }
 }

@@ -13,16 +13,13 @@ export default function ({ store, $axios }) {
       return state
     },
     saveState: (key, state, storage) => localStorage.setItem(key, JSON.stringify(state))
-
-    // filter: (mutation) => {
-    //   console.log(mutation)
-    //   return mutation.type === 'user/login' || mutation.type === 'user/logout'
-    // }
   })
   const playerStorage = new VuexPersistence({
     key: 'player',
     storage: window.localStorage,
     modules: ['player'],
+    restoreState: (key, storage) => ({ player: JSON.parse(localStorage.getItem(key)) }),
+    saveState: (key, state, storage) => localStorage.setItem(key, JSON.stringify(state)),
     filter: mutation =>
       [
         'player/startPlaylist',

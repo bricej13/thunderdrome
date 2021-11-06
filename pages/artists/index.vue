@@ -9,8 +9,10 @@
       pagination-simple
     >
       <template #top-left>
-        <div class="title">
-          Artists
+        <div class="p-2">
+          <div class="title">
+            Artists
+          </div>
         </div>
       </template>
       <b-table-column v-slot="props" label="Artist" field="name">

@@ -36,7 +36,7 @@
             @click="setTrack(j)"
           >
             <div>
-              <div class="is-uppercase">
+              <div class="is-uppercase has-text-weight-semibold">
                 {{ track.title }}
               </div>
               <div class="has-text-weight-normal">
