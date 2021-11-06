@@ -2,7 +2,7 @@
   <div class="p-2">
     <div class="is-flex is-flex-row gap-4 mb-4">
       <figure class="image is-128x128">
-        <img :src="artist.largeImageUrl">
+        <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl">
       </figure>
       <div>
         <div class="title is-size-1">
