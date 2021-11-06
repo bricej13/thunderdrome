@@ -18,7 +18,13 @@ export default function ({ store, $axios }) {
     key: 'player',
     storage: window.localStorage,
     modules: ['player'],
-    restoreState: (key, storage) => ({ player: JSON.parse(localStorage.getItem(key)) }),
+    restoreState: (key, storage) => {
+      const data = JSON.parse(localStorage.getItem(key))
+
+      if (data) {
+        return ({ player: data })
+      }
+    },
     saveState: (key, state, storage) => localStorage.setItem(key, JSON.stringify(state)),
     filter: mutation =>
       [
