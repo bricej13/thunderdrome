@@ -16,10 +16,10 @@ export const mutations = {
 }
 
 export const actions = {
-  trackSearch (ctx, name) {
+  trackSearch (ctx, title) {
     return this.$axios.$get(
       '/api/song', {
-        params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
+        params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', title }
       }
     )
   }

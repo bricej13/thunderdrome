@@ -67,6 +67,8 @@ export default {
         this.albumSearch(v)
       ])
       const $router = this.$router
+      // const $ref = this.$ref
+      const startPlaylist = this.startPlaylist
       const results = []
       if (artists.length > 0) {
         results.push(
@@ -109,8 +111,9 @@ export default {
               type: 'track',
               title: t.title,
               subtitle: t.artist,
-              image: '',
-              onPlay () { this.startPlaylist([t]) }
+              image: `${this.$store.getters['user/subsonicUrl']('getCoverArt')}&id=${t.albumId}&size=300}`,
+              onNav () { $router.push({ name: 'albums-id', params: { id: t.albumId } }) },
+              onPlay () { startPlaylist([t]) }
             }
           })
         })
@@ -121,6 +124,9 @@ export default {
     onSelect (item, event) {
       if (event.shiftKey) {
         console.log('lets play!')
+        if (item.onPlay) {
+          item.onPlay()
+        }
       } else {
         item.onNav()
       }
