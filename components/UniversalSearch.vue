@@ -15,7 +15,7 @@
       expanded
       max-height="50vh"
       @typing="getAsyncData"
-      @select="option => option.onSelect()"
+      @select="onSelect"
     >
       <template slot-scope="props">
         <div class="media">
@@ -74,9 +74,10 @@ export default {
             type: 'Artists',
             items: artists.map((a) => {
               return {
+                type: 'artist',
                 title: a.name,
                 image: a.smallImageUrl || a.mediumImageUrl || a.largeImageUrl,
-                onSelect () {
+                onNav () {
                   $router.push({ name: 'artists-id', params: { id: a.id } })
                 }
               }
@@ -90,10 +91,11 @@ export default {
             type: 'Albums',
             items: albums.map((a) => {
               return {
+                type: 'album',
                 title: a.name,
                 subtitle: a.artist,
                 image: `${this.$store.getters['user/subsonicUrl']('getCoverArt')}&id=${a.id}&size=300}`,
-                onSelect () { $router.push({ name: 'albums-id', params: { id: a.id } }) }
+                onNav () { $router.push({ name: 'albums-id', params: { id: a.id } }) }
               }
             })
           }
@@ -104,24 +106,37 @@ export default {
           type: 'Tracks',
           items: tracks.map((t) => {
             return {
+              type: 'track',
               title: t.title,
               subtitle: t.artist,
               image: '',
-              onSelect () { this.startPlaylist([t]) }
+              onPlay () { this.startPlaylist([t]) }
             }
           })
         })
       }
       this.data = results
       this.isFetching = false
+    },
+    onSelect (item, event) {
+      if (event.shiftKey) {
+        console.log('lets play!')
+      } else {
+        item.onNav()
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-.navbar-item .universal-search img {
+<style lang="scss" scoped>
+.navbar-item .universal-search {
+  &:focus-within {
+    width: 100%;
+  }
+  img {
   max-height: none;
+  }
 }
 
 </style>
