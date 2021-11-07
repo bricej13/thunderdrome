@@ -14,7 +14,7 @@
           </NuxtLink>
         </div>
         <div>
-          <b-rate v-model="album.rating" @change="updateRating" />
+          <b-rate v-model="album.rating" @change="updateRating(album.id, $event)" />
         </div>
       </div>
       <div class="">
@@ -51,7 +51,7 @@
             {{ track.playCount }}
           </td>
           <td>
-            <b-rate v-model="track.rating" />
+            <b-rate v-model="track.rating" @change="updateRating(track.id, $event)" />
           </td>
           <td>
             <div class="level">
@@ -111,8 +111,8 @@ export default {
       'appendToPlaylist',
       'startPlaylist'
     ]),
-    updateRating (newRating) {
-      this.setRating({ id: this.album.id, rating: newRating })
+    updateRating (id, rating) {
+      this.setRating({ id, rating })
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'
