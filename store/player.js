@@ -79,7 +79,7 @@ export const actions = {
       navigator.mediaSession.setActionHandler('stop', function () { dispatch('setPlay', false) })
       navigator.mediaSession.setActionHandler('seekbackward', function (a) { console.log('seekbackward', a) })
       navigator.mediaSession.setActionHandler('seekforward', function (a) { console.log('seekforward', a) })
-      navigator.mediaSession.setActionHandler('seekto', function (seek) { dispatch('seekTo', seek.seekTime) })
+      navigator.mediaSession.setActionHandler('seekto', function (seek) { console.log('seekTo', seek) })
       navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
       navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('nextTrack') })
     }
@@ -90,7 +90,7 @@ export const actions = {
     } else if (payload === false) {
       navigator.mediaSession.playbackState = 'paused'
     } else {
-      state.activeStream = null
+      commit('setPlay', null)
       navigator.mediaSession.playbackState = 'none'
     }
     commit('setPlay', payload)
@@ -154,6 +154,8 @@ export const getters = {
       []
   },
   currentStream: (state, getters) => getters.streamList[getters.i],
+  nextStream: (state, getters) => getters.streamList[getters.i + 1],
+  nextTrack: (state, getters) => getters.playlist[getters.i + 1],
   currentTrack: state => state.playlist[state.playlistIndex],
   hasNext: state => !(state.playlistIndex >= state.playlist.length),
   hasPrev: state => state.playlistIndex > 0,

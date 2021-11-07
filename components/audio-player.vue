@@ -24,6 +24,7 @@
       <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
         <!--        <progress-bar :value="progress" />-->
         <wavesurfer />
+        <wavesurfer-preload />
       </div>
 
       <div class="px-2 has-text-grey">

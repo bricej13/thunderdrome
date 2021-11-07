@@ -9,8 +9,7 @@ export default {
   name: 'Wavesurfer',
   data () {
     return {
-      instance: null,
-      song: 'https://***REMOVED***/rest/stream?u=***REMOVED***&t=384874214fddcb997cab567a70e2e36a&s=d43521&f=json&v=1.8.0&c=ui3&id=76af792ecc15bec528707497e1c6d618&_1636000191071'
+      instance: null
     }
   },
   computed: {
@@ -68,9 +67,9 @@ export default {
       this.instance.playPause()
     },
     load (url) {
-      const json = window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id)
-      if (json) {
-        this.instance.load(url, JSON.parse(json))
+      const peaks = JSON.parse(window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id))
+      if (peaks && peaks.length > 100) {
+        this.instance.load(url, peaks)
       } else {
         this.instance.load(url)
       }

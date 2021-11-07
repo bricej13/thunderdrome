@@ -43,6 +43,7 @@
                 {{ track.artist }}
               </div>
             </div>
+            <div class="p-2" />
             <div>
               <a v-if="i !== j" @click.stop="removeFromPlaylist(j)"><b-icon icon="delete" class="is-clickable px-4" /></a>
               <b-icon v-else icon="play" class="px-4" />
@@ -51,34 +52,6 @@
         </div>
       </Draggable>
     </Container>
-
-    <!--    <Container group-name="track-target" :get-child-payload="(i) => playlist[i]" @drop="onDrop">-->
-    <!--      <Draggable-->
-    <!--        v-for="(track, j) in playlist"-->
-    <!--        :key="track.key || ((track.mediaFileId || track.id) + j)"-->
-    <!--        class="pb-1 pl-1 play-queue-track is-clickable"-->
-    <!--        :class="{'active': i === j}"-->
-    <!--      >-->
-    <!--        <div-->
-    <!--          class="is-flex is-justify-content-space-between is-align-items-center"-->
-    <!--          @click="setTrack(j)"-->
-    <!--        >-->
-    <!--          <div>-->
-    <!--            <div class="is-uppercase">-->
-    <!--              {{ track.title }}-->
-    <!--            </div>-->
-    <!--            <div class="has-text-weight-normal">-->
-    <!--              {{ track.artist }}-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--          <div>-->
-    <!--            <a v-if="i !== j" @click.stop="removeFromPlaylist(j)"><b-icon icon="delete" class="is-clickable px-4" /></a>-->
-    <!--            <b-icon v-else icon="play" class="px-4" />-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </Draggable>-->
-    <!--    </Container>-->
-    <!--    -->
   </div>
 </template>
 
