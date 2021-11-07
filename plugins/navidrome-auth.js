@@ -1,12 +1,18 @@
 export default function (context) {
   // console.log(context)
   context.$axios.onRequest((config) => {
-    config.headers['x-nd-authorization'] = 'Bearer ' + context.store.state.user.token
     if (context.store.getters['user/loggedIn']) {
       if (config.url.includes('api/')) { // native api
+        config.headers['x-nd-authorization'] = 'Bearer ' + context.store.state.user.token
       } else if (config.url.includes('rest/')) { // subsonic api
-        // config.headers['x-nd-authorization'] = 'Bearer ' + store.state.user.token
-        console.error('REQUESTING SUBSONIC API and you haven\'t added the query auth params ;()')
+        Object.assign(config.params, {
+          u: context.store.state.user.name,
+          t: context.store.state.user.subsonicToken,
+          s: context.store.state.user.subsonicSalt,
+          f: 'json',
+          c: 'thunderdrome',
+          v: '1.8.0'
+        })
       } else {
         console.log('not authenticating to this endpoint!')
       }

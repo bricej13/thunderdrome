@@ -9,7 +9,7 @@
           {{ artist.name }}
         </div>
         <div class="subtitle is-size-5">
-          {{ artist.albumCount }} Albums <span class="has-text-weight-light">|</span> {{ artist.songCount }} Tracks
+          {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
         </div>
       </div>
     </div>

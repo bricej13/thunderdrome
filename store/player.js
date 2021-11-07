@@ -82,7 +82,19 @@ export const actions = {
       navigator.mediaSession.setActionHandler('seekto', function (seek) { console.log('seekTo', seek) })
       navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
       navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('nextTrack') })
+      // rest/scrobble?u=***REMOVED***&t=5f24cb316cc29ee8b70c6f99c6e50a2c&s=bc2671&f=json&v=1.8.0&c=NavidromeUI&
+      // id=f003fe2c06a336ca942f7934a16706ac
+      // &submission=false
     }
+    dispatch('scrobble', getters.currentTrack.id)
+  },
+  scrobble (ctx, trackId) {
+    this.$axios.$get('/rest/scrobble', {
+      params: {
+        id: trackId,
+        submission: true
+      }
+    })
   },
   setPlay ({ state, commit }, payload) {
     if (payload === true) {

@@ -23,7 +23,7 @@ $info: $cyan;
 $success: $green;
 $warning: $yellow;
 $danger: $ui3-red;
-$dark: $grey-darker;
+$dark: $black;
 $text: $black;
 
 
@@ -36,6 +36,15 @@ $navbar-background-color: $background;
 $body-background-color: $ui3-lightYellow;
 $menu-item-hover-background-color: $ui3-beet;
 $progress-border-radius: 0;
+
+// Buefy configs
+//// rate
+$rate-color-active: $ui3-yellow;
+//// toast
+$toast-border-radius: 0;
+$toast-opacity: 1;
+$toast-box-shadow: none;
+
 
 // Table
 $table-background-color: $ui3-lightYellow;
@@ -51,6 +60,16 @@ $table-cell-border: 1px solid $black;
   }
 }
 
+
+table.table {
+  td, th {
+    vertical-align: middle;
+    padding: 0 .5em;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+  }
+}
 
 // Typography
 $title-color: $black;

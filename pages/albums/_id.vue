@@ -13,6 +13,9 @@
             {{ album.artist }}
           </NuxtLink>
         </div>
+        <div>
+          <b-rate v-model="album.rating" @change="updateRating" />
+        </div>
       </div>
       <div class="">
         <play-controls :tracks="tracks" />
@@ -20,7 +23,55 @@
 
     <!--    <pre>{{ album }}</pre>-->
     </div>
-    <track-list :tracks="tracks" />
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th />
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Duration</th>
+          <th>Play Count</th>
+          <th>Rating</th>
+          <th style="width: 10%" />
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="track in tracks" :key="track.id">
+          <td>{{ track.trackNumber }}</td>
+          <td>{{ track.title }}</td>
+          <td>
+            <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
+              {{ track.artist }}
+            </NuxtLink>
+          </td>
+          <td>
+            {{ track.duration | tracktime }}
+          </td>
+          <td>
+            {{ track.playCount }}
+          </td>
+          <td>
+            <b-rate v-model="track.rating" />
+          </td>
+          <td>
+            <div class="level">
+              <a
+                class="p-1 is-clickable"
+                @click="startPlaylist([track])"
+              >
+                <b-icon icon="play" size="is-small" />
+              </a>
+              <a
+                class="p-1 is-clickable"
+                @click="appendToPlaylist([track])"
+              >
+                <b-icon icon="plus" size="is-small" />
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <!--    <Container group-name="track-target" behaviour="move" :get-child-payload="getChildPayload" @drop="onDrop">-->
     <!--      <Draggable v-for="item in tracks" :key="item.id">-->
     <!--        <div class="draggable-item">-->
@@ -33,6 +84,7 @@
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd'
+import { mapActions } from 'vuex'
 export default {
   name: 'Album',
   // eslint-disable-next-line vue/no-unused-components
@@ -54,6 +106,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions('albums', ['setRating']),
+    ...mapActions('player', [
+      'appendToPlaylist',
+      'startPlaylist'
+    ]),
+    updateRating (newRating) {
+      this.setRating({ id: this.album.id, rating: newRating })
+        .then(() => this.$buefy.toast.open({
+          type: 'is-dark',
+          message: 'Rating updated'
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Failed to update rating'
+        }))
+    },
     getChildPayload (index) {
       return this.tracks[index]
     },

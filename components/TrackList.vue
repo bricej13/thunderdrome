@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-fullwidth is-hoverable">
+  <table class="table is-fullwidth is-hoverable track-list">
     <thead>
       <tr>
         <th>Title</th>
@@ -37,8 +37,6 @@
             </a>
           </div>
         </td>
-        </nuxtlink>
-        </td>
       </tr>
     </tbody>
   </table>
@@ -68,17 +66,6 @@ tr .play-controls {
 }
 tr:hover .play-controls {
   visibility: visible;
-}
-
-table.table {
-  table-layout: fixed;
-  td, th {
-    vertical-align: middle;
-    padding: 0 .5em;
-    white-space: nowrap;
-    text-overflow:ellipsis;
-    overflow: hidden;
-  }
 }
 
 </style>
