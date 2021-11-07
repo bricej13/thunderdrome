@@ -15,9 +15,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'preload', href: 'assets/scss/Karla-VariableFont_wght.ttf', as: 'font', type: 'font/ttf', crossorigin: true },
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: true }
+      { rel: 'preload', href: 'assets/scss/Karla-VariableFont_wght.ttf', as: 'font', type: 'font/ttf' }
     ]
   },
 

@@ -8,7 +8,10 @@
           </b-navbar-item>
         </template>
 
-        <template #end>
+        <template #end class="is-flex-grow-1">
+          <b-navbar-item tag="div" class="is-flex-grow-1">
+            <universal-search />
+          </b-navbar-item>
           <b-navbar-item tag="div">
             <div class="buttons">
               <a class="is-primary" @click.prevent="logout">

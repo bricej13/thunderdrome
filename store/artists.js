@@ -21,12 +21,22 @@ export const actions = {
     if (differenceInMinutes(new Date(), state.artistLoadDate) > 10 || state.artists.length === 0) {
       commit('setLoading', true)
       this.$axios.$get(
-        'api/artist?_start=0&_order=ASC&_sort=name'
+        'api/artist', {
+          params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'name' }
+        }
       ).then(artists => commit('setArtists', artists))
         .finally(() => commit('setLoading', false))
     }
+  },
+  artistSearch (ctx, name) {
+    return this.$axios.$get(
+      '/api/artist', {
+        params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
+      }
+    )
   }
 }
+
 export const getters = {
   artists: (state) => {
     return state.artists

@@ -51,7 +51,7 @@
             {{ track.playCount }}
           </td>
           <td>
-            <b-rate v-model="track.rating" @change="updateRating(track.id, $event)" />
+            <b-rate v-model="track.rating" size="is-small" @change="updateRating(track.id, $event)" />
           </td>
           <td>
             <div class="level">

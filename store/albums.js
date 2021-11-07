@@ -52,6 +52,13 @@ export const actions = {
         }
       }).catch(err => reject(err))
     })
+  },
+  albumSearch (ctx, name) {
+    return this.$axios.$get(
+      '/api/album', {
+        params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
+      }
+    )
   }
 }
 export const getters = {

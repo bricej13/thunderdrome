@@ -1,6 +1,6 @@
 <template>
-  <figure class="image is-128x128">
-    <img height="128" width="128" :src="coverArt" :alt="`${album.artist} - ${album.name}`">
+  <figure class="image" :class="[`is-${size}x${size}`]">
+    <img :height="size" width="size" :src="coverArt" :alt="`${album.artist} - ${album.name}`">
   </figure>
 </template>
 
@@ -11,6 +11,10 @@ export default {
     album: {
       type: Object,
       required: true
+    },
+    size: {
+      type: Number,
+      default: 128
     }
   },
   computed: {
