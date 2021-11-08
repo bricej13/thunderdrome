@@ -17,6 +17,13 @@
       @typing="getAsyncData"
       @select="onSelect"
     >
+      <template #header>
+        <span class="is-muted"><b>shift + enter</b> to play now</span>
+      </template>
+      <template #empty>
+        No results
+      </template>
+
       <template slot-scope="props">
         <div class="media">
           <div class="media-left">
@@ -28,7 +35,7 @@
             <div class="is-size-6 has-text-weight-semibold">
               {{ props.option.title }}
             </div>
-            <div v-if="props.option.subtitle" class="subtitle is-size-7">
+            <div v-if="props.option.subtitle" class="is-size-7">
               {{ props.option.subtitle }}
             </div>
           </div>
@@ -49,15 +56,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('albums', ['albumSearch']),
+    ...mapActions('albums', ['albumSearch', 'getTracks']),
     ...mapActions('artists', ['artistSearch']),
     ...mapActions('tracks', ['trackSearch']),
     ...mapActions('player', [
       'appendToPlaylist',
-      'startPlaylist'
+      'startPlaylist',
+      'shufflePlaylist'
     ]),
     async getAsyncData (v) {
       if (v.length === 0) {
+        this.data = []
         return
       }
       this.isFetching = true
@@ -66,9 +75,6 @@ export default {
         this.artistSearch(v),
         this.albumSearch(v)
       ])
-      const $router = this.$router
-      // const $ref = this.$ref
-      const startPlaylist = this.startPlaylist
       const results = []
       if (artists.length > 0) {
         results.push(
@@ -79,9 +85,8 @@ export default {
                 type: 'artist',
                 title: a.name,
                 image: a.smallImageUrl || a.mediumImageUrl || a.largeImageUrl,
-                onNav () {
-                  $router.push({ name: 'artists-id', params: { id: a.id } })
-                }
+                onNav: () => this.$router.push({ name: 'artists-id', params: { id: a.id } }),
+                onPlay: () => this.$store.dispatch('artists/getTracks', a.id).then(tracks => this.shufflePlaylist(tracks))
               }
             })
           }
@@ -97,7 +102,8 @@ export default {
                 title: a.name,
                 subtitle: a.artist,
                 image: `${this.$store.getters['user/subsonicUrl']('getCoverArt')}&id=${a.id}&size=300}`,
-                onNav () { $router.push({ name: 'albums-id', params: { id: a.id } }) }
+                onNav: () => this.$router.push({ name: 'albums-id', params: { id: a.id } }),
+                onPlay: () => this.getTracks(a.id).then(tracks => this.startPlaylist(tracks))
               }
             })
           }
@@ -112,8 +118,8 @@ export default {
               title: t.title,
               subtitle: t.artist,
               image: `${this.$store.getters['user/subsonicUrl']('getCoverArt')}&id=${t.albumId}&size=300}`,
-              onNav () { $router.push({ name: 'albums-id', params: { id: t.albumId } }) },
-              onPlay () { startPlaylist([t]) }
+              onNav: () => this.$router.push({ name: 'albums-id', params: { id: t.albumId } }),
+              onPlay: () => this.startPlaylist([t])
             }
           })
         })
@@ -130,18 +136,31 @@ export default {
       } else {
         item.onNav()
       }
+      document.activeElement.blur()
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "~/assets/scss/main.scss";
 .navbar-item .universal-search {
+  width: 100%;
   &:focus-within {
-    width: 100%;
   }
   img {
-  max-height: none;
+    max-height: none;
+  }
+  input {
+    transition: background-color 200ms, border 200ms;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    &:focus {
+      background-color: $white;
+      border: 1px solid black;
+    }
   }
 }
 

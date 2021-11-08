@@ -1,10 +1,10 @@
 <template>
-  <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-start gap-4">
+  <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-start gap-5">
     <NuxtLink
       v-for="album in albums"
       :key="album.id"
       :to="{name: 'albums-id', params: {id: album.id}}"
-      class="flex-grow-1 is-block is-flex is-flex-direction-row is-justify-content-center py-4 px-2 album-link"
+      class="is-block is-flex is-flex-direction-row is-justify-content-center album-link"
     >
       <div class="album">
         <album-art :album="album" />
@@ -43,8 +43,10 @@ export default {
   flex-basis: 0;
 
   &:hover {
-    background-color: $ui3-beet;
-    color: $white;
+    .title, .subtitle {
+      color: $primary;
+      text-decoration: $primary underline;
+    }
   }
 }
 

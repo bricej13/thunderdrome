@@ -59,6 +59,16 @@ export const actions = {
         params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
       }
     )
+  },
+
+  get (ctx, albumId) {
+    return this.$axios.$get(`api/album/${albumId}`)
+  },
+  getTracks (ctx, albumId) {
+    return this.$axios.$get(
+      'api/song/',
+      { params: { _start: 0, _end: 0, _sort: 'album', album_id: albumId } }
+    )
   }
 }
 export const getters = {

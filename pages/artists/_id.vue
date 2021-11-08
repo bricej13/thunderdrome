@@ -11,6 +11,7 @@
         <div class="subtitle is-size-5">
           {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
         </div>
+        <b-rate v-model="artist.rating" @change="updateRating(artist.id, $event)" />
       </div>
     </div>
     <div>
@@ -19,31 +20,54 @@
       </div>
       <album-list-tiles :albums="albums" subtitle-property="minYear" />
     </div>
+    <div>
+      <div class="level">
+        <div class="is-size-3">
+          Tracks
+        </div>
+        <play-controls :tracks="tracks" />
+      </div>
+      <track-list :tracks="tracks" />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Id',
   async asyncData ({ $axios, store, params }) {
-    // '/rest/getArtistInfo?u=***REMOVED***&t=5f24cb316cc29ee8b70c6f99c6e50a2c&s=bc2671&f=json&v=1.8.0&c=NavidromeUI&id=ff9f90893603fffc16cffa8d11c8292c'
-    // artist:  https://***REMOVED***/api/artist/307626e70fbbed31b96072543be71667
-    // albums:  https://***REMOVED***/api/album?_end=0&_order=ASC&_sort=maxYear&_start=0&artist_id=307626e70fbbed31b96072543be71667
-    // tracks: https://***REMOVED***/api/song?_end=0&_order=ASC&_sort=album&_start=0&artist_id=8b0756051df1c62f7f256793af3d79df
-    const artist = await $axios.$get(
-      `api/artist/${params.id}`
-    )
-    const albums = await $axios.$get(
-      `/api/album?_end=0&_order=ASC&_sort=maxYear&_start=0&artist_id=${params.id}`
-    )
-    // const tracks = await $axios.$get(
-    //   `/api/song?_end=0&_order=ASC&_sort=maxYear&_start=0&artist_id=${params.id}`
-    // )
-    return { artist, albums }
+    const [artist, tracks, albums] = await Promise.all([
+      store.dispatch('artists/get', params.id),
+      store.dispatch('artists/getTracks', params.id),
+      store.dispatch('artists/getAlbums', params.id)])
+    return { artist, albums, tracks }
   },
   head () {
     return {
       title: 'Thunderdrome - Artists'
+    }
+  },
+  mounted () {
+    if (this.artist.externalInfoUpdatedAt === '0001-01-01T00:00:00Z') {
+      this.$store.dispatch('artists/loadExternalBio', this.artist.id)
+        .then(() => this.$store.dispatch('artists/get', this.artist.id).then((res) => {
+          this.artist = res
+        }))
+    }
+  },
+  methods: {
+    ...mapActions('albums', ['setRating']),
+    updateRating (id, rating) {
+      this.setRating({ id, rating })
+        .then(() => this.$buefy.toast.open({
+          type: 'is-dark',
+          message: 'Rating updated'
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Failed to update rating'
+        }))
     }
   }
 }

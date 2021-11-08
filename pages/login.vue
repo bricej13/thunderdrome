@@ -4,7 +4,10 @@
       <div class="columns">
         <div class="column is-one-third is-offset-one-third">
           <div class="is-size-2 has-text-weight-bold has-text-centered">
-            Welcome to the Thunderdrome
+            welcome to the
+          </div>
+          <div class="title is-size-1 has-text-centered">
+            Thunderdrome
           </div>
           <b-field>
             <b-input v-model="creds.baseUrl" placeholder="Navidrome URL" autofocus />

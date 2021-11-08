@@ -37,6 +37,13 @@ $body-background-color: $ui3-lightYellow;
 $menu-item-hover-background-color: $ui3-beet;
 $progress-border-radius: 0;
 
+//// Dropdown
+$dropdown-content-radius: 0;
+$dropdown-content-shadow: inset 0 0 0 1px black;
+$dropdown-item-hover-color: $white;
+$dropdown-item-hover-background-color: $ui3-beet;
+$dropdown-content-offset: 0;
+
 // Buefy configs
 //// rate
 $rate-color-active: $ui3-yellow;

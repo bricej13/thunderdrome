@@ -72,32 +72,18 @@
         </tr>
       </tbody>
     </table>
-    <!--    <Container group-name="track-target" behaviour="move" :get-child-payload="getChildPayload" @drop="onDrop">-->
-    <!--      <Draggable v-for="item in tracks" :key="item.id">-->
-    <!--        <div class="draggable-item">-->
-    <!--          {{ item.title }}-->
-    <!--        </div>-->
-    <!--      </Draggable>-->
-    <!--    </Container>-->
   </div>
 </template>
 
 <script>
-import { Container, Draggable } from 'vue-smooth-dnd'
 import { mapActions } from 'vuex'
 export default {
   name: 'Album',
-  // eslint-disable-next-line vue/no-unused-components
-  components: { Container, Draggable },
   async asyncData ({ $axios, store, params }) {
-    // https://***REMOVED***/api/album/4b546861fec61762dc0ad781801cd9b4
-    const album = await $axios.$get(
-      `api/album/${params.id}`
-    )
-    const tracks = await $axios.$get(
-      // https://***REMOVED***/api/song?_end=0&_order=ASC&_sort=album&_start=0&album_id=4b546861fec61762dc0ad781801cd9b4
-      `api/song/?_start=0&_end=0&_sort=album&album_id=${params.id}`
-    )
+    const [album, tracks] = await Promise.all([
+      store.dispatch('albums/get', params.id),
+      store.dispatch('albums/getTracks', params.id)
+    ])
     return { album, tracks }
   },
   head () {
