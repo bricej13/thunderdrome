@@ -23,6 +23,12 @@ export const mutations = {
       state.playlistIndex = state.playlistIndex + tracks.length
     }
   },
+  shufflePlaylist (state) {
+    const otherTracks = state.playlist.filter((t, i) => i !== state.playlistIndex)
+    otherTracks.sort((a, b) => 0.5 - Math.random())
+    state.playlist = [state.playlist[state.playlistIndex], ...otherTracks]
+    state.playlistIndex = 0
+  },
   removeFromPlaylist (state, index) {
     const newList = state.playlist.filter((t, i) => i !== index)
     if (index > state.playlistIndex) {
@@ -121,6 +127,9 @@ export const actions = {
   clearQueue ({ commit, dispatch }) {
     dispatch('setPlay', null)
     commit('startPlaylist', [])
+  },
+  shuffleQueue ({ commit, state, dispatch }) {
+    commit('shufflePlaylist')
   },
   shufflePlaylist ({ dispatch }, payload) {
     const shuffled = [...payload]

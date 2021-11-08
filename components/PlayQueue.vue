@@ -5,7 +5,10 @@
         <div class="title is-3">
           Queue
         </div>
-        <a @click="clearQueue"><b-icon icon="delete" class="is-clickable px-4" /></a>
+        <div>
+          <a @click="shuffleQueue"><b-icon icon="shuffle" class="is-clickable px-4" /></a>
+          <a @click="clearQueue"><b-icon icon="delete" class="is-clickable px-4" /></a>
+        </div>
       </div>
       <div class="is-flex is-justify-content-space-between is-align-items-baseline ">
         <div class="is-6">
@@ -81,6 +84,7 @@ export default {
     ...mapActions('player', [
       'setTrack',
       'clearQueue',
+      'shuffleQueue',
       'removeFromPlaylist',
       'dragonDrop'
     ]),

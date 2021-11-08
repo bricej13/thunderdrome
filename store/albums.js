@@ -17,7 +17,6 @@ export const state = () => ({
 
 export const mutations = {
   setAlbums (state, payload) {
-    console.log('setting albums')
     state.albums = payload
     state.albumLoadDate = new Date()
   },

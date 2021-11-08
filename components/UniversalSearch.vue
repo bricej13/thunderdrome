@@ -129,7 +129,6 @@ export default {
     },
     onSelect (item, event) {
       if (event.shiftKey) {
-        console.log('lets play!')
         if (item.onPlay) {
           item.onPlay()
         }

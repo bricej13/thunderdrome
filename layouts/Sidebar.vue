@@ -79,8 +79,6 @@ export default {
     ...mapActions('playlists', ['addTracksToPlaylist']),
     onDrop (playlistId, dropResult) {
       if (dropResult.addedIndex != null) {
-        console.log(`adding track ${dropResult.payload.id} to playlist ${playlistId}`)
-        /// why is this failing?
         this.addTracksToPlaylist({ playlistId, tracks: [dropResult.payload.mediaFileId || dropResult.payload.id] })
       }
     }
