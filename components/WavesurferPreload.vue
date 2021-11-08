@@ -30,7 +30,16 @@ export default {
     })
     this.instance.on('waveform-ready', () => {
       const peaks = this.instance.backend.mergedPeaks
-      window.localStorage.setItem(this.nextTrack.mediaFileId || this.nextTrack.id, JSON.stringify(peaks))
+      try {
+        window.localStorage.setItem(this.nextTrack.mediaFileId || this.nextTrack.id, JSON.stringify(peaks))
+      } catch {
+        console.log('clearing out local storage')
+        const keysToDelete = Object.keys(window.localStorage).filter(k => !['user', 'player'].includes(k))
+        for (const key of keysToDelete) {
+          window.localStorage.removeItem(key)
+        }
+        window.localStorage.setItem(this.nextTrack.mediaFileId || this.nextTrack.id, JSON.stringify(peaks))
+      }
       console.log(`finished preloading ${this.nextTrack.title}`, `found ${this.instance.backend.mergedPeaks.length} peaks`)
 
       // Code for calculating crossover point
