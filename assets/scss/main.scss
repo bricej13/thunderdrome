@@ -2,13 +2,12 @@
 @font-face {
   font-family: "Karla";
   font-weight: 200 800;
-  src: url("~/assets/scss/Karla-VariableFont_wght.ttf") format("truetype");
+  src: url("~/static/Karla-VariableFont_wght.ttf") format("truetype");
   font-display: swap;
 }
 
 
-// $family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-$family-sans-serif: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 $family-primary: $family-sans-serif;
 
 $navbar-background-color: $background;
