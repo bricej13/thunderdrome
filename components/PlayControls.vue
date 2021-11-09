@@ -23,7 +23,7 @@
         class="p-1 is-clickable"
         @click="shufflePlaylist(tracks)"
       >
-        <b-icon icon="shuffle" size="is-medium" />
+        <b-icon icon="random" size="is-medium" />
       </a>
     </b-tooltip>
     <b-tooltip

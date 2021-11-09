@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~/assets/scss/main.scss";
+@import "~/assets/scss/colors.scss";
 .navbar-item .universal-search {
   width: 100%;
   &:focus-within {

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="p-2">
+  <div class="p-2">
+    <div>
       <div class="title">
         Albums
       </div>
@@ -34,6 +34,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/main.scss";
+@import "~/assets/scss/colors.scss";
 
 </style>

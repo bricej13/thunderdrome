@@ -35,7 +35,7 @@
         <div class="level">
           <div v-shortkey="['arrowleft']" class="p-1 is-clickable" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
             <b-icon
-              icon="skip-previous"
+              icon="step-backward"
             />
           </div>
 
@@ -52,7 +52,7 @@
           </div>
           <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
             <b-icon
-              icon="skip-next"
+              icon="step-forward"
             />
           </div>
         </div>
@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/main.scss";
+@import "~/assets/scss/colors.scss";
 .audio-player {
   background-color: $background;
   border-top: 2px solid black;

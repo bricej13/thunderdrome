@@ -6,8 +6,8 @@
           Queue
         </div>
         <div>
-          <a @click="shuffleQueue"><b-icon icon="shuffle" class="is-clickable px-4" /></a>
-          <a @click="clearQueue"><b-icon icon="delete" class="is-clickable px-4" /></a>
+          <a @click="shuffleQueue"><b-icon icon="random" /></a>
+          <a @click="clearQueue"><b-icon icon="trash-alt" /></a>
         </div>
       </div>
       <div class="is-flex is-justify-content-space-between is-align-items-baseline ">
@@ -47,9 +47,11 @@
               </div>
             </div>
             <div class="p-2" />
-            <div>
-              <a v-if="i !== j" @click.stop="removeFromPlaylist(j)"><b-icon icon="delete" class="is-clickable px-4" /></a>
-              <b-icon v-else icon="play" class="px-4" />
+            <div class="px-2">
+              <a v-if="i !== j" @click.stop="removeFromPlaylist(j)">
+                <b-icon icon="trash-alt" />
+              </a>
+              <b-icon v-else icon="play" />
             </div>
           </div>
         </div>
@@ -98,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/main.scss";
+@import "~/assets/scss/colors.scss";
 
 .play-queue-wrapper {
   position: relative;
@@ -118,7 +120,7 @@ export default {
       color: transparent;
     }
     &:hover {
-      background-color: $menu-item-hover-background-color;
+      background-color: $ui3-beet;
       color: $white;
       a {
         color: $white;

@@ -21,11 +21,9 @@ export default {
   name: 'Playlist',
   async asyncData ({ store, params }) {
     if (store.getters['playlists/playlists'].length === 0) {
-      console.log('loading playlists')
       await store.dispatch('playlists/loadPlaylists')
     }
     if (!store.getters['playlists/playlistTracksLoaded'](params.id)) {
-      console.log('loading tracks')
       await store.dispatch('playlists/loadPlaylistTracks', params.id)
     }
     return { playlistId: params.id }

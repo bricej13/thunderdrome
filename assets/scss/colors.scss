@@ -1,0 +1,22 @@
+@import "~bulma/sass/utilities/derived-variables";
+$ui3-lightYellow: #fefbe5;
+$ui3-yellow: #feb601;
+$ui3-orange: #fc3b00;
+$ui3-red: #fc0000;
+$ui3-beet: #da0039;
+$ui3-fuchsia: #81023f;
+// Set your colors
+$primary: $ui3-fuchsia;
+$primary-light: $ui3-orange;
+$primary-dark: $ui3-beet;
+$primary-invert: findColorInvert($primary);
+
+$link: $ui3-beet;
+$info: $cyan;
+$success: $green;
+$warning: $yellow;
+$danger: $ui3-red;
+$dark: $black;
+$text: $black;
+
+$background: $ui3-lightYellow;

@@ -35,16 +35,24 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/fontawesome'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    ['nuxt-buefy', { css: false }],
+    ['nuxt-buefy', { css: false, materialDesignIcons: false, defaultIconPack: 'fas', defaultIconComponent: 'FontAwesomeIcon' }],
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
-
+  fontawesome: {
+    icons: {
+      // solid: true, // include the full pack in the bundle, not recommended
+      solid: ['faPlay', 'faRecordVinyl', 'faPause', 'faTrashAlt', 'faStepForward', 'faStepBackward', 'faMusic', 'faMicrophoneAlt',
+        'faPlus', 'faRandom', 'faStream', 'faArrowUp', 'faArrowDown', 'faArrowLeft', 'faArrowRight', 'faAngleRight', 'faAngleLeft',
+        'faStar']
+    }
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // baseURL: 'http://localhost:4533'

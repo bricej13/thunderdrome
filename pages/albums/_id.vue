@@ -8,7 +8,7 @@
         <div class="title is-size-1">
           {{ album.name }}
         </div>
-        <div class="subtitle is-3">
+        <div class="subtitle is-3 mb-2">
           <NuxtLink :to="{name: 'artists-id', params: {id: album.artistId}}">
             {{ album.artist }}
           </NuxtLink>

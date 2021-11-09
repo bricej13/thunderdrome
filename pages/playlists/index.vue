@@ -29,7 +29,7 @@
       </div>
       <div class="column is-narrow">
         <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, true)">
-          <b-icon icon="shuffle" size="is-medium" />
+          <b-icon icon="random" size="is-medium" />
         </div>
       </div>
     </div>
