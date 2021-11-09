@@ -4,7 +4,7 @@
       <div class="pl-4 p-2">
         <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
           <figure class="image is-64x64">
-            <img :src="albumArt">
+            <img width="64px" height="64px" :src="albumArt" :alt="`${currentTrack.artist} - ${currentTrack.title}`">
           </figure>
         </NuxtLink>
       </div>
