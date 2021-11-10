@@ -9,10 +9,15 @@
       aria-page-label="Page"
       aria-current-label="Current page"
       :page-size="pageSize"
+      backend-sorting
+      :default-sort-direction="$route.query._sort"
+      :default-sort="[$route.query._sort, $route.query._order]"
       :total="total"
+      sort-icon-size="is-small"
       :current-page.sync="page"
       pagination-position="top"
       pagination-simple
+      @sort="onSort"
       @page-change="onPageChange"
     >
       <template #top-left>
@@ -29,29 +34,33 @@
           </button>
         </div>
       </template>
-      <b-table-column v-slot="props" label="Artist" field="name">
+      <b-table-column v-slot="props" sortable label="Artist" field="name">
         <NuxtLink :to="`/artists/${props.row.id}`">
           {{ props.row.name }}
         </NuxtLink>
       </b-table-column>
-      <b-table-column v-slot="props" label="Album Count" field="albumCount">
+      <b-table-column v-slot="props" width="0" sortable label="Albums" field="albumCount">
         {{ props.row.albumCount }}
       </b-table-column>
-      <b-table-column v-slot="props" label="Plays" field="playCount">
-        {{ props.row.albumCount }}
+      <b-table-column v-slot="props" width="0" sortable label="Tracks" field="songCount">
+        {{ props.row.songCount }}
       </b-table-column>
-      <b-table-column v-slot="props" label="Rating" field="rating">
-        {{ props.row.rating }}
+      <b-table-column v-slot="props" width="0" sortable label="Plays" field="playCount">
+        {{ props.row.playCount }}
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Rating" field="rating">
+        <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
       </b-table-column>
     </b-table>
   </section>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Artists',
   async asyncData ({ $axios, query }) {
-    console.log('async data')
     const pageSize = query._end - query._start || 20
     const page = query._end / pageSize || 1
     const artists = await $axios.$get(
@@ -61,28 +70,36 @@ export default {
     const total = artists.length === pageSize ? pageSize * (page + 1) : Number(query._start) + artists.length
     return { artists, pageSize, page, total }
   },
-  data () {
-    return {
-      sortField: 'vote_count',
-      sortOrder: 'desc',
-      defaultSortOrder: 'desc'
-    }
-  },
   head () {
     return {
       title: 'Thunderdrome - Artists'
     }
   },
-  computed: {
-  },
   watchQuery: true,
   methods: {
+    ...mapActions('albums', ['setRating']),
+    updateRating (id, rating) {
+      this.setRating({ id, rating })
+        .then(() => this.$buefy.toast.open({
+          type: 'is-dark',
+          message: 'Rating updated'
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Failed to update rating'
+        }))
+    },
     onPageChange (page) {
       const query = Object.assign({}, this.$route.query, {
         _start: (page - 1) * this.pageSize,
         _end: page * this.pageSize
       })
-      console.log(page, { name: 'artists', query })
+      this.$router.replace({ query })
+    },
+    onSort (field, order) {
+      const query = Object.assign({}, this.$route.query, {
+        _order: order,
+        _sort: field
+      })
       this.$router.replace({ query })
     }
   }

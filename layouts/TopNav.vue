@@ -24,7 +24,13 @@
 </template>
 <script>
 export default {
-  name: 'TopNav'
+  name: 'TopNav',
+  methods: {
+    async logout () {
+      await this.$store.dispatch('user/logout')
+      await this.$router.push('/login')
+    }
+  }
 }
 </script>
 
