@@ -10252,6 +10252,11 @@ vue-howler@^0.7.0:
     object-assign "^4.1.1"
     object-values "^1.0.0"
 
+vue-infinite-loading@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/vue-infinite-loading/-/vue-infinite-loading-2.4.5.tgz#cc20fd40af7f20188006443c99b60470cf1de1b3"
+  integrity sha512-xhq95Mxun060bRnsOoLE2Be6BR7jYwuC89kDe18+GmCLVrRA/dU0jrGb12Xu6NjmKs+iTW0AA6saSEmEW4cR7g==
+
 vue-loader@^15.9.7:
   version "15.9.8"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.9.8.tgz#4b0f602afaf66a996be1e534fb9609dc4ab10e61"
