@@ -56,72 +56,69 @@
     <b-menu>
       <b-menu-list>
         <b-menu-item
+          label="Albums"
           icon="record-vinyl"
           tag="nuxt-link"
-          exact-path
-          exact-active-class="is-active"
+          active-class="is-active"
           :to="{name: 'albums'}"
-          label="Albums"
           expanded
         >
           <b-menu-item
+            label="Random"
             icon="random"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: { _sort: 'random'}}"
-            label="Random"
           />
           <b-menu-item
+            label="Favorites"
             icon="heart"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'starred_at', _order:'DESC', starred: true}}"
-            label="Favorites"
           />
           <b-menu-item
+            label="Top Rated"
             icon="star"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'rating', _order: 'DESC', has_rating:true}}"
-            label="Top Rated"
           />
           <b-menu-item
+            label="Recently Added"
             icon="history"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'recently_added', _order: 'DESC'}}"
-            label="Recently Added"
           />
           <b-menu-item
+            label="Recently Played"
             icon="play-circle"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'play_date', _order: 'DESC'}}"
-            label="Recently Played"
           />
           <b-menu-item
+            label="Most Played"
             icon="infinity"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'play_count', _order: 'DESC'}}"
-            label="Most Played"
           />
         </b-menu-item>
         <b-menu-item
+          label="Artists"
           icon="microphone-alt"
           tag="nuxt-link"
-          exact-path
-          exact-active-class="is-active"
+          active-class="is-active"
           :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }}"
-          label="Artists"
         />
         <b-menu-item
+          label="Songs"
           icon="music"
           tag="nuxt-link"
-          exact-path
           exact-active-class="is-active"
           :to="{name: 'songs'}"
-          label="Songs"
         />
 
         <b-menu-item
@@ -148,6 +145,7 @@
                   {{ playlist.title }}
                 </div>
                 <div
+                  class="ml-2"
                   @click.stop.prevent="playPlaylist(playlist.id)"
                 >
                   <b-icon
@@ -200,28 +198,42 @@ export default {
 <style lang="scss">
 @import "~/assets/scss/colors.scss";
 
-.menu-list a {
+aside .menu > .menu-list li ul {
+  margin: .5em 0 .5em .75em;
+}
+
+aside .menu > .menu-list a {
   border-radius: 0;
   &:hover {
     color: white;
   }
 }
 
-aside > a.menu-item {
+aside .menu > .menu-list li {
   &:nth-child(1) {
-    background-color: $ui3-yellow;
+    .is-active, &>a:hover {
+      background-color: $ui3-yellow;
+    }
   }
   &:nth-child(2) {
-    background-color: $ui3-orange;
+    .is-active, &>a:hover {
+      background-color: $ui3-orange;
+    }
   }
   &:nth-child(3) {
-    background-color: $ui3-red;
+    .is-active, &>a:hover {
+      background-color: $ui3-red;
+    }
   }
   &:nth-child(4) {
-    background-color: $ui3-beet;
+    .is-active, &>a:hover  {
+      background-color: $ui3-beet;
+    }
   }
   &:nth-child(5) {
-    background-color: $ui3-fuchsia;
+    .is-active, &>a:hover  {
+      background-color: $ui3-fuchsia;
+    }
   }
   &:hover {
   }
