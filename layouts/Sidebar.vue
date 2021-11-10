@@ -55,9 +55,30 @@
     <!--    </NuxtLink>-->
     <b-menu>
       <b-menu-list>
-        <b-menu-item icon="record-vinyl" tag="nuxt-link" exact-active-class="is-active" :to="{name: 'albums'}" label="Albums" />
-        <b-menu-item icon="microphone-alt" tag="nuxt-link" exact-active-class="is-active" :to="{name: 'artists'}" label="Artists" />
-        <b-menu-item icon="music" tag="nuxt-link" exact-active-class="is-active" :to="{name: 'songs'}" label="Songs" />
+        <b-menu-item
+          icon="record-vinyl"
+          tag="nuxt-link"
+          exact-path
+          exact-active-class="is-active"
+          :to="{name: 'albums'}"
+          label="Albums"
+        />
+        <b-menu-item
+          icon="microphone-alt"
+          tag="nuxt-link"
+          exact-path
+          exact-active-class="is-active"
+          :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }}"
+          label="Artists"
+        />
+        <b-menu-item
+          icon="music"
+          tag="nuxt-link"
+          exact-path
+          exact-active-class="is-active"
+          :to="{name: 'songs'}"
+          label="Songs"
+        />
 
         <b-menu-item
           icon="stream"
