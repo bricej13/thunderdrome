@@ -6,12 +6,16 @@
       </div>
     </div>
     <album-list-tiles :albums="albums" />
-    <infinite-loading spinner="waveDots" :distance="500" force-use-infinite-wrapper=".page-content" @infinite="fetchData">
+    <infinite-loading spinner="waveDots" :identifier="$route.query" :distance="500" force-use-infinite-wrapper=".page-content" @infinite="fetchData">
       <div slot="no-more">
-        you've reached the end
+        <div class="py-6">
+          you've reached the end
+        </div>
       </div>
       <div slot="no-results">
-        No Albums Found
+        <div class="py-6">
+          No Albums Found
+        </div>
       </div>
     </infinite-loading>
   </div>
@@ -23,19 +27,13 @@ import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'Albums',
   components: { InfiniteLoading },
-  async asyncData ({ query, $axios }) {
-    const albums = await $axios.$get(
-      '/api/album', {
-        params: Object.assign({
-          _start: 0, _end: 20, _order: 'ASC', _sort: 'name'
-        }, query)
-      }
-    )
+  asyncData ({ query }) {
     const pageSize = (query._end - query._start) || 20
-    return { albums, pageSize }
+    return { pageSize }
   },
   data () {
     return {
+      albums: []
     }
   },
   head () {
@@ -43,22 +41,23 @@ export default {
       title: 'Thunderdrome - Albums'
     }
   },
+  watchQuery: true,
   methods: {
     async fetchData ($state) {
       const newAlbums = await this.getAlbums({
         _start: this.albums.length, _end: this.albums.length + this.pageSize
       })
       this.albums.push(...newAlbums)
-      if (newAlbums.length === this.pageSize) {
-        $state.loaded()
-      } else {
+      if (newAlbums.length === 0) {
         $state.complete()
+      } else {
+        $state.loaded()
       }
     },
     async getAlbums (queryParams) {
       const params = Object.assign({
         _start: 0, _end: 20, _order: 'ASC', _sort: 'name'
-      }, queryParams)
+      }, this.$route.query, queryParams)
       return await this.$axios.$get(
         '/api/album', { params }
       )
@@ -67,7 +66,23 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~/assets/scss/colors.scss";
+.infinite-status-prompt .loading-wave-dots {
+  animation: unhide 0s ease-in 2s forwards;
+  -webkit-animation: unhide 0s ease-in 2s forwards;
+  opacity: 0;
+}
+
+@-webkit-keyframes unhide {
+  to {
+    opacity: 1
+  }
+}
+@keyframes unhide {
+  to {
+    opacity: 1
+  }
+}
 
 </style>

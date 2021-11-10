@@ -1,8 +1,8 @@
 <template>
   <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-start gap-5">
     <NuxtLink
-      v-for="album in albums"
-      :key="album.id"
+      v-for="(album, i) in albums"
+      :key="album.id + i"
       :to="{name: 'albums-id', params: {id: album.id}}"
       class="is-block is-flex is-flex-direction-row is-justify-content-center album-link"
     >

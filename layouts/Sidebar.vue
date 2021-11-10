@@ -62,7 +62,51 @@
           exact-active-class="is-active"
           :to="{name: 'albums'}"
           label="Albums"
-        />
+          expanded
+        >
+          <b-menu-item
+            icon="random"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: { _sort: 'random'}}"
+            label="Random"
+          />
+          <b-menu-item
+            icon="heart"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: {_sort:'starred_at', _order:'DESC', starred: true}}"
+            label="Favorites"
+          />
+          <b-menu-item
+            icon="star"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: {_sort:'rating', _order: 'DESC', has_rating:true}}"
+            label="Top Rated"
+          />
+          <b-menu-item
+            icon="history"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: {_sort:'recently_added', _order: 'DESC'}}"
+            label="Recently Added"
+          />
+          <b-menu-item
+            icon="play-circle"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: {_sort:'play_date', _order: 'DESC'}}"
+            label="Recently Played"
+          />
+          <b-menu-item
+            icon="infinity"
+            tag="nuxt-link"
+            exact-active-class="is-active"
+            :to="{name: 'albums', query: {_sort:'play_count', _order: 'DESC'}}"
+            label="Most Played"
+          />
+        </b-menu-item>
         <b-menu-item
           icon="microphone-alt"
           tag="nuxt-link"
