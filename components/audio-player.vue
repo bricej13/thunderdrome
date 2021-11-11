@@ -49,13 +49,13 @@
             <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
               <b-icon icon="step-forward" />
             </div>
-            <div class="p-1 is-clickable is-hidden-tablet" @click="$store.dispatch('toggleQueue')">
+            <div class="p-1 is-clickable is-hidden-desktop" @click="$store.dispatch('toggleQueue')">
               <b-icon icon="bars" />
             </div>
           </div>
         </div>
 
-        <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4 is-hidden-mobile" @shortkey="changeVolume">
+        <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4 is-hidden-touch" @shortkey="changeVolume">
           <vertical-progress-bar :value="volume" />
         </div>
       </div>

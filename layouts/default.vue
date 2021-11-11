@@ -4,13 +4,13 @@
       <TopNav />
     </div>
     <div class="body-content columns is-gapless is-mobile mb-0 is-clipped">
-      <div class="side-menu column is-narrow is-hidden-mobile">
+      <div class="side-menu column is-3-tablet is-2-desktop is-hidden-mobile">
         <SideMenu />
       </div>
       <div class="page-content column">
         <Nuxt />
       </div>
-      <div class="play-queue column is-hidden-touch">
+      <div class="play-queue column is-3-desktop is-hidden-touch">
         <play-queue />
       </div>
     </div>

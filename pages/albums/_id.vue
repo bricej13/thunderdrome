@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns block mb-4 px-2">
+    <div class="columns block mb-4 px-2-tablet">
       <div class="column is-one-quarter-tablet">
         <album-art :album="album" />
       </div>

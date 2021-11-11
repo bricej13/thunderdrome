@@ -1,21 +1,25 @@
 <template>
-  <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-start gap-5">
-    <NuxtLink
+  <div class="columns is-multiline is-mobile">
+    <div
       v-for="(album, i) in albums"
       :key="album.id + i"
-      :to="{name: 'albums-id', params: {id: album.id}}"
-      class="is-block is-flex is-flex-direction-row is-justify-content-center album-link"
+      class="column is-4-mobile is-3-tablet is-2-widescreen"
     >
-      <div class="album">
-        <album-art :album="album" />
-        <div class="is-uppercase title has-text-weight-semibold is-size-6">
-          {{ album.name }}
+      <NuxtLink
+        :to="{name: 'albums-id', params: {id: album.id}}"
+        class="album-link"
+      >
+        <div class="album">
+          <album-art :album="album" />
+          <div class="is-uppercase title has-text-weight-semibold is-size-6">
+            {{ album.name }}
+          </div>
+          <div class="subtitle is-size-7">
+            {{ album[subtitleProperty] }}
+          </div>
         </div>
-        <div class="subtitle is-size-7">
-          {{ album[subtitleProperty] }}
-        </div>
-      </div>
-    </NuxtLink>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 

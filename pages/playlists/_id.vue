@@ -1,12 +1,10 @@
 <template>
   <div v-if="tracks != null" class="playlist-view">
-    <div class="playlist-header">
-      <div class="level">
-        <div class="level-left">
-          <div class="title">
-            {{ playlist.name }}
-          </div>
-        </div>
+    <div class="columns px-2">
+      <div class="column title">
+        {{ playlist.name }}
+      </div>
+      <div class="column is-narrow">
         <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
     </div>

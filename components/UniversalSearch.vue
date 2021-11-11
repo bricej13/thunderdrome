@@ -26,10 +26,13 @@
 
       <template slot-scope="props">
         <div class="media">
-          <div class="media-left">
-            <figure class="image is-48x48">
-              <img width="48" height="48" :src="props.option.image">
-            </figure>
+          <div class="media-left" style="width: 48px;">
+            <b-image
+              :src="props.option.image"
+              :alt="`${props.option.title} - ${props.option.subtitle}`"
+              responsive
+              ratio="1by1"
+            />
           </div>
           <div class="media-content">
             <div class="is-size-6 has-text-weight-semibold">
@@ -52,7 +55,12 @@ export default {
   data () {
     return {
       data: [],
-      isFetching: false
+      isFetching: false,
+      iconTypes: {
+        artist: 'microphone-alt',
+        album: 'record-vinyl',
+        track: 'music'
+      }
     }
   },
   methods: {
@@ -84,7 +92,7 @@ export default {
               return {
                 type: 'artist',
                 title: a.name,
-                image: a.smallImageUrl || a.mediumImageUrl || a.largeImageUrl,
+                image: a.smallImageUrl || a.mediumImageUrl || a.largeImageUrl || '/microphone-alt.png',
                 onNav: () => this.$router.push({ name: 'artists-id', params: { id: a.id } }),
                 onPlay: () => this.$store.dispatch('artists/getTracks', a.id).then(tracks => this.shufflePlaylist(tracks))
               }
