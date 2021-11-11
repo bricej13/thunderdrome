@@ -11,6 +11,7 @@
       <b-sidebar
         class="is-hidden-tablet"
         :open="$store.getters.menuOpen"
+        overlay
         :fullheight="true"
         @close="$store.commit('setMenuOpen', false)"
       >
@@ -20,6 +21,7 @@
         class="is-hidden-tablet"
         :open="$store.getters.queueOpen"
         :fullheight="true"
+        overlay
         right
         @close="$store.commit('setQueueOpen', false)"
       >
