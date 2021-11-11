@@ -3,16 +3,14 @@
     <div class="header">
       <TopNav />
     </div>
-    <div class="body-content columns is-gapless is-mobile mb-0 is-clipped">
-      <div class="side-menu column is-narrow is-hidden-mobile">
-        <SideMenu />
-      </div>
-      <div class="page-content column">
-        <Nuxt />
-      </div>
-      <div class="play-queue column is-hidden-touch">
-        <play-queue />
-      </div>
+    <div class="side-menu" :style="{width: $store.getters.menuOpen ? 'auto' : '0'}">
+      <SideMenu />
+    </div>
+    <div class="page-content">
+      <Nuxt />
+    </div>
+    <div class="play-queue">
+      <play-queue />
     </div>
     <div class="player">
       <audio-player />
@@ -46,19 +44,31 @@ export default {
 .default-layout {
   height: 100vh;
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr 4fr auto;
   grid-template-rows: auto 1fr auto;
   gap: 0 0;
   grid-auto-flow: row;
   grid-template-areas:
+    "header header header"
+    "side-menu page-content play-queue"
+    "player player player";
+}
+.default-layout.mobile {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto ;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-areas:
     "header"
-    "body-content"
+    "page-content"
     "player";
 }
 
 .header { grid-area: header; border-bottom: 2px solid black; }
 
-.side-menu { grid-area: side-menu; overflow-y: auto; border-right: 3px solid black; position: relative; }
+.side-menu { grid-area: side-menu; overflow-y: auto; border-right: inset 3px black; position: relative; }
 
 .play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw; border-left: 3px solid black;}
 

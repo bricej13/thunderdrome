@@ -1,6 +1,6 @@
 <template>
   <div class="pbar-wrapper has-background-white is-clipped" @click="seek($event)">
-    <div class="pbar" :style="{transform: 'translateX(' + (-100+value) + '%)'}" />
+    <div class="pbar" :style="{transform: 'translateX(' + (-100+value) + '%)', height: height + 'px'}" />
   </div>
 </template>
 
@@ -11,6 +11,10 @@ export default {
     value: {
       type: Number,
       required: true
+    },
+    height: {
+      type: Number,
+      default: 20
     }
   },
   methods: {
@@ -28,7 +32,6 @@ export default {
 @import "~/assets/scss/colors.scss";
 
 .pbar {
-  height: 20px;
   width: 100%;
   background-color: $primary;
 }

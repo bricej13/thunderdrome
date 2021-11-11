@@ -1,66 +1,65 @@
 <template>
   <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
-    <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
-      <div class="pl-4 p-2">
-        <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
-          <figure class="image is-64x64">
-            <img width="64px" height="64px" :src="albumArt" :alt="`${currentTrack.artist} - ${currentTrack.title}`">
-          </figure>
-        </NuxtLink>
-      </div>
-      <div class="px-2">
-        <div v-if="currentTrack">
-          <div class="is-size-6 is-uppercase has-text-weight-bold" style="line-height: 1.5rem">
-            {{ currentTrack.title }}
-          </div>
-          <div class="is-size-7">
-            <NuxtLink :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
-              {{ currentTrack.artist }}
-            </NuxtLink>
+    <div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="pl-4 p-2">
+          <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
+            <figure class="image is-64x64">
+              <img width="64px" height="64px" :src="albumArt" :alt="`${currentTrack.artist} - ${currentTrack.title}`">
+            </figure>
+          </NuxtLink>
+        </div>
+        <div class="px-2">
+          <div v-if="currentTrack">
+            <div class="is-size-6 is-uppercase has-text-weight-bold" style="line-height: 1.5rem">
+              {{ currentTrack.title }}
+            </div>
+            <div class="is-size-7">
+              <NuxtLink :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
+                {{ currentTrack.artist }}
+              </NuxtLink>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
-        <!--        <progress-bar :value="progress" />-->
-        <wavesurfer />
-        <wavesurfer-preload />
-      </div>
+        <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
+          <!--        <progress-bar :value="progress" />-->
+          <wavesurfer class="is-invisible-mobile" />
+          <wavesurfer-preload />
+        </div>
 
-      <div class="px-2 has-text-grey">
-        {{ currentTime | tracktime }} / {{ duration | tracktime }}
-      </div>
+        <div class="px-2 has-text-grey is-hidden-mobile">
+          {{ currentTime | tracktime }} / {{ duration | tracktime }}
+        </div>
 
-      <div class="pl-2 pr-2">
-        <div class="level">
-          <div v-shortkey="['arrowleft']" class="p-1 is-clickable" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
-            <b-icon
-              icon="step-backward"
-            />
-          </div>
+        <div class="pl-2 pr-2">
+          <div class="is-flex is-flex-direction-row is-align-items-center">
+            <div v-shortkey="['arrowleft']" class="p-1 is-clickable is-hidden-mobile" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
+              <b-icon icon="step-backward" />
+            </div>
 
-          <div
-            v-shortkey="['space']"
-            class="p-1 is-clickable"
-            @shortkey="togglePlay"
-            @click="togglePlay"
-          >
-            <b-icon
-              :icon="playing ? 'pause' : 'play'"
-              size="is-large"
-            />
-          </div>
-          <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
-            <b-icon
-              icon="step-forward"
-            />
+            <div
+              v-shortkey="['space']"
+              class="p-1 is-clickable"
+              @shortkey="togglePlay"
+              @click="togglePlay"
+            >
+              <b-icon size="is-large" :icon="playing ? 'pause' : 'play'" />
+            </div>
+            <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
+              <b-icon icon="step-forward" />
+            </div>
+            <div class="p-1 is-clickable is-hidden-tablet" @click="$store.dispatch('toggleQueue')">
+              <b-icon icon="bars" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4" @shortkey="changeVolume">
-        <vertical-progress-bar :value="volume" />
+        <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4 is-hidden-mobile" @shortkey="changeVolume">
+          <vertical-progress-bar :value="volume" />
+        </div>
       </div>
+      <progress-bar class="is-hidden-tablet" :height="10" :value="$store.getters['player/progress']" />
     </div>
   </div>
 </template>

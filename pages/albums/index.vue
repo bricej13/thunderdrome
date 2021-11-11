@@ -27,6 +27,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'Albums',
   components: { InfiniteLoading },
+  layout: 'responsive',
   asyncData ({ query }) {
     const pageSize = (query._end - query._start) || 20
     return { pageSize }

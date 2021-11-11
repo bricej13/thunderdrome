@@ -50,7 +50,7 @@ export default {
       // solid: true, // include the full pack in the bundle, not recommended
       solid: ['faPlay', 'faRecordVinyl', 'faPause', 'faTrashAlt', 'faStepForward', 'faStepBackward', 'faMusic', 'faMicrophoneAlt',
         'faPlus', 'faRandom', 'faStream', 'faArrowUp', 'faArrowDown', 'faArrowLeft', 'faArrowRight', 'faAngleRight', 'faAngleLeft',
-        'faStar', 'faHeart', 'faHistory', 'faPlayCircle', 'faInfinity']
+        'faStar', 'faHeart', 'faHistory', 'faPlayCircle', 'faInfinity', 'faBars']
     }
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
