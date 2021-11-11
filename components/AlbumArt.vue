@@ -1,6 +1,6 @@
 <template>
-  <figure class="image" :class="[`is-${size}x${size}`]">
-    <img :height="size" width="size" :src="coverArt" :alt="`${album.artist} - ${album.name}`">
+  <figure class="image">
+    <img :src="coverArt" :alt="`${album.artist} - ${album.name}`">
   </figure>
 </template>
 

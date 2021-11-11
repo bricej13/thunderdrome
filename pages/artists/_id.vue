@@ -1,26 +1,31 @@
 <template>
-  <div class="is-flex is-flex-direction-column gap-6 pt-2">
-    <section class="px-2 is-flex is-flex-row gap-4">
-      <figure class="image is-128x128">
-        <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl">
-      </figure>
-      <div>
-        <div class="title is-size-1">
-          {{ artist.name }}
+  <div class="pt-2">
+    <div class="block px-2">
+      <div class="columns">
+        <div class="column is-one-quarter-tablet">
+          <figure class="image">
+            <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl">
+          </figure>
         </div>
-        <div class="subtitle is-size-5 mb-2">
-          {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
+        <div class="column">
+          <div class="title is-size-1">
+            {{ artist.name }}
+          </div>
+          <div class="subtitle is-size-5 mb-2">
+            {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
+          </div>
+          <b-rate v-model="artist.rating" @change="updateRating(artist.id, $event)" />
         </div>
-        <b-rate v-model="artist.rating" @change="updateRating(artist.id, $event)" />
       </div>
-    </section>
-    <section class="px-2">
+    </div>
+    <div class="block px-2" v-html="artist.biography" />
+    <div class="block px-2">
       <div class="is-size-3">
         Albums
       </div>
       <album-list-tiles :albums="albums" subtitle-property="minYear" />
-    </section>
-    <section>
+    </div>
+    <div class="block">
       <div class="level px-2">
         <div class="is-size-3">
           Tracks
@@ -28,7 +33,7 @@
         <play-controls :tracks="tracks" />
       </div>
       <track-list :tracks="tracks" />
-    </section>
+    </div>
   </div>
 </template>
 

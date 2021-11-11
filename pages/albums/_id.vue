@@ -1,77 +1,79 @@
 <template>
   <div>
-    <div class="is-flex is-flex-direction-row is-align-items-start mb-4">
-      <div class="m-2">
+    <div class="columns block mb-4 px-2">
+      <div class="column is-one-quarter-tablet">
         <album-art :album="album" />
       </div>
-      <div class="is-flex-grow-1 pl-1">
-        <div class="title is-size-1">
-          {{ album.name }}
-        </div>
-        <div class="subtitle is-3 mb-2">
-          <NuxtLink :to="{name: 'artists-id', params: {id: album.artistId}}">
-            {{ album.artist }}
-          </NuxtLink>
-        </div>
-        <div>
-          <b-rate v-model="album.rating" @change="updateRating(album.id, $event)" />
-        </div>
-      </div>
-      <div class="">
-        <play-controls :tracks="tracks" />
-      </div>
-
-    <!--    <pre>{{ album }}</pre>-->
-    </div>
-    <table class="table is-fullwidth is-hoverable">
-      <thead>
-        <tr>
-          <th />
-          <th>Title</th>
-          <th>Artist</th>
-          <th>Duration</th>
-          <th>Play Count</th>
-          <th>Rating</th>
-          <th style="width: 10%" />
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="track in tracks" :key="track.id">
-          <td>{{ track.trackNumber }}</td>
-          <td>{{ track.title }}</td>
-          <td>
-            <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
-              {{ track.artist }}
+      <div class="column columns is-mobile">
+        <div class="column">
+          <div class="title is-size-1">
+            {{ album.name }}
+          </div>
+          <div class="subtitle is-3 mb-2">
+            <NuxtLink :to="{name: 'artists-id', params: {id: album.artistId}}">
+              {{ album.artist }}
             </NuxtLink>
-          </td>
-          <td>
-            {{ track.duration | tracktime }}
-          </td>
-          <td>
-            {{ track.playCount }}
-          </td>
-          <td>
-            <b-rate v-model="track.rating" size="is-small" @change="updateRating(track.id, $event)" />
-          </td>
-          <td>
-            <div class="level">
-              <a
-                class="p-1 is-clickable"
-                @click="startPlaylist([track])"
-              >
-                <b-icon icon="play" size="is-small" />
-              </a>
-              <a
-                class="p-1 is-clickable"
-                @click="appendToPlaylist([track])"
-              >
-                <b-icon icon="plus" size="is-small" />
-              </a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+          <div>
+            <b-rate v-model="album.rating" @change="updateRating(album.id, $event)" />
+          </div>
+        </div>
+        <div class="column is-narrow">
+          <play-controls :tracks="tracks" />
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th />
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Duration</th>
+            <th>Play Count</th>
+            <th>Rating</th>
+            <th style="width: 10%" />
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="track in tracks" :key="track.id">
+            <td>{{ track.trackNumber }}</td>
+            <td>{{ track.title }}</td>
+            <td>
+              <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
+                {{ track.artist }}
+              </NuxtLink>
+            </td>
+            <td>
+              {{ track.duration | tracktime }}
+            </td>
+            <td>
+              {{ track.playCount }}
+            </td>
+            <td>
+              <b-rate v-model="track.rating" size="is-small" @change="updateRating(track.id, $event)" />
+            </td>
+            <td>
+              <div class="level">
+                <a
+                  class="p-1 is-clickable"
+                  @click="startPlaylist([track])"
+                >
+                  <b-icon icon="play" size="is-small" />
+                </a>
+                <a
+                  class="p-1 is-clickable"
+                  @click="appendToPlaylist([track])"
+                >
+                  <b-icon icon="plus" size="is-small" />
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

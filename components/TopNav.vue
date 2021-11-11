@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style>
-.navbar-menu .navbar-brand {
+.navbar .navbar-brand {
   flex-grow: 1;
 }
 </style>
