@@ -1,14 +1,14 @@
 <template>
   <div v-if="tracks != null" class="playlist-view">
     <div class="columns px-2">
-      <div class="column title">
+      <div class="column title mb-0">
         {{ playlist.name }}
       </div>
       <div class="column is-narrow">
         <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
     </div>
-    <TrackList :tracks="tracks" />
+    <track-list :tracks="tracks" />
   </div>
 </template>
 

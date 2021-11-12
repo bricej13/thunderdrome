@@ -4,7 +4,7 @@
       <div class="columns">
         <div class="column is-one-quarter-tablet">
           <figure class="image">
-            <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl">
+            <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl || '/microphone-alt.png'">
           </figure>
         </div>
         <div class="column">

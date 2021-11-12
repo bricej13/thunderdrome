@@ -31,7 +31,7 @@ export default {
     this.instance.on('waveform-ready', () => {
       const peaks = this.instance.backend.mergedPeaks
       try {
-        window.localStorage.setItem(this.nextTrack.mediaFileId || this.nextTrack.id, JSON.stringify(peaks))
+        // window.localStorage.setItem(this.nextTrack.mediaFileId || this.nextTrack.id, JSON.stringify(peaks))
       } catch {
         console.log('clearing out local storage')
         const keysToDelete = Object.keys(window.localStorage).filter(k => !['user', 'player'].includes(k))

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="is-flex is-justify-content-center is-flex-direction-column" style="height: 100vh">
-      <div class="columns">
-        <div class="column is-one-third is-offset-one-third">
+      <div class="section columns">
+        <div class="column is-6 is-offset-3 is-one-third-widescreen is-offset-one-third-widescreen">
           <div class="is-size-2 has-text-weight-bold has-text-centered">
             welcome to the
           </div>
-          <div class="title is-size-1 has-text-centered">
+          <div class="title is-size-1 has-text-centered is-uppercase">
             Thunderdrome
           </div>
           <b-field>

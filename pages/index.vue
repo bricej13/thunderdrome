@@ -1,24 +1,24 @@
 <template>
   <section class="p-2">
-    <div>
+    <div class="block">
       <div class="title is-size-2">
         Recently Played
       </div>
       <album-list-tiles :albums="recentlyPlayedAlbums" />
     </div>
-    <div>
+    <div class="block">
       <div class="title is-size-2">
         Most Played
       </div>
       <album-list-tiles :albums="mostPlayedAlbums" />
     </div>
-    <div>
+    <div class="block">
       <div class="title is-size-2">
         Top Rated
       </div>
       <album-list-tiles :albums="topRatedAlbums" />
     </div>
-    <div>
+    <div class="block">
       <div class="title is-size-2">
         Recently Added
       </div>

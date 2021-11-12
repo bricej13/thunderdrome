@@ -47,7 +47,7 @@ export default {
       this.instance.play()
     })
     this.instance.on('waveform-ready', () => {
-      window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
+      // window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
     })
     this.instance.on('audioprocess', (v) => {
       this.setCurrentTime(v)
