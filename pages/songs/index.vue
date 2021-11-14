@@ -1,14 +1,122 @@
 <template>
   <section class="">
-    <div class="title">
-      Songs
-    </div>
+    <b-table
+      :data="songs"
+      paginated
+      backend-pagination
+      aria-next-label="Next page"
+      aria-previous-label="Previous page"
+      aria-page-label="Page"
+      aria-current-label="Current page"
+      :page-size="pageSize"
+      backend-sorting
+      :default-sort-direction="$route.query._sort"
+      :default-sort="[$route.query._sort, $route.query._order]"
+      :total="total"
+      sort-icon-size="is-small"
+      :current-page.sync="page"
+      pagination-position="top"
+      pagination-simple
+      @sort="onSort"
+      @page-change="onPageChange"
+    >
+      <template #top-left>
+        <div class="p-2">
+          <div class="title">
+            Tracks
+          </div>
+        </div>
+      </template>
+      <template #top-right>
+        <div class="">
+          <button class="btn">
+            <b-icon icon="angle-left" />
+          </button>
+        </div>
+      </template>
+      <b-table-column v-slot="props" sortable label="Title" field="title">
+        <NuxtLink :to="`/albums/${props.row.albumId}`">
+          {{ props.row.title }}
+        </NuxtLink>
+      </b-table-column>
+      <b-table-column v-slot="props" sortable label="Artist" field="artistId">
+        <NuxtLink :to="`/artists/${props.row.artistId}`">
+          {{ props.row.artist }}
+        </NuxtLink>
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Album" field="album">
+        <NuxtLink :to="`/albums/${props.row.albumId}`">
+          {{ props.row.album }}
+        </NuxtLink>
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Year" field="year">
+        {{ props.row.year }}
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Plays" field="playCount">
+        {{ props.row.playCount }}
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Time" field="playCount">
+        {{ props.row.duration | tracktime }}
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Bit Rate" field="bitRate">
+        <bitrate :bit-rate="props.row.bitRate" :suffix="props.row.suffix" />
+      </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Rating" field="rating">
+        <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
+      </b-table-column>
+    </b-table>
   </section>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'Songs'
+  name: 'Songs',
+  async asyncData ({ $axios, query }) {
+    const pageSize = query._end - query._start || 20
+    const page = query._end / pageSize || 1
+    const songs = await $axios.$get(
+      'api/song', {
+        params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'title' }, query)
+      })
+    const total = songs.length === pageSize ? pageSize * (page + 1) : Number(query._start) + songs.length
+    return { songs, pageSize, page, total }
+  },
+  head () {
+    return {
+      title: 'Thunderdrome - Songs'
+    }
+  },
+  watchQuery: true,
+  methods: {
+    ...mapActions('albums', ['setRating']),
+    updateRating (id, rating) {
+      this.setRating({ id, rating })
+        .then(() => this.$buefy.toast.open({
+          type: 'is-dark',
+          message: 'Rating updated'
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Failed to update rating'
+        }))
+    },
+    onPageChange (page) {
+      const query = Object.assign({}, this.$route.query, {
+        _start: (page - 1) * this.pageSize,
+        _end: page * this.pageSize
+      })
+      this.$router.replace({ query })
+    },
+    onSort (field, order) {
+      const query = Object.assign({}, this.$route.query, {
+        _order: order,
+        _sort: field
+      })
+      this.$router.replace({ query })
+    }
+  }
+
 }
 </script>
 

@@ -7,8 +7,8 @@ $ui3-beet: #da0039;
 $ui3-fuchsia: #81023f;
 // Set your colors
 $primary: $ui3-fuchsia;
-$primary-light: $ui3-orange;
-$primary-dark: $ui3-beet;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
 
 $link: $ui3-beet;

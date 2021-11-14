@@ -65,7 +65,7 @@
           icon="music"
           tag="nuxt-link"
           exact-active-class="is-active"
-          :to="{name: 'songs'}"
+          :to="{name: 'songs', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'title' }}"
         />
 
         <b-menu-item

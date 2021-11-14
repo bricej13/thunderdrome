@@ -1,4 +1,5 @@
 @import "./colors";
+
 @font-face {
   font-family: "Karla";
   font-weight: 200 800;
@@ -44,6 +45,7 @@ $table-cell-border: 1px solid $black;
 //}
 .table.is-hoverable tbody tr:not(.is-selected):hover {
   color: $white;
+
   a {
     color: $white
   }
@@ -54,7 +56,7 @@ table.table {
   td, th {
     vertical-align: middle;
     white-space: nowrap;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
   }
 }
@@ -66,8 +68,10 @@ $title-weight: 800;
 * {
   letter-spacing: -.08rem;
 }
+
 .title {
   letter-spacing: -.2rem;
+
   &.is-size-6 {
     letter-spacing: -.1rem;
   }
@@ -86,21 +90,27 @@ $title-weight: 800;
 .gap-0 {
   gap: 0;
 }
+
 .gap-1 {
   gap: 0.25rem
 }
+
 .gap-2 {
   gap: 0.5rem
 }
+
 .gap-3 {
   gap: 0.75rem
 }
+
 .gap-4 {
   gap: 1rem
 }
+
 .gap-5 {
   gap: 1.5rem
 }
+
 .gap-6 {
   gap: 3rem
 }
@@ -117,58 +127,88 @@ $custom-shades: null !default;
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(
     (
-        "white": (
-            $white,
-            $black,
-        ),
-        "black": (
-            $black,
-            $white,
-        ),
-        "light": (
-            $light,
-            $light-invert,
-        ),
-        "dark": (
-            $dark,
-            $dark-invert,
-        ),
-        "primary": (
-            $primary,
-            $primary-invert,
-            $primary-light,
-            $primary-dark,
-        ),
-        "link": (
-            $link,
-            $link-invert,
-            $link-light,
-            $link-dark,
-        ),
-        "info": (
-            $info,
-            $info-invert,
-            $info-light,
-            $info-dark,
-        ),
-        "success": (
-            $success,
-            $success-invert,
-            $success-light,
-            $success-dark,
-        ),
-        "warning": (
-            $warning,
-            $warning-invert,
-            $warning-light,
-            $warning-dark,
-        ),
-        "danger": (
-            $danger,
-            $danger-invert,
-            $danger-light,
-            $danger-dark,
-        ),
+      "white": (
+        $white,
+        $black,
+      ),
+      "black": (
+        $black,
+        $white,
+      ),
+      "light": (
+        $light,
+        $light-invert,
+      ),
+      "dark": (
+        $dark,
+        $dark-invert,
+      ),
+      "primary": (
+        $primary,
+        $primary-invert,
+        $primary-light,
+        $primary-dark,
+      ),
+      "link": (
+        $link,
+        $link-invert,
+        $link-light,
+        $link-dark,
+      ),
+      "info": (
+        $info,
+        $info-invert,
+        $info-light,
+        $info-dark,
+      ),
+      "success": (
+        $success,
+        $success-invert,
+        $success-light,
+        $success-dark,
+      ),
+      "warning": (
+        $warning,
+        $warning-invert,
+        $warning-light,
+        $warning-dark,
+      ),
+      "danger": (
+        $danger,
+        $danger-invert,
+        $danger-light,
+        $danger-dark,
+      ),
+      "yellow": (
+        $ui3-yellow,
+        findColorInvert($ui3-yellow),
+        findLightColor($ui3-yellow),
+        findDarkColor($ui3-yellow)
+      ),
+      "orange": (
+        $ui3-orange,
+        findColorInvert($ui3-orange),
+        findLightColor($ui3-orange),
+        findDarkColor($ui3-orange)
+      ),
+      "red": (
+        $ui3-red,
+        findColorInvert($ui3-red),
+        findLightColor($ui3-red),
+        findDarkColor($ui3-red)
+      ),
+      "beet": (
+        $ui3-beet,
+        findColorInvert($ui3-beet),
+        findLightColor($ui3-beet),
+        findDarkColor($ui3-beet)
+      ),
+      "fuchsia": (
+        $ui3-fuchsia,
+        findColorInvert($ui3-fuchsia),
+        findLightColor($ui3-fuchsia),
+        findDarkColor($ui3-fuchsia)
+      ),
     ),
     $custom-colors
 );

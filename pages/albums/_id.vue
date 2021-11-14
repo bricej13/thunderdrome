@@ -14,6 +14,13 @@
               {{ album.artist }}
             </NuxtLink>
           </div>
+          <div class="is-size-5 has-text-grey has-text-weight-light">
+            <span>{{ album.minYear }}</span>
+            ·
+            <span>{{ album.songCount }} tracks </span>
+            ·
+            <span>{{ album.duration | playlisttime }}</span>
+          </div>
           <div>
             <b-rate v-model="album.rating" @change="updateRating(album.id, $event)" />
           </div>
@@ -31,6 +38,7 @@
             <th>Title</th>
             <th>Artist</th>
             <th>Duration</th>
+            <th>Quality</th>
             <th>Play Count</th>
             <th>Rating</th>
             <th style="width: 10%" />
@@ -47,6 +55,9 @@
             </td>
             <td>
               {{ track.duration | tracktime }}
+            </td>
+            <td>
+              <bitrate :suffix="track.suffix" :bit-rate="track.bitRate" />
             </td>
             <td>
               {{ track.playCount }}
