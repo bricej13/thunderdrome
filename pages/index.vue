@@ -1,24 +1,24 @@
 <template>
   <section class="p-2">
-    <div class="block">
+    <div v-if="recentlyPlayedAlbums.length > 0" class="block">
       <div class="title is-size-2">
         Recently Played
       </div>
       <album-list-tiles :albums="recentlyPlayedAlbums" />
     </div>
-    <div class="block">
+    <div v-if="mostPlayedAlbums.length > 0" class="block">
       <div class="title is-size-2">
         Most Played
       </div>
       <album-list-tiles :albums="mostPlayedAlbums" />
     </div>
-    <div class="block">
+    <div v-if="topRatedAlbums.length > 0" class="block">
       <div class="title is-size-2">
         Top Rated
       </div>
       <album-list-tiles :albums="topRatedAlbums" />
     </div>
-    <div class="block">
+    <div v-if="recentlyAddedAlbums.length > 0" class="block">
       <div class="title is-size-2">
         Recently Added
       </div>
