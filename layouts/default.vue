@@ -10,7 +10,7 @@
       <div class="page-content column">
         <Nuxt />
       </div>
-      <div class="play-queue column is-3-desktop is-hidden-touch">
+      <div v-if="hasQueue" class="play-queue column is-3-desktop is-hidden-touch">
         <play-queue />
       </div>
     </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SideMenu from '~/components/SideMenu'
 import TopNav from '~/components/TopNav'
 
@@ -37,7 +38,8 @@ export default {
       }
     }
   },
-  methods: {
+  computed: {
+    ...mapGetters('player', ['hasQueue'])
   }
 }
 </script>

@@ -43,10 +43,16 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Id',
   async asyncData ({ $axios, store, params }) {
-    const [artist, tracks, albums] = await Promise.all([
+    const [artist, allTracks, albums] = await Promise.all([
       store.dispatch('artists/get', params.id),
       store.dispatch('artists/getTracks', params.id),
       store.dispatch('artists/getAlbums', params.id)])
+    const tracks = allTracks.reduce((acc, cur) => {
+      if (!acc.find(t => t.albumId === cur.albumId && t.trackNumber === cur.trackNumber)) {
+        acc.push(cur)
+      }
+      return acc
+    }, [])
     return { artist, albums, tracks }
   },
   head () {
@@ -63,7 +69,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('albums', ['setRating']),
+    ...mapActions(['setRating']),
     updateRating (id, rating) {
       this.setRating({ id, rating })
         .then(() => this.$buefy.toast.open({

@@ -5,6 +5,11 @@ export default {
   generate: {
     fallback: true
   },
+  vue: {
+    config: {
+      ignoredElements: [/^ion-/]
+    }
+  },
   head: {
     title: 'Thunderdrome',
     meta: [
@@ -16,6 +21,10 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'preload', href: '/Karla-VariableFont_wght.ttf', as: 'font', type: 'font/ttf' }
+    ],
+    script: [
+      { type: 'module', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js' },
+      { nomodule: '', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js' }
     ]
   },
 
@@ -41,16 +50,17 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    ['nuxt-buefy', { css: false, materialDesignIcons: false, defaultIconPack: 'fas', defaultIconComponent: 'FontAwesomeIcon' }],
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    ['nuxt-buefy', { css: false, materialDesignIcons: false, defaultIconPack: 'fas', defaultIconComponent: 'FontAwesomeIcon' }]
   ],
   fontawesome: {
     icons: {
       // solid: true, // include the full pack in the bundle, not recommended
       solid: ['faPlay', 'faRecordVinyl', 'faPause', 'faTrashAlt', 'faStepForward', 'faStepBackward', 'faMusic', 'faMicrophoneAlt',
         'faPlus', 'faRandom', 'faStream', 'faArrowUp', 'faArrowDown', 'faArrowLeft', 'faArrowRight', 'faAngleRight', 'faAngleLeft',
-        'faStar', 'faHeart', 'faHistory', 'faPlayCircle', 'faInfinity', 'faBars']
+        'faStar', 'faHeart', 'faHistory', 'faPlayCircle', 'faInfinity', 'faBars'],
+      regular: ['faHeart']
     }
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

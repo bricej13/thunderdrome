@@ -26,7 +26,7 @@ export const actions = {
   getTracks (ctx, artistId) {
     return this.$axios.$get(
       '/api/song', {
-        params: { _start: 0, _end: 0, _order: 'ASC', artist_id: artistId }
+        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'year', artist_id: artistId }
       }
     )
   },

@@ -15,6 +15,10 @@
             </NuxtLink>
           </div>
           <div class="is-size-5 has-text-grey has-text-weight-light">
+            <a @click.prevent="toggleAlbumFavorite">
+              <ion-icon :name="album.starred ? 'heart' : 'heart-outline'" />
+            </a>
+
             <span>{{ album.minYear }}</span>
             ·
             <span>{{ album.songCount }} tracks </span>
@@ -41,11 +45,12 @@
             <th>Quality</th>
             <th>Play Count</th>
             <th>Rating</th>
+            <th><ion-icon name="heart-outline" /></th>
             <th style="width: 10%" />
           </tr>
         </thead>
         <tbody>
-          <tr v-for="track in tracks" :key="track.id">
+          <tr v-for="(track, i) in tracks" :key="track.id">
             <td>{{ track.trackNumber }}</td>
             <td>{{ track.title }}</td>
             <td>
@@ -64,6 +69,11 @@
             </td>
             <td>
               <b-rate v-model="track.rating" size="is-small" @change="updateRating(track.id, $event)" />
+            </td>
+            <td>
+              <a @click.prevent="toggleTrackFavorite(i)">
+                <ion-icon :name="track.starred ? 'heart' : 'heart-outline'" />
+              </a>
             </td>
             <td>
               <div class="level">
@@ -90,13 +100,20 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 export default {
   name: 'Album',
   async asyncData ({ $axios, store, params }) {
-    const [album, tracks] = await Promise.all([
+    const [album, allTracks] = await Promise.all([
       store.dispatch('albums/get', params.id),
       store.dispatch('albums/getTracks', params.id)
     ])
+    const tracks = allTracks.reduce((acc, cur) => {
+      if (!acc.find(t => t.trackNumber === cur.trackNumber)) {
+        acc.push(cur)
+      }
+      return acc
+    }, [])
     return { album, tracks }
   },
   head () {
@@ -105,11 +122,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions('albums', ['setRating']),
+    ...mapActions(['setRating', 'setFavorite']),
     ...mapActions('player', [
       'appendToPlaylist',
       'startPlaylist'
     ]),
+    toggleAlbumFavorite () {
+      this.setFavorite({ id: this.album.id, isFavorite: !this.album.starred })
+        .then(() => {
+          this.album.starred = !this.album.starred
+        })
+    },
+    toggleTrackFavorite (i) {
+      this.setFavorite({ id: this.tracks[i].id, isFavorite: !this.tracks[i].starred })
+        .then(() => {
+          this.tracks[i].starred = !this.tracks[i].starred
+        })
+    },
     updateRating (id, rating) {
       this.setRating({ id, rating })
         .then(() => this.$buefy.toast.open({
@@ -125,7 +154,9 @@ export default {
     },
     onDrop (dropResult) {
       const { removedIndex, addedIndex, payload } = dropResult
-      if (removedIndex === null && addedIndex === null) { return this.tracks }
+      if (removedIndex === null && addedIndex === null) {
+        return this.tracks
+      }
 
       const result = [...this.tracks]
       let itemToAdd = payload

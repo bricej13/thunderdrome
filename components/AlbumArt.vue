@@ -1,7 +1,10 @@
 <template>
-  <figure class="image">
-    <img :src="coverArt" :alt="`${album.artist} - ${album.name}`">
-  </figure>
+  <b-image
+    :src="coverArt"
+    :alt="`${album.artist} - ${album.name}`"
+    ratio="1by1"
+    :lazy="false"
+  />
 </template>
 
 <script>

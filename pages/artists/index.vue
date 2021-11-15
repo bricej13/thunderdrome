@@ -51,6 +51,11 @@
       <b-table-column v-slot="props" width="0" sortable label="Rating" field="rating">
         <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
       </b-table-column>
+      <b-table-column v-slot="props" width="0" sortable label="Rating" field="starred">
+        <a @click.prevent="toggleArtistFavorite(props.row)">
+          <ion-icon :name="props.row.starred ? 'heart' : 'heart-outline'" />
+        </a>
+      </b-table-column>
     </b-table>
   </section>
 </template>
@@ -77,7 +82,7 @@ export default {
   },
   watchQuery: true,
   methods: {
-    ...mapActions('albums', ['setRating']),
+    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
       this.setRating({ id, rating })
         .then(() => this.$buefy.toast.open({
@@ -101,6 +106,12 @@ export default {
         _sort: field
       })
       this.$router.replace({ query })
+    },
+    toggleArtistFavorite (artist) {
+      this.setFavorite({ id: artist.id, isFavorite: !artist.starred })
+        .then(() => {
+          artist.starred = !artist.starred
+        })
     }
   }
 
