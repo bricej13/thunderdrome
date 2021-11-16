@@ -47,11 +47,13 @@
               </div>
             </div>
             <div class="p-2" />
-            <div class="px-2">
-              <a v-if="i !== j" @click.stop="removeFromPlaylist(j)">
+            <div v-if="i !== j" class="px-2">
+              <a @click.stop="removeFromPlaylist(j)">
                 <ion-icon name="trash" />
               </a>
-              <ion-icon name="play" />
+              <a @click.stop="setTrack(j)">
+                <ion-icon name="play" />
+              </a>
             </div>
           </div>
         </div>

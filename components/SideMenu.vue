@@ -4,7 +4,7 @@
       <b-menu-list>
         <b-menu-item
           label="Albums"
-          icon="albums"
+          icon="albums-outline"
           tag="nuxt-link"
           active-class="is-active"
           :to="{name: 'albums'}"
@@ -19,28 +19,28 @@
           />
           <b-menu-item
             label="Favorites"
-            icon="heart"
+            icon="heart-outline"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'starred_at', _order:'DESC', starred: true}}"
           />
           <b-menu-item
             label="Top Rated"
-            icon="star"
+            icon="star-outline"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'rating', _order: 'DESC', has_rating:true}}"
           />
           <b-menu-item
             label="Recently Added"
-            icon="timer"
+            icon="timer-outline"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'recently_added', _order: 'DESC'}}"
           />
           <b-menu-item
             label="Recently Played"
-            icon="play-circle"
+            icon="play-circle-outline"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'play_date', _order: 'DESC'}}"

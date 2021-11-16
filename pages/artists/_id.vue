@@ -12,6 +12,9 @@
             {{ artist.name }}
           </div>
           <div class="subtitle is-size-5 mb-2">
+            <a @click.prevent="toggleArtistFavorite(artist)">
+              <ion-icon :name="artist.starred ? 'heart' : 'heart-outline'" />
+            </a>
             {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
           </div>
           <b-rate v-model="artist.rating" @change="updateRating(artist.id, $event)" />
@@ -69,7 +72,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setRating']),
+    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
       this.setRating({ id, rating })
         .then(() => this.$buefy.toast.open({
@@ -79,6 +82,12 @@ export default {
           type: 'is-danger',
           message: 'Failed to update rating'
         }))
+    },
+    toggleArtistFavorite (artist) {
+      this.setFavorite({ id: artist.id, isFavorite: !artist.starred })
+        .then(() => {
+          artist.starred = !artist.starred
+        })
     }
   }
 }
