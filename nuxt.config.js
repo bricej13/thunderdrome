@@ -44,25 +44,46 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/eslint-module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    ['nuxt-buefy', { css: false, materialDesignIcons: false, defaultIconPack: 'fas', defaultIconComponent: 'FontAwesomeIcon' }]
+    ['nuxt-buefy', {
+      css: false,
+      materialDesignIcons: false,
+      defaultIconPack: 'ionicons',
+      defaultIconComponent: 'Icon',
+      customIconPacks: {
+        ionicons: {
+          sizes: {
+            default: 'is-size-5',
+            'is-small': '',
+            'is-medium': 'is-size-3',
+            'is-large': 'is-size-1'
+          },
+          internalIcons: {
+            check: 'checkmark',
+            information: 'information',
+            'check-circle': 'checkmark-circle-outline',
+            alert: 'alert',
+            'alert-circle': 'alert',
+            'arrow-up': 'arrow-up',
+            'chevron-right': 'arrow-forward',
+            'chevron-left': 'arrow-back',
+            'chevron-down': 'arrow-down',
+            eye: 'eye',
+            'eye-off': 'eye-off',
+            'menu-down': 'arrow-dropdown',
+            'menu-up': 'arrow-dropup',
+            'close-circle': 'close-circle-outline'
+          }
+        }
+      }
+    }]
   ],
-  fontawesome: {
-    icons: {
-      // solid: true, // include the full pack in the bundle, not recommended
-      solid: ['faPlay', 'faRecordVinyl', 'faPause', 'faTrashAlt', 'faStepForward', 'faStepBackward', 'faMusic', 'faMicrophoneAlt',
-        'faPlus', 'faRandom', 'faStream', 'faArrowUp', 'faArrowDown', 'faArrowLeft', 'faArrowRight', 'faAngleRight', 'faAngleLeft',
-        'faStar', 'faHeart', 'faHistory', 'faPlayCircle', 'faInfinity', 'faBars'],
-      regular: ['faHeart']
-    }
-  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // baseURL: 'http://localhost:4533'

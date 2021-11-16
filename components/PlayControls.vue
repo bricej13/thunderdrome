@@ -10,7 +10,7 @@
         class="p-1 is-clickable"
         @click="startPlaylist(tracks)"
       >
-        <b-icon icon="play" size="is-large" />
+        <ion-icon name="play" size="large" />
       </a>
     </b-tooltip>
     <b-tooltip
@@ -23,7 +23,7 @@
         class="p-1 is-clickable"
         @click="shufflePlaylist(tracks)"
       >
-        <b-icon icon="random" size="is-medium" />
+        <ion-icon name="shuffle-outline" size="large" />
       </a>
     </b-tooltip>
     <b-tooltip
@@ -36,7 +36,7 @@
         class="p-1 is-clickable"
         @click="appendToPlaylist(tracks)"
       >
-        <b-icon icon="plus" size="is-medium" />
+        <ion-icon name="add" size="large" />
       </a>
     </b-tooltip>
   </div>

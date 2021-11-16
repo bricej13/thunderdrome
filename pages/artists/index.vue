@@ -30,7 +30,7 @@
       <template #top-right>
         <div class="">
           <button class="btn">
-            <b-icon icon="angle-left" />
+            <ion-icon name="shuffle" size="medium" />
           </button>
         </div>
       </template>

@@ -24,12 +24,12 @@
       </div>
       <div class="column is-narrow">
         <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, false)">
-          <b-icon icon="play" size="is-large" />
+          <ion-icon name="play" size="large" />
         </div>
       </div>
       <div class="column is-narrow">
         <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, true)">
-          <b-icon icon="random" size="is-medium" />
+          <ion-icon name="shuffle" />
         </div>
       </div>
     </div>

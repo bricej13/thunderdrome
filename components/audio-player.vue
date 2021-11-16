@@ -22,9 +22,8 @@
           </div>
         </div>
 
-        <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column">
-          <!--        <progress-bar :value="progress" />-->
-          <wavesurfer class="is-invisible-mobile" />
+        <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column is-invisible-mobile">
+          <wavesurfer />
           <wavesurfer-preload />
         </div>
 
@@ -34,8 +33,8 @@
 
         <div class="pl-2 pr-2">
           <div class="is-flex is-flex-direction-row is-align-items-center">
-            <div v-shortkey="['arrowleft']" class="p-1 is-clickable is-hidden-mobile" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
-              <b-icon icon="step-backward" />
+            <div v-shortkey="['arrowleft']" class="p-1 is-clickable" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
+              <ion-icon name="play-skip-back-outline" />
             </div>
 
             <div
@@ -44,13 +43,13 @@
               @shortkey="togglePlay"
               @click="togglePlay"
             >
-              <b-icon size="is-large" :icon="playing ? 'pause' : 'play'" />
+              <ion-icon :name="playing ? 'pause' : 'play'" size="large" />
             </div>
             <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
-              <b-icon icon="step-forward" />
+              <ion-icon name="play-skip-forward-outline" />
             </div>
             <div class="p-1 is-clickable is-hidden-desktop" @click="$store.dispatch('toggleQueue')">
-              <b-icon icon="bars" />
+              <ion-icon name="menu-outline" size="large" />
             </div>
           </div>
         </div>

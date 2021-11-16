@@ -18,7 +18,6 @@
         <side-menu @click.native="$store.commit('setMenuOpen', false)" />
       </b-sidebar>
       <b-sidebar
-        class="is-hidden-tablet"
         :open="$store.getters.queueOpen"
         :fullheight="true"
         overlay

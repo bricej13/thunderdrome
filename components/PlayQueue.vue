@@ -1,13 +1,13 @@
 <template>
-  <div class="play-queue-wrapper" :class="{'is-sr-only': playlist.length === 0}">
+  <div class="play-queue-wrapper">
     <div class="play-queue-header px-1 pb-2">
       <div class="is-flex is-justify-content-space-between is-align-items-baseline ">
         <div class="title is-3">
           Queue
         </div>
         <div>
-          <a @click="shuffleQueue"><b-icon icon="random" /></a>
-          <a @click="clearQueue"><b-icon icon="trash-alt" /></a>
+          <a @click="shuffleQueue"><ion-icon name="shuffle-outline" /></a>
+          <a @click="clearQueue"><ion-icon name="trash-outline" /></a>
         </div>
       </div>
       <div class="is-flex is-justify-content-space-between is-align-items-baseline ">
@@ -49,9 +49,9 @@
             <div class="p-2" />
             <div class="px-2">
               <a v-if="i !== j" @click.stop="removeFromPlaylist(j)">
-                <b-icon icon="trash-alt" />
+                <ion-icon name="trash" />
               </a>
-              <b-icon v-else icon="play" />
+              <ion-icon name="play" />
             </div>
           </div>
         </div>

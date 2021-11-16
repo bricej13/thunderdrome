@@ -1,13 +1,13 @@
 <template>
-  <div class="pt-2">
-    <div class="block px-2">
+  <div class="pt-2-tablet">
+    <div class="block px-2-tablet">
       <div class="columns">
         <div class="column is-one-quarter-tablet">
           <figure class="image">
             <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl || '/microphone-alt.png'">
           </figure>
         </div>
-        <div class="column">
+        <div class="column px-2">
           <div class="title is-size-1">
             {{ artist.name }}
           </div>

@@ -81,13 +81,13 @@
                   class="p-1 is-clickable"
                   @click="startPlaylist([track])"
                 >
-                  <b-icon icon="play" size="is-small" />
+                  <ion-icon name="play" />
                 </a>
                 <a
                   class="p-1 is-clickable"
                   @click="appendToPlaylist([track])"
                 >
-                  <b-icon icon="plus" size="is-small" />
+                  <ion-icon name="add" />
                 </a>
               </div>
             </td>

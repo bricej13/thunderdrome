@@ -4,7 +4,7 @@
       <b-menu-list>
         <b-menu-item
           label="Albums"
-          icon="record-vinyl"
+          icon="albums"
           tag="nuxt-link"
           active-class="is-active"
           :to="{name: 'albums'}"
@@ -12,7 +12,7 @@
         >
           <b-menu-item
             label="Random"
-            icon="random"
+            icon="shuffle"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: { _sort: 'random'}}"
@@ -33,7 +33,7 @@
           />
           <b-menu-item
             label="Recently Added"
-            icon="history"
+            icon="timer"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'recently_added', _order: 'DESC'}}"
@@ -47,7 +47,7 @@
           />
           <b-menu-item
             label="Most Played"
-            icon="infinity"
+            icon="infinite"
             tag="nuxt-link"
             exact-active-class="is-active"
             :to="{name: 'albums', query: {_sort:'play_count', _order: 'DESC'}}"
@@ -55,21 +55,21 @@
         </b-menu-item>
         <b-menu-item
           label="Artists"
-          icon="microphone-alt"
+          icon="mic-outline"
           tag="nuxt-link"
           active-class="is-active"
           :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }}"
         />
         <b-menu-item
           label="Songs"
-          icon="music"
+          icon="musical-note-outline"
           tag="nuxt-link"
           exact-active-class="is-active"
           :to="{name: 'songs', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'title' }}"
         />
 
         <b-menu-item
-          icon="stream"
+          icon="reorder-four"
           tag="nuxt-link"
           exact-active-class="is-active"
           :to="{name: 'playlists'}"
@@ -95,10 +95,7 @@
                   class="ml-2"
                   @click.stop.prevent="playPlaylist(playlist.id)"
                 >
-                  <b-icon
-                    icon="play"
-                    size="is-small"
-                  />
+                  <ion-icon name="play" />
                 </div>
               </div>
             </template>
