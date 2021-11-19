@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'volume', 'playing', 'currentTrack'])
+    ...mapGetters('player', ['activeStream', 'volume', 'playing', 'currentTrack', 'albumArt'])
   },
   watch: {
     activeStream (v) {
@@ -43,8 +43,12 @@ export default {
       height: 80,
       backend: 'MediaElement'
     })
+    this.instance.on('loading', (v) => {
+      console.log('loading', v)
+    })
     this.instance.on('ready', () => {
       this.instance.play()
+      this.showCurrentTrackToast()
     })
     this.instance.on('waveform-ready', () => {
       // window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
@@ -73,6 +77,24 @@ export default {
       } else {
         this.instance.load(url)
       }
+    },
+    showCurrentTrackToast () {
+      this.$buefy.toast.open({
+        position: 'is-top-right',
+        pauseOnHover: true,
+        message: `
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48">
+              <img src="${this.albumArt}" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="media-content has-text-left">
+            <p class="title is-4 has-text-light">${this.currentTrack.title}</p>
+            <p class="subtitle is-6 has-text-light">${this.currentTrack.artist}</p>
+          </div>
+        </div>`
+      })
     }
   }
 }

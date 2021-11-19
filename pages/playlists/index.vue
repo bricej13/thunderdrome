@@ -8,34 +8,39 @@
         Add Playlist
       </button>
     </div>
-    <div v-for="playlist in playlists" :key="playlist.id" class="columns is-vcentered">
-      <div class="column">
-        <NuxtLink :to="`/playlists/${playlist.id}`" class="is-size-2">
-          {{ playlist.name }}
+
+    <b-table
+      :data="playlists"
+      :checked-rows.sync="checkedPlaylists"
+      checkable
+      :mobile-cards="false"
+    >
+      <b-table-column v-slot="props" sortable label="Name" field="name">
+        <NuxtLink :to="`/playlists/${props.row.id}`">
+          {{ props.row.name }}
         </NuxtLink>
-      </div>
-      <div class="column is-narrow">
-        {{ playlist.songCount }} tracks
-      </div>
-      <div class="column is-narrow">
-        {{ playlist.duration | playlisttime }}
-      </div>
-      <div class="column is-narrow">
-        <b-switch :value="playlist.public" disabled>
-          Public
-        </b-switch>
-      </div>
-      <div class="column is-narrow">
-        <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, false)">
-          <ion-icon name="play" size="large" />
+      </b-table-column>
+      <b-table-column v-slot="props" sortable label="Tracks" field="songCount">
+        {{ props.row.songCount }} tracks
+      </b-table-column>
+      <b-table-column v-slot="props" sortable label="Duration" field="duration">
+        {{ props.row.duration | playlisttime }}
+      </b-table-column>
+      <b-table-column v-slot="props" sortable label="Public" field="public">
+        <b-switch :value="props.row.public" @input="togglePlaylistPublic(props)" />
+      </b-table-column>
+      <b-table-column v-slot="props">
+        <div class="columns is-mobile">
+          <a class="column" @click="startPlaylist(props.row.id, false)">
+            <ion-icon name="play" />
+          </a>
+          <a class="column" @click="startPlaylist(props.row.id, true)">
+            <ion-icon name="shuffle" />
+          </a>
         </div>
-      </div>
-      <div class="column is-narrow">
-        <div class="p-1 is-clickable" @click="startPlaylist(playlist.id, true)">
-          <ion-icon name="shuffle" />
-        </div>
-      </div>
-    </div>
+      </b-table-column>
+    </b-table>
+
     <b-modal
       :active="isCreatePlaylistActive"
       :destroy-on-hide="true"
@@ -58,7 +63,8 @@ export default {
   name: 'Playlists',
   data () {
     return {
-      isCreatePlaylistActive: false
+      isCreatePlaylistActive: false,
+      checkedPlaylists: []
     }
   },
   head () {
@@ -73,19 +79,21 @@ export default {
     this.$store.dispatch('playlists/loadPlaylists')
   },
   methods: {
-    ...mapActions('player', [
-      'startPlaylist', 'shufflePlaylist', 'appendToPlaylist'
-    ]),
-    ...mapActions(['loadPlaylists']),
+    ...mapActions('player', ['startPlaylist', 'shufflePlaylist', 'appendToPlaylist']),
+    ...mapActions('playlists', ['updatePlaylist']),
     async startPlaylist (id, shuffle) {
       const tracks = await this.$axios.$get(
         `api/playlist/${id}/tracks`
       )
       if (shuffle) {
-        await this.$store.dispatch('player/startPlaylist', tracks)
+        await this.shufflePlaylist(tracks)
       } else {
-        await this.$store.dispatch('player/shufflePlaylist', tracks)
+        await this.startPlaylist(tracks)
       }
+    },
+    togglePlaylistPublic ({ index, row: playlist }) {
+      const updated = Object.assign({}, playlist, { public: !playlist.public })
+      this.updatePlaylist(updated)
     }
   }
 }

@@ -30,6 +30,13 @@ export const actions = {
     // https://navidrome.com/api/playlist/5334f9f2-4617-4a2a-befc-f02d946cefd1/tracks
     this.$axios.$post(`api/playlist/${playlistId}/tracks`, { ids: tracks })
       .then(res => context.dispatch('loadPlaylistTracks', playlistId))
+  },
+  updatePlaylist (context, playlist) {
+    this.$axios.$put(`api/playlist/${playlist.id}`, playlist).then((res) => {
+      context.commit('setPlaylists', context.state.playlists.map((p) => {
+        return p.id === res.id ? res : p
+      }))
+    })
   }
 }
 export const getters = {
