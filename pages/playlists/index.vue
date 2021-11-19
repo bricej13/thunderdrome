@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="level">
+    <div class="level p-2">
       <div class="title">
         Playlists
       </div>
+      <button class="button" @click="isCreatePlaylistActive = true">
+        Add Playlist
+      </button>
     </div>
     <div v-for="playlist in playlists" :key="playlist.id" class="columns is-vcentered">
       <div class="column">
@@ -33,6 +36,18 @@
         </div>
       </div>
     </div>
+    <b-modal
+      :active="isCreatePlaylistActive"
+      :destroy-on-hide="true"
+      aria-role="dialog"
+      aria-label="Example Modal"
+      close-button-aria-label="Close"
+      aria-modal
+    >
+      <template #default>
+        <smart-playlist-editor @close="isCreatePlaylistActive = false" />
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -41,6 +56,11 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Playlists',
+  data () {
+    return {
+      isCreatePlaylistActive: false
+    }
+  },
   head () {
     return {
       title: 'Thunderdrome - Playlists'
