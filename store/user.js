@@ -9,6 +9,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  setToken (state, token) {
+    state.token = token
+  },
   login (state, payload) {
     state.baseUrl = payload.baseUrl
     state.id = payload.id

@@ -26,6 +26,7 @@ import SideMenu from '~/components/SideMenu'
 import TopNav from '~/components/TopNav'
 
 export default {
+  name: 'DefaultLayout',
   components: { TopNav, SideMenu },
   data () {
     return {

@@ -18,6 +18,11 @@ export default function (context) {
       }
     }
   })
+  context.$axios.onResponse((response) => {
+    if (response.headers['x-nd-authorization'] != null) {
+      context.store.commit('user/setToken', response.headers['x-nd-authorization'])
+    }
+  })
   context.$axios.onResponseError((err, err2) => {
     if (err.response.status === 401) {
       context.store.dispatch('user/logout')
@@ -26,7 +31,7 @@ export default function (context) {
   })
   context.app.router.beforeEach((to, from, next) => {
     if (to.name !== 'login' && !context.store.state.user.token) {
-      next({ name: 'login' })
+      next({ name: 'login', hash: 'timeoutReminder' })
     } else {
       next()
     }

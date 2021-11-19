@@ -44,7 +44,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Id',
+  name: 'Artist',
   async asyncData ({ $axios, store, params }) {
     const [artist, allTracks, albums] = await Promise.all([
       store.dispatch('artists/get', params.id),
