@@ -20,7 +20,7 @@ export const actions = {
   getAlbums (ctx, artistId) {
     return this.$axios.$get(
       '/api/album', {
-        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'maxYear', artist_id: artistId }
+        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'minYear', artist_id: artistId }
       })
   },
   getTracks (ctx, artistId) {

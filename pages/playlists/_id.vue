@@ -1,6 +1,6 @@
 <template>
   <div v-if="tracks != null" class="playlist-view">
-    <div class="columns px-2">
+    <div class="columns px-2 is-vcentered">
       <div class="column title mb-0">
         {{ playlist.name }}
       </div>
@@ -8,7 +8,7 @@
         <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
     </div>
-    <track-list :tracks="tracks" />
+    <track-list :tracks="tracks" :hide-fields="['album']" />
   </div>
 </template>
 

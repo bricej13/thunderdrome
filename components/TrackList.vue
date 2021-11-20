@@ -1,91 +1,109 @@
 <template>
   <div>
-    <div class="columns is-vcentered is-mobile is-variable is-1" style="border-bottom: 2px solid black">
-      <div class="column ml-2 has-text-weight-bold">
-        Title
-      </div>
-      <div class="column has-text-weight-bold">
-        Artist
-      </div>
-      <div class="column ml-2 has-text-weight-bold is-hidden-mobile">
-        Album
-      </div>
-      <div class="column ml-2 has-text-weight-bold is-narrow">
-        &nbsp;
-      </div>
-    </div>
-    <div v-for="(track, i) in tracks" :key="track.id + i" class="columns is-vcentered is-mobile is-variable is-1" style="border-bottom: 1px solid black">
-      <div class="column ml-2 has-text-weight-bold">
-        {{ track.title }}
-      </div>
-      <div class="column">
-        <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
-          {{ track.artist }}
+    <b-table
+      :data="tracks"
+      :hoverable="true"
+      :mobile-cards="false"
+    >
+      <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
+        <span class="is-uppercase has-text-weight-bold">
+          {{ props.row.title }}
+        </span>
+      </b-table-column>
+      <b-table-column v-slot="props" sortable label="Artist" field="artist" :visible="!hideFields.includes('artist')">
+        <NuxtLink :to="`/artists/${props.row.artistId}`">
+          {{ props.row.artist }}
         </NuxtLink>
-      </div>
-      <div class="column is-hidden-mobile">
-        <NuxtLink :to="{name: 'albums-id', params: { id: track.albumId}}">
-          {{ track.album }}
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Album"
+        field="album"
+        :visible="!hideFields.includes('album')"
+      >
+        <NuxtLink :to="`/albums/${props.row.albumId}`">
+          {{ props.row.album }}
         </NuxtLink>
-      </div>
-      <div class="column is-narrow ml-2">
-        <a
-          class="px-2 is-clickable"
-          @click="startPlaylist(tracks.slice(i))"
-        >
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Year"
+        field="year"
+        width="4rem"
+        :visible="!hideFields.includes('year')"
+      >
+        {{ props.row.year }}
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Plays"
+        field="playCount"
+        width="4rem"
+        :visible="!hideFields.includes('playCount')"
+      >
+        {{ props.row.playCount }}
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Time"
+        field="duration"
+        width="5rem"
+        :visible="!hideFields.includes('duration')"
+      >
+        {{ props.row.duration | tracktime }}
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Bit Rate"
+        field="bitRate"
+        width="6rem"
+        :visible="!hideFields.includes('bitRate')"
+      >
+        <bitrate :bit-rate="props.row.bitRate" :suffix="props.row.suffix" />
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="Rating"
+        field="rating"
+        width="100"
+        :visible="!hideFields.includes('rating')"
+      >
+        <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
+      </b-table-column>
+      <b-table-column
+        v-slot="props"
+        width="30"
+        field="starred"
+        :visible="!hideFields.includes('starred')"
+      >
+        <a @click.prevent="toggleTrackFavorite(props.row)">
+          <ion-icon :name="props.row.starred ? 'heart' : 'heart-outline'" />
+        </a>
+      </b-table-column>
+
+      <b-table-column
+        v-slot="props"
+        width="105"
+        :visible="!hideFields.includes('actions')"
+      >
+        <a v-if="!hideFields.includes('play')" class="px-1 action" @click="startPlaylist([props.row])">
           <ion-icon name="play" />
         </a>
-        <a
-          class="px-2 is-clickable"
-          @click="appendToPlaylist([track])"
-        >
+        <a v-if="!hideFields.includes('add')" class="px-1 action" @click="appendToPlaylist([props.row])">
           <ion-icon name="add" />
         </a>
-      </div>
-    </div>
+        <a v-if="!hideFields.includes('delete')" class="px-1 action" @click="$emit('delete', {playlist: props.row, i : props.index})">
+          <ion-icon name="trash" />
+        </a>
+      </b-table-column>
+    </b-table>
   </div>
-
-  <!--  <table class="table is-fullwidth is-hoverable track-list">-->
-<!--    <thead>-->
-<!--      <tr>-->
-<!--        <th>Title</th>-->
-<!--        <th>Artist</th>-->
-<!--        <th>Album</th>-->
-<!--        <th style="width: 10%" />-->
-<!--      </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--      <tr v-for="track in tracks" :key="track.id">-->
-<!--        <td>{{ track.title }}</td>-->
-<!--        <td>-->
-<!--          <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">-->
-<!--            {{ track.artist }}-->
-<!--          </NuxtLink>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <NuxtLink :to="{name: 'albums-id', params: { id: track.albumId}}">-->
-<!--            {{ track.album }}-->
-<!--          </NuxtLink>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--          <div class="level">-->
-<!--            <a-->
-<!--              class="p-1 is-clickable"-->
-<!--              @click="startPlaylist([track])"-->
-<!--            >-->
-<!--              <b-icon icon="play" size="is-small" />-->
-<!--            </a>-->
-<!--            <a-->
-<!--              class="p-1 is-clickable"-->
-<!--              @click="appendToPlaylist([track])"-->
-<!--            >-->
-<!--              <b-icon icon="plus" size="is-small" />-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </tr>-->
-<!--    </tbody>-->
-<!--  </table>-->
 </template>
 <script>
 import { mapActions } from 'vuex'
@@ -95,22 +113,43 @@ export default {
     tracks: {
       type: Array,
       required: true
+    },
+    hideFields: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
-    ...mapActions('player', [
-      'appendToPlaylist',
-      'startPlaylist'
-    ])
+    ...mapActions('player', ['appendToPlaylist', 'startPlaylist']),
+    ...mapActions(['setRating', 'setFavorite']),
+    updateRating (id, rating) {
+      this.setRating({ id, rating })
+        .then(() => this.$buefy.toast.open({
+          type: 'is-dark',
+          message: 'Rating updated'
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Failed to update rating'
+        }))
+    },
+    toggleTrackFavorite (track) {
+      this.setFavorite({ id: track.id, isFavorite: !track.starred })
+        .then(() => {
+          track.starred = !track.starred
+        })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-tr .play-controls {
+table.table {
+  table-layout: fixed;
+}
+tr .action {
   visibility: hidden;
 }
-tr:hover .play-controls {
+tr:hover .action {
   visibility: visible;
 }
 

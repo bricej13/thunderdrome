@@ -34,67 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="block">
-      <table class="table is-fullwidth is-hoverable">
-        <thead>
-          <tr>
-            <th />
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Duration</th>
-            <th>Quality</th>
-            <th>Play Count</th>
-            <th>Rating</th>
-            <th><ion-icon name="heart-outline" /></th>
-            <th style="width: 10%" />
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(track, i) in tracks" :key="track.id">
-            <td>{{ track.trackNumber }}</td>
-            <td>{{ track.title }}</td>
-            <td>
-              <NuxtLink :to="{name: 'artists-id', params: { id: track.artistId}}">
-                {{ track.artist }}
-              </NuxtLink>
-            </td>
-            <td>
-              {{ track.duration | tracktime }}
-            </td>
-            <td>
-              <bitrate :suffix="track.suffix" :bit-rate="track.bitRate" />
-            </td>
-            <td>
-              {{ track.playCount }}
-            </td>
-            <td>
-              <b-rate v-model="track.rating" size="is-small" @change="updateRating(track.id, $event)" />
-            </td>
-            <td>
-              <a @click.prevent="toggleTrackFavorite(i)">
-                <ion-icon :name="track.starred ? 'heart' : 'heart-outline'" />
-              </a>
-            </td>
-            <td>
-              <div class="level">
-                <a
-                  class="p-1 is-clickable"
-                  @click="startPlaylist([track])"
-                >
-                  <ion-icon name="play" />
-                </a>
-                <a
-                  class="p-1 is-clickable"
-                  @click="appendToPlaylist([track])"
-                >
-                  <ion-icon name="add" />
-                </a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <track-list :tracks="tracks" :hide-fields="['artist', 'album', 'delete']" />
   </div>
 </template>
 
