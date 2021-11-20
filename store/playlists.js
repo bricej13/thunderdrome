@@ -32,7 +32,7 @@ export const actions = {
       .then(res => context.dispatch('loadPlaylistTracks', playlistId))
   },
   updatePlaylist (context, playlist) {
-    this.$axios.$put(`api/playlist/${playlist.id}`, playlist).then((res) => {
+    return this.$axios.$put(`api/playlist/${playlist.id}`, playlist).then((res) => {
       context.commit('setPlaylists', context.state.playlists.map((p) => {
         return p.id === res.id ? res : p
       }))

@@ -154,27 +154,27 @@ aside .menu > .menu-list a {
 }
 
 aside .menu > .menu-list li {
-  &:nth-child(1) {
+  &:nth-child(5n+1) {
     .is-active, &>a:hover {
       background-color: $ui3-yellow;
     }
   }
-  &:nth-child(2) {
+  &:nth-child(5n+2) {
     .is-active, &>a:hover {
       background-color: $ui3-orange;
     }
   }
-  &:nth-child(3) {
+  &:nth-child(5n+3) {
     .is-active, &>a:hover {
       background-color: $ui3-red;
     }
   }
-  &:nth-child(4) {
+  &:nth-child(5n+4) {
     .is-active, &>a:hover  {
       background-color: $ui3-beet;
     }
   }
-  &:nth-child(5) {
+  &:nth-child(5n+5) {
     .is-active, &>a:hover  {
       background-color: $ui3-fuchsia;
     }

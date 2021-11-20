@@ -4,9 +4,9 @@
       <div class="title">
         Playlists
       </div>
-      <button class="button" @click="isCreatePlaylistActive = true">
-        Add Playlist
-      </button>
+      <!--      <button class="button" @click="isCreatePlaylistActive = true">-->
+      <!--        Add Playlist-->
+      <!--      </button>-->
     </div>
 
     <b-table
@@ -15,27 +15,30 @@
       checkable
       :mobile-cards="false"
     >
-      <b-table-column v-slot="props" sortable label="Name" field="name">
+      <b-table-column v-slot="props" sortable label="Name" field="name" :visible="visibleColumns.includes('name')">
         <NuxtLink :to="`/playlists/${props.row.id}`">
           {{ props.row.name }}
         </NuxtLink>
       </b-table-column>
-      <b-table-column v-slot="props" sortable label="Tracks" field="songCount">
+      <b-table-column v-slot="props" sortable label="Tracks" field="songCount" :visible="visibleColumns.includes('songCount')">
         {{ props.row.songCount }} tracks
       </b-table-column>
-      <b-table-column v-slot="props" sortable label="Duration" field="duration">
+      <b-table-column v-slot="props" sortable label="Duration" field="duration" :visible="visibleColumns.includes('duration')">
         {{ props.row.duration | playlisttime }}
       </b-table-column>
-      <b-table-column v-slot="props" sortable label="Public" field="public">
+      <b-table-column v-slot="props" sortable label="Public" field="public" :visible="visibleColumns.includes('public')">
         <b-switch :value="props.row.public" @input="togglePlaylistPublic(props)" />
       </b-table-column>
-      <b-table-column v-slot="props">
-        <div class="columns is-mobile">
+      <b-table-column v-slot="props" :visible="visibleColumns.includes('actions')">
+        <div class="columns is-mobile is-vcentered">
           <a class="column" @click="startPlaylist(props.row.id, false)">
             <ion-icon name="play" />
           </a>
           <a class="column" @click="startPlaylist(props.row.id, true)">
             <ion-icon name="shuffle" />
+          </a>
+          <a class="column" @click="editingPlaylist = props.row">
+            <ion-icon name="create-outline" />
           </a>
         </div>
       </b-table-column>
@@ -53,18 +56,25 @@
         <smart-playlist-editor @close="isCreatePlaylistActive = false" />
       </template>
     </b-modal>
+
+    <b-modal v-model="showEditModal" has-modal-card>
+      <edit-playlist :playlist="editingPlaylist" @close="editingPlaylist = null" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import EditPlaylist from '~/components/EditPlaylist'
 
 export default {
   name: 'Playlists',
   data () {
     return {
       isCreatePlaylistActive: false,
-      checkedPlaylists: []
+      editingPlaylist: null,
+      checkedPlaylists: [],
+      visibleColumns: ['name', 'songCount', 'duration', 'public', 'actions']
     }
   },
   head () {
@@ -73,7 +83,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('playlists', ['playlists', 'getPlaylist'])
+    ...mapGetters('playlists', ['playlists', 'getPlaylist']),
+    showEditModal () { return this.editingPlaylist !== null }
   },
   mounted () {
     this.$store.dispatch('playlists/loadPlaylists')
@@ -94,6 +105,12 @@ export default {
     togglePlaylistPublic ({ index, row: playlist }) {
       const updated = Object.assign({}, playlist, { public: !playlist.public })
       this.updatePlaylist(updated)
+    },
+    editPlaylist (playlist) {
+      this.$buefy.open({
+        parent: this,
+        component: EditPlaylist
+      })
     }
   }
 }

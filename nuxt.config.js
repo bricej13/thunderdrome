@@ -89,6 +89,9 @@ export default {
   axios: {
     // baseURL: 'http://localhost:4533'
   },
+  formulate: {
+    configPath: '~/plugins/formulate.config.js'
+  },
   router: {
   },
   pwa: {
