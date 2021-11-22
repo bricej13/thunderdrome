@@ -169,7 +169,7 @@ export const getters = {
   playlist: state => state.playlist,
   hasQueue: state => state.playlist.length > 0,
   i: state => state.playlistIndex,
-  streamList: (state, getters, rootState, rootGetters) => {
+  streamList: (state, getters, rootGetters) => {
     return state.playlist
       .map(t => `${rootGetters['user/subsonicUrl']('stream')}&id=${t.mediaFileId || t.id}&_${new Date().getTime()}`) ||
       []
@@ -187,7 +187,7 @@ export const getters = {
     return (state.currentTime / state.trackDuration) * 100
   },
   playing: state => state.playing,
-  albumArt: (state, getters, rootState, rootGetters) => {
+  albumArt: (state, getters, rootGetters) => {
     if (getters.currentTrack == null) { return null }
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`
   },

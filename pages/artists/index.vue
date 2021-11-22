@@ -51,7 +51,7 @@
       <b-table-column v-slot="props" width="0" sortable label="Rating" field="rating">
         <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
       </b-table-column>
-      <b-table-column v-slot="props" width="0" sortable label="Rating" field="starred">
+      <b-table-column v-slot="props" width="0" sortable label="Fav" field="starred">
         <a @click.prevent="toggleArtistFavorite(props.row)">
           <ion-icon :name="props.row.starred ? 'heart' : 'heart-outline'" />
         </a>
