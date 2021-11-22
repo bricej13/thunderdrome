@@ -9,6 +9,22 @@
       <!--      </button>-->
     </div>
 
+    <b-collapse
+      :open="checkedPlaylists.length > 0"
+      animation="slide"
+    >
+      <div class="level px-2">
+        <div class="level-left" />
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-beet is-right" @click="deletePlaylists">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </b-collapse>
+
     <b-table
       :data="playlists"
       :checked-rows.sync="checkedPlaylists"
@@ -39,6 +55,20 @@
           </a>
           <a class="column" @click="editingPlaylist = props.row">
             <ion-icon name="create-outline" />
+          </a>
+          <a class="column">
+            <b-tooltip
+              type="is-light"
+              square
+              position="is-left"
+              :triggers="['click']"
+              :auto-close="['outside', 'escape']"
+            >
+              <template #content>
+                <a @click="deletePlaylist(props.row.id)">Delete</a>
+              </template>
+              <ion-icon name="trash" />
+            </b-tooltip>
           </a>
         </div>
       </b-table-column>
@@ -91,7 +121,7 @@ export default {
   },
   methods: {
     ...mapActions('player', ['startPlaylist', 'shufflePlaylist', 'appendToPlaylist']),
-    ...mapActions('playlists', ['updatePlaylist']),
+    ...mapActions('playlists', ['updatePlaylist', 'deletePlaylist']),
     async startPlaylist (id, shuffle) {
       const tracks = await this.$axios.$get(
         `api/playlist/${id}/tracks`
@@ -111,6 +141,10 @@ export default {
         parent: this,
         component: EditPlaylist
       })
+    },
+    async deletePlaylists () {
+      await Promise.all(this.checkedPlaylists.map(p => this.deletePlaylist(p.id)))
+      this.checkedPlaylists = []
     }
   }
 }

@@ -10,7 +10,17 @@
 // export const plugins = [vuexLocal.plugin]
 export const state = () => ({
   menuOpen: false,
-  queueOpen: false
+  queueOpen: false,
+  eventStream: null,
+  scanStatus: {
+    scanning: false,
+    count: 0,
+    folderCount: 0
+  },
+  serverStatus: {
+    startTime: null,
+    version: ''
+  }
 })
 
 export const mutations = {
@@ -19,6 +29,18 @@ export const mutations = {
   },
   setQueueOpen (state, payload) {
     state.queueOpen = payload
+  },
+  setEventStream (state, eventSource) {
+    state.eventStream = eventSource
+  },
+  setScanStatus (state, scanStatus) {
+    state.scanStatus = scanStatus
+  },
+  setServerStatus (state, status) {
+    state.serverStatus = {
+      version: status.version,
+      startTime: new Date(status.startTime)
+    }
   }
 }
 
@@ -58,9 +80,28 @@ export const actions = {
         }
       }).catch(err => reject(err))
     })
+  },
+  startEventStream ({ commit, state, rootState }) {
+    if (state.eventStream === null && rootState.user.token !== null) {
+      const eventSource = new EventSource(`${state.user.baseUrl}/api/events?jwt=${rootState.user.token}`)
+      eventSource.addEventListener('scanStatus', function (e) {
+        commit('setScanStatus', JSON.parse(e.data))
+      })
+      eventSource.addEventListener('serverStart', function (e) {
+        commit('setServerStatus', JSON.parse(e.data))
+      })
+
+      commit('setEventStream', eventSource)
+    }
+  },
+  closeEventStream ({ commit, state }) {
+    state.eventStream.close()
+    commit('setEventStream', null)
   }
 }
 export const getters = {
   menuOpen: state => state.menuOpen,
-  queueOpen: state => state.queueOpen
+  queueOpen: state => state.queueOpen,
+  serverStatus: state => state.serverStatus,
+  scanStatus: state => state.scanStatus
 }

@@ -29,8 +29,12 @@
     </template>
 
     <template #end class="is-flex-grow-1">
+      <b-navbar-item tag="div" />
       <b-navbar-item tag="div">
         <div class="buttons">
+          <nuxt-link :to="{name: 'settings'}" class="p-2">
+            <ion-icon name="settings-outline" />
+          </nuxt-link>
           <a class="is-primary" @click.prevent="logout">
             <strong>Log out {{ $store.state.user.name }}</strong>
           </a>

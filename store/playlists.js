@@ -37,6 +37,11 @@ export const actions = {
         return p.id === res.id ? res : p
       }))
     })
+  },
+  deletePlaylist (context, playlistId) {
+    return this.$axios.$delete(`api/playlist/${playlistId}`).then((res) => {
+      context.commit('setPlaylists', context.state.playlists.filter(p => p.id !== playlistId))
+    })
   }
 }
 export const getters = {

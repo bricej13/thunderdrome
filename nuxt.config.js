@@ -31,14 +31,13 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['~/assets/scss/main.scss'],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/navidrome-auth.js',
+    '~/plugins/init.js',
     { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/vue-shortkey.js', ssr: false }
   ],
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 

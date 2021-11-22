@@ -41,6 +41,9 @@ export default {
   },
   computed: {
     ...mapGetters('player', ['hasQueue'])
+  },
+  mounted () {
+    this.$store.dispatch('startEventStream')
   }
 }
 </script>

@@ -33,20 +33,23 @@ export const mutations = {
 }
 
 export const actions = {
-  login ({ commit, dispatch }, { baseUrl, username, password }) {
+  login ({ commit, dispatch, rootState }, { baseUrl, username, password }) {
     return new Promise((resolve, reject) => {
       this.$axios.$post(baseUrl + '/auth/login', { username, password })
         .then((res) => {
           this.$axios.setBaseURL(baseUrl)
           commit('login', Object.assign(res, { baseUrl }))
+          rootState.dispatch('startEventStream')
           resolve(res)
         }).catch((err) => {
           dispatch('logout')
+          rootState.dispatch('closeEventStream')
           reject(err)
         })
     })
   },
   logout (context) {
+    context.rootState.dispatch('closeEventStream')
     context.commit('logout')
   }
 }
