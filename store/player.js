@@ -187,6 +187,10 @@ export const getters = {
     return (state.currentTime / state.trackDuration) * 100
   },
   playing: state => state.playing,
+  albumArtUrl: (state, getters, rootState, rootGetters) => (albumId) => {
+    if (getters.currentTrack == null) { return null }
+    return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${albumId}&size=300`
+  },
   albumArt: (state, getters, rootState, rootGetters) => {
     if (getters.currentTrack == null) { return null }
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`

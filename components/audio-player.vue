@@ -23,8 +23,9 @@
         </div>
 
         <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column is-invisible-mobile">
-          <wavesurfer />
-          <wavesurfer-preload />
+          <audio-pipeline />
+          <!--          <wavesurfer />-->
+          <!--          <wavesurfer-preload />-->
         </div>
 
         <div class="px-2 has-text-grey is-hidden-mobile">
