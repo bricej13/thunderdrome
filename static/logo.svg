@@ -1,12 +1,24 @@
 <?xml version="1.0"?>
-<svg width="250" height="250" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
  <g class="layer">
   <title>Layer 1</title>
-  <rect fill="#feb601" height="50" id="svg_1" stroke="#000000" stroke-width="0" width="250" x="0" y="0"/>
-  <rect fill="#fc3b00" height="50" id="svg_2" stroke="#000000" stroke-width="0" width="60" x="95" y="50"/>
-  <rect fill="#fc0000" height="50" id="svg_3" stroke="#000000" stroke-width="0" width="60" x="95" y="100"/>
-  <rect fill="#da0039" height="50" id="svg_4" stroke="#000000" stroke-width="0" width="60" x="95" y="150"/>
-  <rect fill="#81023f" height="50" id="svg_5" stroke="#000000" stroke-width="0" width="60" x="95" y="200"/>
+  <ellipse cx="200" cy="200" fill="#81023f" id="svg_1" rx="200" ry="200" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#da0039" id="svg_2" rx="175" ry="175" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#fc0000" id="svg_3" rx="150" ry="150" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#fc3b00" id="svg_4" rx="125" ry="125" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#feb601" id="svg_5" rx="100" ry="100" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#000000" id="svg_6" rx="75" ry="75" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#ffffff" id="svg_7" rx="65" ry="65" stroke="#000000" stroke-width="0"/>
+  <ellipse cx="200" cy="200" fill="#000000" id="svg_9" rx="5" ry="5" stroke="#000000" stroke-width="0"/>
+ </g>
+ <g class="layer">
+  <title>Layer 2</title>
+  <path d="m25,200a175,175 0 0 1 175,-175" fill-opacity="0" id="svg_8" stroke="#ffffff" stroke-width="4"/>
+  <path d="m50,200a150,150 0 0 1 150,-150" fill-opacity="0" id="svg_10" stroke="#ffffff" stroke-width="4"/>
+  <path d="m75,200a125,125 0 0 1 125,-125" fill-opacity="0" id="svg_11" stroke="#ffffff" stroke-width="4"/>
+  <path d="m375,200a175,175 0 0 1 -175,175" fill-opacity="0" id="svg_12" stroke="#ffffff" stroke-width="4"/>
+  <path d="m350,200a150,150 0 0 1 -150,150" fill-opacity="0" id="svg_13" stroke="#ffffff" stroke-width="4"/>
+  <path d="m325,200a125,125 0 0 1 -125,125" fill-opacity="0" id="svg_14" stroke="#ffffff" stroke-width="4"/>
  </g>
 </svg>
