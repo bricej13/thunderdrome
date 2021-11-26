@@ -171,9 +171,10 @@ export const getters = {
   i: state => state.playlistIndex,
   streamList: (state, getters, rootState, rootGetters) => {
     return state.playlist
-      .map(t => `${rootGetters['user/subsonicUrl']('stream')}&id=${t.mediaFileId || t.id}&_${new Date().getTime()}`) ||
+      .map(t => getters.streamUrl(t)) ||
       []
   },
+  streamUrl: (state, getters, rootState, rootGetters) => t => `${rootGetters['user/subsonicUrl']('stream')}&id=${t.mediaFileId || t.id}&_${new Date().getTime()}`,
   currentStream: (state, getters) => getters.streamList[getters.i],
   nextStream: (state, getters) => getters.streamList[getters.i + 1],
   nextTrack: (state, getters) => getters.playlist[getters.i + 1],

@@ -1,43 +1,39 @@
 <template>
   <div>
-    <div class="columns">
-      <div v-for="deck in decks" :key="deck.id" class="column">
-        <b-message :type="deck.playing ? 'is-success' : ''">
-          <article class="media">
-            <div class="media-left">
-              <figure class="image is-64x64">
-                <b-skeleton v-if="deck.track == null" width="64" height="64" />
-                <img v-else :src="albumArtUrl(deck.track.albumId)">
-              </figure>
-            </div>
-            <div class="media-content">
-              <div class="content">
-                <div class="columns">
-                  <div class="column">
-                    <p v-if="deck.track">
-                      <strong>{{ deck.track.title }}</strong>
-                      <br>
-                      {{ deck.track.artist }}
-                      <br>
-                      <span v-if="false">
-                        {{ deck.startTime }} |
-                        {{ currentTime }} |
-                        {{ deck.buffer.duration }}
-                      </span>
-                    </p>
-                    <div v-else>
-                      <b-skeleton width="100%" height="20px" animated />
-                      <b-skeleton width="80%" height="20px" animated />
-                    </div>
-                  </div>
+    <b-message :type="deck.playing ? 'is-success' : ''">
+      <article class="media">
+        <div class="media-left">
+          <figure class="image is-64x64">
+            <b-skeleton v-if="deck.track == null" width="64" height="64" />
+            <img v-else :src="albumArtUrl(deck.track.albumId)">
+          </figure>
+        </div>
+        <div class="media-content">
+          <div class="content">
+            <div class="columns">
+              <div class="column">
+                <p v-if="deck.track">
+                  <strong>{{ deck.track.title }}</strong>
+                  <br>
+                  {{ deck.track.artist }}
+                  <br>
+                  <span v-if="false">
+                    {{ deck.startTime }} |
+                    {{ currentTime }} |
+                    {{ deck.buffer.duration }}
+                  </span>
+                </p>
+                <div v-else>
+                  <b-skeleton width="100%" height="20px" animated />
+                  <b-skeleton width="80%" height="20px" animated />
                 </div>
-                <b-progress :type="deck.loading ? '' : 'is-primary'" :min="0" :max="1" :value="deck.loading ? deck.progress : (!deck.playing ? 0 : (currentTime - deck.startTime) / deck.buffer.duration)" />
               </div>
             </div>
-          </article>
-        </b-message>
-      </div>
-    </div>
+            <b-progress :type="deck.loading ? '' : 'is-primary'" :min="0" :max="1" :value="deck.loading ? deck.progress : (!deck.playing ? 0 : (currentTime - deck.startTime) / deck.buffer.duration)" />
+          </div>
+        </div>
+      </article>
+    </b-message>
     <b-button @click="playPauseDeck">
       {{ playing ? 'Pause' : 'Play' }}
     </b-button>
@@ -53,6 +49,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import * as LRU from 'lru-cache'
+
+const arrayBufferCache = new LRU({ max: 10 })
 
 export default {
   name: 'AudioPipeline',
@@ -62,26 +61,34 @@ export default {
       gainNode: null,
       compressorNode: null,
       analyserNode: null,
-      decks: [
-        { id: 0, i: 0, buffer: null, analyser: null, source: null, track: null, playing: false, startTime: 0, offset: 0, progress: 0, loading: false },
-        { id: 1, i: 1, buffer: null, analyser: null, source: null, track: null, playing: false, startTime: 0, offset: 0, progress: 0, loading: false }
-      ],
+      deck: { id: 0, i: 0, buffer: null, analyser: null, source: null, track: null, playing: false, startTime: 0, offset: 0, progress: 0, loading: false },
       currentTime: 0
     }
   },
   computed: {
-    ...mapGetters('player', ['albumArtUrl', 'activeStream', 'i', 'hasQueue', 'playlist', 'currentStream', 'streamList', 'nextStream', 'volume', 'playing', 'currentTrack', 'nextTrack', 'albumArt']),
-    playing () { return this.decks[0].playing || this.decks[1].playing }
+    ...mapGetters('player', ['albumArtUrl', 'streamUrl', 'activeStream', 'i', 'hasQueue', 'playlist', 'currentStream', 'streamList', 'nextStream', 'volume', 'playing', 'currentTrack', 'nextTrack', 'albumArt'])
   },
   watch: {
-    i (i) {
-      const deckToLoad = this.decks[0].playing ? 1 : 0
-      this.loadTrackInDeck(this.decks[deckToLoad], this.nextTrack, this.nextStream)
-    },
     playing (playing) {
+      console.log('playing', playing)
+      this.playPauseDeck()
       if (playing) {
         window.requestAnimationFrame(this.updateProgress.bind(this))
       }
+    },
+    // currentTrack (track) {
+    //   this.preloadFile(track.id, this.streamUrl(track))
+    // },
+    // nextTrack (track) {
+    //   this.preloadFile(track.id, this.streamUrl(track))
+    // },
+    currentTrack (track) {
+      // const buffer = arrayBufferCache.get(track.id) || await this.getFileBuffer(this.streamUrl(track))
+      //
+      // Object.assign(this.deck, { track }, this.getAudioSource(buffer))
+      console.log('currentTrack', track)
+      this.loadTrackInDeck(this.deck, track, this.streamUrl(track), true)
+      this.preloadFile(this.nextTrack.id, this.streamUrl(this.nextTrack))
     }
   },
   mounted () {
@@ -93,58 +100,47 @@ export default {
     this.gainNode.connect(this.analyserNode)
     this.analyserNode.connect(this.audioContext.destination)
     if (this.hasQueue) {
-      this.loadTrackInDeck(this.decks[0], this.currentTrack, this.currentStream)
-      this.loadTrackInDeck(this.decks[1], this.nextTrack, this.nextStream)
+      this.loadTrackInDeck(this.deck, this.currentTrack, this.currentStream)
+      this.preloadFile(this.nextTrack.id, this.streamUrl(this.nextTrack))
     }
+  },
+  destroyed () {
+    this.audioContext.close()
   },
   methods: {
     next () {
-      if (this.decks[0].playing) {
-        this.stopDeck(this.decks[0])
-        this.decks[1].source.start(0)
-        this.decks[1].playing = true
-        this.decks[1].startTime = this.audioContext.currentTime
-      } else {
-        this.stopDeck(this.decks[1])
-        this.decks[0].source.start(0)
-        this.decks[0].playing = true
-        this.decks[0].startTime = this.audioContext.currentTime
+      if (this.deck.playing) {
+        this.stopDeck(this.deck)
       }
       this.$store.dispatch('player/nextTrack')
     },
-    loadTrackInDeck (deck, track, streamUrl, start) {
+    async loadTrackInDeck (deck, track, streamUrl, start) {
       this.stopDeck(deck)
       deck.loading = true
       deck.track = track
-      this.getFileBuffer(streamUrl, deck).then((buffer) => {
-        // source.addEventListener('ended', () => {
-        //   console.log('deck1complete')
-        //   source.disconnect()
-        //   this.decks[deckIndex].i = 0
-        // })
-        deck.buffer = buffer
-        const { source, analyser } = this.getAudioSource(buffer)
-        deck.source = source
-        deck.analyser = analyser
-        deck.loading = false
-        if (start) {
-          deck.source.start(0)
-        }
-      })
+      const buffer = arrayBufferCache.get(track.id) || await this.getFileBuffer(streamUrl)
+      deck.buffer = buffer
+      const { source, analyser } = this.getAudioSource(buffer)
+      deck.source = source
+      deck.analyser = analyser
+      deck.loading = false
+      if (start) {
+        deck.source.start(0)
+      }
     },
     playPauseDeck () {
-      const deck = this.decks[1].playing ? this.decks[1] : this.decks[0]
-      if (!deck.playing) {
-        deck.startTime = this.audioContext.currentTime
-        deck.source.start(0, deck.offset + 150)
-        deck.playing = true
+      if (!this.deck.source) { return }
+      if (!this.deck.playing) {
+        this.deck.startTime = this.audioContext.currentTime
+        this.deck.source.start(0, this.deck.offset)
+        this.deck.playing = true
       } else {
-        deck.source.stop()
-        deck.playing = false
-        deck.offset += this.audioContext.currentTime - deck.startTime
-        const { source, analyser } = this.getAudioSource(deck.buffer)
-        deck.source = source
-        deck.analyser = analyser
+        this.deck.source.stop()
+        this.deck.playing = false
+        this.deck.offset += this.audioContext.currentTime - this.deck.startTime
+        const { source, analyser } = this.getAudioSource(this.deck.buffer)
+        this.deck.source = source
+        this.deck.analyser = analyser
       }
     },
     updateProgress () {
@@ -165,7 +161,8 @@ export default {
       deck.offset = 0
       deck.track = null
     },
-    async getFileBuffer (url, deck) {
+    async getFileBuffer (url) {
+      console.log('getting file buffer', url)
       const response = await fetch(url)
       const length = parseInt(response.headers.get('Content-Length'))
       const array = new Uint8Array(length)
@@ -176,12 +173,13 @@ export default {
         if (done) {
           break
         }
-        deck.progress = at / length
+        // deck.progress = at / length
         array.set(value, at)
         at += value.length
       }
 
       // const arrayBuffer = new ArrayBuffer(length)
+      console.log('got file buffer')
       return await this.audioContext.decodeAudioData(array.buffer)
     },
     getAudioSource (buffer) {
@@ -196,6 +194,11 @@ export default {
       analyser.connect(this.gainNode)
 
       return { source, analyser }
+    },
+    preloadFile (trackId, url) {
+      if (arrayBufferCache.has(trackId)) { return }
+      this.getFileBuffer(url)
+        .then(buffer => arrayBufferCache.set(trackId, buffer))
     }
   }
 }
