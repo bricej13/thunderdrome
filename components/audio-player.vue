@@ -23,8 +23,8 @@
         </div>
 
         <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column is-invisible-mobile">
-          <wavesurfer />
-          <wavesurfer-preload />
+          <wavesurfer @loading="loading = $event" />
+          <!--          <wavesurfer-preload />-->
         </div>
 
         <div class="px-2 has-text-grey is-hidden-mobile">
@@ -45,6 +45,9 @@
             >
               <ion-icon :name="playing ? 'pause' : 'play'" size="large" />
             </div>
+            <!--            <div v-if="loading" class="p-1">-->
+            <!--              <ion-icon name="aperture-outline" size="large" />-->
+            <!--            </div>-->
             <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
               <ion-icon name="play-skip-forward-outline" />
             </div>
@@ -69,7 +72,8 @@ export default {
   name: 'AudioPlayer',
   data () {
     return {
-      listeners: []
+      listeners: [],
+      loading: false
     }
   },
   computed: {

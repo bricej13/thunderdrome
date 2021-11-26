@@ -2,7 +2,7 @@
   <b-navbar type="is-transparent" :mobile-burger="false">
     <template #brand>
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
-        <img src="/logo.png" class="mr-2"><span class="is-size-4 title is-uppercase">Thunderdrome</span>
+        <img src="/logo.svg" class="mr-2"><span class="is-size-4 title is-uppercase">Thunderdrome</span>
       </b-navbar-item>
       <b-navbar-item tag="div" class="is-flex-grow-1 is-hidden-mobile">
         <universal-search />

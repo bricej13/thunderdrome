@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'volume', 'playing', 'currentTrack', 'albumArt'])
+    ...mapGetters('player', ['activeStream', 'currentStream', 'volume', 'playing', 'currentTrack', 'albumArt'])
   },
   watch: {
     activeStream (v) {
@@ -47,8 +47,11 @@ export default {
       console.log('loading', v)
     })
     this.instance.on('ready', () => {
-      this.instance.play()
-      this.showCurrentTrackToast()
+      if (this.playing) {
+        this.instance.play()
+        this.$emit('loading', false)
+        this.showCurrentTrackToast()
+      }
     })
     this.instance.on('waveform-ready', () => {
       // window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
@@ -60,6 +63,7 @@ export default {
       }
     })
     this.instance.on('finish', () => this.nextTrack())
+    if (this.currentStream) { this.load(this.currentStream) }
   },
   beforeDestroy () {
     this.instance.destroy()
@@ -71,6 +75,7 @@ export default {
       this.instance.playPause()
     },
     load (url) {
+      this.$emit('loading', true)
       const peaks = JSON.parse(window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id))
       if (peaks && peaks.length > 100) {
         this.instance.load(url, peaks)

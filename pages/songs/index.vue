@@ -55,7 +55,7 @@
       <b-table-column v-slot="props" width="0" sortable label="Plays" field="playCount">
         {{ props.row.playCount }}
       </b-table-column>
-      <b-table-column v-slot="props" width="0" sortable label="Time" field="playCount">
+      <b-table-column v-slot="props" width="0" sortable label="Time" field="duration">
         {{ props.row.duration | tracktime }}
       </b-table-column>
       <b-table-column v-slot="props" width="0" sortable label="Bit Rate" field="bitRate">
