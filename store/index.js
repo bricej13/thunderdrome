@@ -51,36 +51,6 @@ export const actions = {
   toggleQueue ({ commit, state }) {
     commit('setQueueOpen', !state.queueOpen)
   },
-  setRating ({ commit }, { id, rating }) {
-    return new Promise((resolve, reject) => {
-      this.$axios.$get(
-        '/rest/setRating', {
-          params: { id, rating }
-        }
-      ).then((res) => {
-        if (res['subsonic-response'].status === 'ok') {
-          resolve()
-        } else {
-          reject(new Error(res['subsonic-response'].error))
-        }
-      }).catch(err => reject(err))
-    })
-  },
-  setFavorite (context, { id, isFavorite }) {
-    const path = isFavorite ? '/rest/star' : '/rest/unstar'
-    return new Promise((resolve, reject) => {
-      this.$axios.$get(path, {
-        params: { id }
-      }
-      ).then((res) => {
-        if (res['subsonic-response'].status === 'ok') {
-          resolve()
-        } else {
-          reject(new Error(res['subsonic-response'].error))
-        }
-      }).catch(err => reject(err))
-    })
-  },
   startEventStream ({ commit, state, rootState }) {
     if (state.eventStream === null && rootState.user.token !== null) {
       const eventSource = new EventSource(`${state.user.baseUrl}/api/events?jwt=${rootState.user.token}`)

@@ -41,15 +41,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'Artist',
-  async asyncData ({ $axios, store, params }) {
+  async asyncData ({ $api, params }) {
     const [artist, allTracks, albums] = await Promise.all([
-      store.dispatch('artists/get', params.id),
-      store.dispatch('artists/getTracks', params.id),
-      store.dispatch('artists/getAlbums', params.id)])
+      $api.artist.get(params.id),
+      $api.artist.tracks(params.id),
+      $api.artist.albums(params.id)])
     const tracks = allTracks.reduce((acc, cur) => {
       if (!acc.find(t => t.albumId === cur.albumId && t.trackNumber === cur.trackNumber)) {
         acc.push(cur)
@@ -65,16 +63,15 @@ export default {
   },
   mounted () {
     if (this.artist.externalInfoUpdatedAt === '0001-01-01T00:00:00Z') {
-      this.$store.dispatch('artists/loadExternalBio', this.artist.id)
-        .then(() => this.$store.dispatch('artists/get', this.artist.id).then((res) => {
+      this.$api.artist.loadExternalBio(this.artist.id)
+        .then(() => this.$api.aritst.get(this.artist.id).then((res) => {
           this.artist = res
         }))
     }
   },
   methods: {
-    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
-      this.setRating({ id, rating })
+      this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'
@@ -84,7 +81,7 @@ export default {
         }))
     },
     toggleArtistFavorite (artist) {
-      this.setFavorite({ id: artist.id, isFavorite: !artist.starred })
+      this.$api.setFavorite(artist.id, !artist.starred)
         .then(() => {
           artist.starred = !artist.starred
         })

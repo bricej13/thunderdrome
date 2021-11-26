@@ -14,32 +14,28 @@ export const mutations = {
 
 export const actions = {
   loadPlaylists (context) {
-    return this.$axios.$get('api/playlist?_end=0&_sort=name&_start=-100').then(res =>
+    return this.$api.playlist.all().then(res =>
       context.commit('setPlaylists', res)
     )
   },
   loadPlaylistTracks (context, playlistId) {
-    return this.$axios.$get(
-      `api/playlist/${playlistId}/tracks`
-    ).then(tracks =>
+    this.$api.playlist.tracks(playlistId).then(tracks =>
       context.commit('setPlaylistTracks', { playlistId, tracks })
     )
   },
   addTracksToPlaylist (context, { playlistId, tracks }) {
-    // tracks is a list of track ids
-    // https://navidrome.com/api/playlist/5334f9f2-4617-4a2a-befc-f02d946cefd1/tracks
-    this.$axios.$post(`api/playlist/${playlistId}/tracks`, { ids: tracks })
+    this.$api.playlist.addTracks(playlistId, tracks)
       .then(res => context.dispatch('loadPlaylistTracks', playlistId))
   },
   updatePlaylist (context, playlist) {
-    return this.$axios.$put(`api/playlist/${playlist.id}`, playlist).then((res) => {
+    return this.$api.playlist.update(playlist).then((res) => {
       context.commit('setPlaylists', context.state.playlists.map((p) => {
         return p.id === res.id ? res : p
       }))
     })
   },
   deletePlaylist (context, playlistId) {
-    return this.$axios.$delete(`api/playlist/${playlistId}`).then((res) => {
+    return this.$api.playlist.delete(playlistId).then((res) => {
       context.commit('setPlaylists', context.state.playlists.filter(p => p.id !== playlistId))
     })
   }

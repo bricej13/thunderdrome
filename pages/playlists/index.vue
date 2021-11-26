@@ -4,10 +4,14 @@
       <div class="title">
         Playlists
       </div>
-      <!--      <button class="button" @click="isCreatePlaylistActive = true">-->
-      <!--        Add Playlist-->
-      <!--      </button>-->
+      <button class="button" @click="isCreatePlaylistActive = !isCreatePlaylistActive">
+        Add Playlist
+      </button>
     </div>
+
+    <b-collapse animation="slide" :open="isCreatePlaylistActive" class="px-2">
+      <add-playlist-form @playlistCreated="playlistCreated" />
+    </b-collapse>
 
     <b-collapse
       :open="checkedPlaylists.length > 0"
@@ -75,7 +79,7 @@
     </b-table>
 
     <b-modal
-      :active="isCreatePlaylistActive"
+      :active="false"
       :destroy-on-hide="true"
       aria-role="dialog"
       aria-label="Example Modal"
@@ -141,6 +145,10 @@ export default {
         parent: this,
         component: EditPlaylist
       })
+    },
+    playlistCreated (p) {
+      this.$store.dispatch('playlists/loadPlaylists')
+      this.isCreatePlaylistActive = false
     },
     async deletePlaylists () {
       await Promise.all(this.checkedPlaylists.map(p => this.deletePlaylist(p.id)))

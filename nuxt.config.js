@@ -45,7 +45,8 @@ export default {
     '~/plugins/navidrome-auth.js',
     '~/plugins/init.js',
     { src: '~/plugins/vuex-persist', ssr: false },
-    { src: '~/plugins/vue-shortkey.js', ssr: false }
+    { src: '~/plugins/vue-shortkey.js', ssr: false },
+    '~/plugins/api.js'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

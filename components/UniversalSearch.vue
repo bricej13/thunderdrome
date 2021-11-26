@@ -64,9 +64,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('albums', ['albumSearch', 'getTracks']),
-    ...mapActions('artists', ['artistSearch']),
-    ...mapActions('tracks', ['trackSearch']),
     ...mapActions('player', [
       'appendToPlaylist',
       'startPlaylist',
@@ -79,9 +76,9 @@ export default {
       }
       this.isFetching = true
       const [tracks, artists, albums] = await Promise.all([
-        this.trackSearch(v),
-        this.artistSearch(v),
-        this.albumSearch(v)
+        this.$api.track.search(v),
+        this.$api.artist.search(v),
+        this.$api.album.search(v)
       ])
       const results = []
       if (artists.length > 0) {
@@ -94,7 +91,7 @@ export default {
                 title: a.name,
                 image: a.smallImageUrl || a.mediumImageUrl || a.largeImageUrl || '/microphone-alt.png',
                 onNav: () => this.$router.push({ name: 'artists-id', params: { id: a.id } }),
-                onPlay: () => this.$store.dispatch('artists/getTracks', a.id).then(tracks => this.shufflePlaylist(tracks))
+                onPlay: () => this.$api.artist.tracks(a.id).then(tracks => this.shufflePlaylist(tracks))
               }
             })
           }
@@ -111,7 +108,7 @@ export default {
                 subtitle: a.artist,
                 image: `${this.$store.getters['user/subsonicUrl']('getCoverArt')}&id=${a.id}&size=300}`,
                 onNav: () => this.$router.push({ name: 'albums-id', params: { id: a.id } }),
-                onPlay: () => this.getTracks(a.id).then(tracks => this.startPlaylist(tracks))
+                onPlay: () => this.$api.album.tracks(a.id).then(tracks => this.startPlaylist(tracks))
               }
             })
           }

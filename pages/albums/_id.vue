@@ -43,10 +43,10 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'Album',
-  async asyncData ({ $axios, store, params }) {
+  async asyncData ({ $api, params }) {
     const [album, allTracks] = await Promise.all([
-      store.dispatch('albums/get', params.id),
-      store.dispatch('albums/getTracks', params.id)
+      $api.album.get(params.id),
+      $api.album.tracks(params.id)
     ])
     const tracks = allTracks.reduce((acc, cur) => {
       if (!acc.find(t => t.trackNumber === cur.trackNumber)) {
@@ -62,25 +62,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setRating', 'setFavorite']),
-    ...mapActions('player', [
-      'appendToPlaylist',
-      'startPlaylist'
-    ]),
+    ...mapActions('player', ['appendToPlaylist', 'startPlaylist']),
     toggleAlbumFavorite () {
-      this.setFavorite({ id: this.album.id, isFavorite: !this.album.starred })
+      this.$api.setFavorite(this.album.id, !this.album.starred)
         .then(() => {
           this.album.starred = !this.album.starred
         })
     },
     toggleTrackFavorite (i) {
-      this.setFavorite({ id: this.tracks[i].id, isFavorite: !this.tracks[i].starred })
+      this.$api.setFavorite(this.tracks[i].id, !this.tracks[i].starred)
         .then(() => {
           this.tracks[i].starred = !this.tracks[i].starred
         })
     },
     updateRating (id, rating) {
-      this.setRating({ id, rating })
+      this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'

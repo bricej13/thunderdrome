@@ -74,17 +74,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'Songs',
-  async asyncData ({ $axios, query }) {
+  async asyncData ({ query, $api }) {
     const pageSize = query._end - query._start || 20
     const page = query._end / pageSize || 1
-    const songs = await $axios.$get(
-      'api/song', {
-        params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'title' }, query)
-      })
+    const songs = await $api.track.all(query)
     const total = songs.length === pageSize ? pageSize * (page + 1) : Number(query._start) + songs.length
     return { songs, pageSize, page, total }
   },
@@ -95,9 +90,8 @@ export default {
   },
   watchQuery: true,
   methods: {
-    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
-      this.setRating({ id, rating })
+      this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'
@@ -121,7 +115,7 @@ export default {
       this.$router.replace({ query })
     },
     toggleTrackFavorite (track) {
-      this.setFavorite({ id: track.id, isFavorite: !track.starred })
+      this.$api.setFavorite(track.id, !track.starred)
         .then(() => {
           track.starred = !track.starred
         })

@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 
 export default {
   name: 'Artists',
@@ -82,9 +81,8 @@ export default {
   },
   watchQuery: true,
   methods: {
-    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
-      this.setRating({ id, rating })
+      this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'
@@ -108,7 +106,7 @@ export default {
       this.$router.replace({ query })
     },
     toggleArtistFavorite (artist) {
-      this.setFavorite({ id: artist.id, isFavorite: !artist.starred })
+      this.$api.setFavorite(artist.id, !artist.starred)
         .then(() => {
           artist.starred = !artist.starred
         })

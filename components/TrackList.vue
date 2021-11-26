@@ -121,9 +121,8 @@ export default {
   },
   methods: {
     ...mapActions('player', ['appendToPlaylist', 'startPlaylist']),
-    ...mapActions(['setRating', 'setFavorite']),
     updateRating (id, rating) {
-      this.setRating({ id, rating })
+      this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
           type: 'is-dark',
           message: 'Rating updated'
@@ -133,7 +132,7 @@ export default {
         }))
     },
     toggleTrackFavorite (track) {
-      this.setFavorite({ id: track.id, isFavorite: !track.starred })
+      this.$api.setFavorite(track.id, !track.starred)
         .then(() => {
           track.starred = !track.starred
         })
