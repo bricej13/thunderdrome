@@ -54,8 +54,8 @@ export default {
   transition: background-color 200ms, color 200ms;
   flex-basis: 0;
   &:hover {
-     background-color: $ui3-beet;
-     color: $white;
+     background-color: $color4;
+     color: $text-invert;
    }
 }
 </style>

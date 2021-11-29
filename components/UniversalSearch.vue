@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~/assets/scss/colors.scss";
+@use "~/assets/scss/colors.scss";
 .navbar-item .universal-search {
   width: 100%;
   &:focus-within {
@@ -162,8 +162,8 @@ export default {
     box-shadow: none;
     border-radius: 0;
     &:focus {
-      background-color: $white;
-      border: 1px solid black;
+      background-color: colors.$text-invert;
+      border: 1px solid colors.$text;
     }
   }
 }

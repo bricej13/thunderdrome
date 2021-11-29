@@ -21,19 +21,19 @@ export default {
     width: 100%;
     height: 40px;
     &.yellow {
-      background-color: $ui3-yellow;
+      background-color: $color1;
     }
     &.orange {
-      background-color: $ui3-orange;
+      background-color: $color2;
     }
     &.red {
-      background-color: $ui3-red;
+      background-color: $color3;
     }
     &.beet {
-      background-color: $ui3-beet;
+      background-color: $color4;
     }
     &.fuchsia {
-      background-color: $ui3-fuchsia;
+      background-color: $color5;
     }
   }
 }

@@ -58,7 +58,7 @@
           icon="mic-outline"
           tag="nuxt-link"
           active-class="is-active"
-          :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }}"
+          :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'DESC', _sort: 'playCount' }}"
         />
         <b-menu-item
           label="Songs"
@@ -156,27 +156,27 @@ aside .menu > .menu-list a {
 aside .menu > .menu-list li {
   &:nth-child(5n+1) {
     .is-active, &>a:hover {
-      background-color: $ui3-yellow;
+      background-color: $color1;
     }
   }
   &:nth-child(5n+2) {
     .is-active, &>a:hover {
-      background-color: $ui3-orange;
+      background-color: $color2;
     }
   }
   &:nth-child(5n+3) {
     .is-active, &>a:hover {
-      background-color: $ui3-red;
+      background-color: $color3;
     }
   }
   &:nth-child(5n+4) {
     .is-active, &>a:hover  {
-      background-color: $ui3-beet;
+      background-color: $color4;
     }
   }
   &:nth-child(5n+5) {
     .is-active, &>a:hover  {
-      background-color: $ui3-fuchsia;
+      background-color: $color5;
     }
   }
   &:hover {

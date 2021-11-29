@@ -1,22 +1,73 @@
-@import "~bulma/sass/utilities/derived-variables";
+@use "~bulma/sass/utilities/derived-variables";
+@use "~bulma/sass/utilities/functions";
 $ui3-lightYellow: #fefbe5;
 $ui3-yellow: #feb601;
 $ui3-orange: #fc3b00;
 $ui3-red: #fc0000;
 $ui3-beet: #da0039;
 $ui3-fuchsia: #81023f;
-// Set your colors
-$primary: $ui3-fuchsia;
-$primary-light: findLightColor($primary);
-$primary-dark: findDarkColor($primary);
-$primary-invert: findColorInvert($primary);
-
-$link: $ui3-beet;
-$info: $cyan;
-$success: $green;
-$warning: $yellow;
-$danger: $ui3-red;
-$dark: $black;
-$text: $black;
-
+$color1: $ui3-yellow;
+$color2: $ui3-orange;
+$color3: $ui3-red;
+$color4: $ui3-beet;
+$color5: $ui3-fuchsia;
 $background: $ui3-lightYellow;
+$text: derived-variables.$black;
+$text-invert: derived-variables.$white;
+$text-light: derived-variables.$grey-dark;
+
+$h320-maize: #ffc64f;
+$h320-white: #ffffff;
+$h320-yellow: #f9e0ae;
+$h320-orange: #fd8621;
+$h320-tan: #c34913;
+$h320-brown: #682c0e;
+//$color1: $h320-yellow;
+//$color2: $h320-white;
+//$color3: $h320-orange;
+//$color4: $h320-tan;
+//$color5: $h320-brown;
+//$background: $h320-maize;
+//$text: derived-variables.$black;
+//$text-invert: derived-variables.$white;
+//$text-light: derived-variables.$grey-dark;
+
+$hc-salmon: #F23D4C;
+$hc-pink: #F2059F;
+$hc-purp: #240940;
+$hc-blk: #140626;
+$hc-ltpurp: #2E038C;
+
+//$color1: $hc-ltpurp;
+//$color2: $hc-salmon;
+//$color3: $hc-pink;
+//$color4: $hc-purp;
+//$color5: $hc-blk;
+//$background: $hc-blk;
+//$text: derived-variables.$white-bis;
+//$text-invert: derived-variables.$black;
+//$text-light: derived-variables.$white-ter;
+//$text-strong: derived-variables.$white;
+
+$eighties1: #F06BF2;
+$eighties2: #532473;
+$eighties3: #7630D9;
+$eighties4: #04588C;
+$eighties5: #79F2E6;
+
+
+
+
+// Set your colors
+$primary: $color5;
+$primary-light: functions.findLightColor($primary);
+$primary-dark: functions.findDarkColor($primary);
+$primary-invert: functions.findColorInvert($primary);
+
+$link: $color4;
+$info: derived-variables.$cyan;
+$success: derived-variables.$green;
+$warning: $color1;
+$danger: $color3;
+$dark: derived-variables.$black;
+

@@ -102,13 +102,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/colors.scss";
+@use "~/assets/scss/colors.scss";
 
 .play-queue-wrapper {
   position: relative;
   .play-queue-header {
     position: sticky;
-    background-color: $background;
+    background-color: colors.$background;
     top: 0;
     z-index: 1;
     .title {
@@ -122,20 +122,20 @@ export default {
       color: transparent;
     }
     &:hover {
-      background-color: $ui3-beet;
-      color: $white;
+      background-color: colors.$color4;
+      color: colors.$text-invert;
       a {
-        color: $white;
+        color: colors.$text-invert;
         &:hover {
-          color: $black;
+          color: colors.$text;
         }
       }
     }
     &.active {
-      color: $white;
-      background-color: $primary;
+      color: colors.$text-invert;
+      background-color: colors.$primary;
       a {
-        color: $white;
+        color: colors.$text-invert;
       }
     }
   }

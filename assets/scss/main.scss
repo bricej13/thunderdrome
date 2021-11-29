@@ -1,4 +1,6 @@
-@import "./colors";
+@use "./colors";
+@use "~bulma/sass/utilities/derived-variables";
+@use "~bulma/sass/utilities/functions";
 
 @font-face {
   font-family: "Karla";
@@ -11,43 +13,43 @@
 $family-sans-serif: "Karla", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 $family-primary: $family-sans-serif;
 
-$navbar-background-color: $background;
-$body-background-color: $ui3-lightYellow;
-$menu-item-hover-background-color: $ui3-beet;
+$navbar-background-color: colors.$background;
+$body-background-color: colors.$background;
+$menu-item-hover-background-color: colors.$color4;
 $progress-border-radius: 0;
 
 //// Dropdown
 $dropdown-content-radius: 0;
-$dropdown-content-shadow: inset 0 0 0 1px black;
-$dropdown-item-hover-color: $white;
-$dropdown-item-hover-background-color: $ui3-beet;
+$dropdown-content-shadow: inset 0 0 0 1px colors.$text;
+$dropdown-item-hover-color: colors.$text-invert;
+$dropdown-item-hover-background-color: colors.$color4;
 $dropdown-content-offset: 0;
 
 // Buefy configs
 //// rate
-$rate-color-active: $ui3-yellow;
+$rate-color-active: colors.$color1;
 //// toast
 $toast-border-radius: 0;
 $toast-opacity: 1;
 $toast-box-shadow: none;
 //// sidebar
-$sidebar-box-shadow: 0 0 0 2px $black;
+$sidebar-box-shadow: 0 0 0 2px colors.$text;
 //// navbar
-$navbar-breakpoint: $tablet;
+$navbar-breakpoint: derived-variables.$tablet;
 
 
 // Table
-$table-background-color: $ui3-lightYellow;
-$table-row-hover-background-color: $link;
-$table-cell-border: 1px solid $black;
+$table-background-color: colors.$background;
+$table-row-hover-background-color: colors.$link;
+$table-cell-border: 1px solid colors.$text;
 //tr > td:first-child, tr > th:first-child {
 //  padding-left: 0;
 //}
 .table.is-hoverable tbody tr:not(.is-selected):hover {
-  color: $white;
+  color: colors.$text-invert;
 
   a {
-    color: $white
+    color: colors.$text-invert
   }
 }
 
@@ -62,7 +64,7 @@ table.table {
 }
 
 // Typography
-$title-color: $black;
+$title-color: colors.$text;
 $title-size: 4rem;
 $title-weight: 800;
 * {
@@ -125,98 +127,52 @@ $custom-shades: null !default;
 }
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$colors: mergeColorMaps(
+$colors: functions.mergeColorMaps(
     (
-      "white": (
-        $white,
-        $black,
-      ),
-      "black": (
-        $black,
-        $white,
-      ),
-      "light": (
-        $light,
-        $light-invert,
-      ),
-      "dark": (
-        $dark,
-        $dark-invert,
-      ),
       "primary": (
-        $primary,
-        $primary-invert,
-        $primary-light,
-        $primary-dark,
-      ),
-      "link": (
-        $link,
-        $link-invert,
-        $link-light,
-        $link-dark,
-      ),
-      "info": (
-        $info,
-        $info-invert,
-        $info-light,
-        $info-dark,
-      ),
-      "success": (
-        $success,
-        $success-invert,
-        $success-light,
-        $success-dark,
-      ),
-      "warning": (
-        $warning,
-        $warning-invert,
-        $warning-light,
-        $warning-dark,
-      ),
-      "danger": (
-        $danger,
-        $danger-invert,
-        $danger-light,
-        $danger-dark,
+        colors.$primary,
+        colors.$primary-invert,
+        colors.$primary-light,
+        colors.$primary-dark,
       ),
       "yellow": (
-        $ui3-yellow,
-        findColorInvert($ui3-yellow),
-        findLightColor($ui3-yellow),
-        findDarkColor($ui3-yellow)
+        colors.$color1,
+        functions.findColorInvert(colors.$color1),
+        functions.findLightColor(colors.$color1),
+        functions.findDarkColor(colors.$color1)
       ),
       "orange": (
-        $ui3-orange,
-        findColorInvert($ui3-orange),
-        findLightColor($ui3-orange),
-        findDarkColor($ui3-orange)
+        colors.$color2,
+        functions.findColorInvert(colors.$color2),
+        functions.findLightColor(colors.$color2),
+        functions.findDarkColor(colors.$color2)
       ),
       "red": (
-        $ui3-red,
-        findColorInvert($ui3-red),
-        findLightColor($ui3-red),
-        findDarkColor($ui3-red)
+        colors.$color3,
+        functions.findColorInvert(colors.$color3),
+        functions.findLightColor(colors.$color3),
+        functions.findDarkColor(colors.$color3)
       ),
       "beet": (
-        $ui3-beet,
-        findColorInvert($ui3-beet),
-        findLightColor($ui3-beet),
-        findDarkColor($ui3-beet)
+        colors.$color4,
+        functions.findColorInvert(colors.$color4),
+        functions.findLightColor(colors.$color4),
+        functions.findDarkColor(colors.$color4)
       ),
       "fuchsia": (
-        $ui3-fuchsia,
-        findColorInvert($ui3-fuchsia),
-        findLightColor($ui3-fuchsia),
-        findDarkColor($ui3-fuchsia)
-      ),
+        colors.$color5,
+        functions.findColorInvert(colors.$color5),
+        functions.findLightColor(colors.$color5),
+        functions.findDarkColor(colors.$color5)
+      )
     ),
     $custom-colors
 );
 
 // Links
-$link: $primary;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
+$link: colors.$primary;
+$link-invert: colors.$primary-invert;
+$link-focus-border: colors.$primary;
 
 // Import Bulma and Buefy styles
 @import "~bulma/sass/utilities/_all";

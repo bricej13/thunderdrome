@@ -48,7 +48,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "~/assets/scss/colors.scss";
 .default-layout {
   height: 100vh;
   display: grid;
@@ -62,11 +63,11 @@ export default {
     "player";
 }
 
-.header { grid-area: header; border-bottom: 2px solid black; }
+.header { grid-area: header; border-bottom: 2px solid colors.$text; }
 
-.side-menu { grid-area: side-menu; overflow-y: auto; border-right: 3px solid black; position: relative; }
+.side-menu { grid-area: side-menu; overflow-y: auto; border-right: 3px solid colors.$text; position: relative; }
 
-.play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw; border-left: 3px solid black;}
+.play-queue { grid-area: play-queue; overflow-y: auto; max-width: 20vw; border-left: 3px solid colors.$text;}
 
 .page-content { grid-area: page-content; overflow-y: auto; }
 

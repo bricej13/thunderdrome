@@ -44,7 +44,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Album',
   async asyncData ({ $api, params }) {
-    const [album, allTracks] = await Promise.all([
+    const [album, tracks] = await Promise.all([
       $api.album.get(params.id),
       $api.album.tracks(params.id)
     ])

@@ -123,10 +123,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/colors.scss";
+@use "~/assets/scss/colors.scss";
 .audio-player {
-  background-color: $background;
-  border-top: 2px solid black;
+  background-color: colors.$background;
+  border-top: 2px solid colors.$text;
   width: 100%;
 }
 
