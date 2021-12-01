@@ -58,7 +58,7 @@
         </div>
 
         <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4 is-hidden-touch" @shortkey="changeVolume">
-          <vertical-progress-bar :value="volume" />
+          <vertical-progress-bar :value="volume" @change=" $store.dispatch('player/volumeTo', $event)" />
         </div>
       </div>
       <progress-bar class="is-hidden-tablet" :height="10" :value="$store.getters['player/progress']" />

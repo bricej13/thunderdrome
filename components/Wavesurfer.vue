@@ -1,5 +1,21 @@
 <template>
-  <div ref="waveform" class="waveform" />
+  <section>
+    <div class="is-flex is-flex-direction-row is-align-items-center">
+      <div ref="waveform" class="waveform" />
+      <a @click="showEq = true">
+        <ion-icon name="bar-chart-outline" />
+      </a>
+    </div>
+    <b-modal v-model="showEq" :width="640" scroll="keep">
+      <div class="card">
+        <div class="card-content">
+          <div v-if="instance" class="content">
+            <equalizer :ac="instance.backend.ac" @filters="instance.backend.setFilters($event)" />
+          </div>
+        </div>
+      </div>
+    </b-modal>
+  </section>
 </template>
 <script>
 import WaveSurfer from 'wavesurfer'
@@ -9,7 +25,8 @@ export default {
   name: 'Wavesurfer',
   data () {
     return {
-      instance: null
+      instance: null,
+      showEq: false
     }
   },
   computed: {
@@ -41,7 +58,7 @@ export default {
       barHeight: 2,
       barGap: null,
       height: 80,
-      backend: 'MediaElement'
+      backend: 'WebAudio'
     })
     this.instance.on('loading', (v) => {
       console.log('loading', v)
@@ -100,6 +117,10 @@ export default {
           </div>
         </div>`
       })
+    },
+    updateFilters (filters) {
+      console.log('setting filters')
+      this.instance.backend.setFilters(filters)
     }
   }
 }

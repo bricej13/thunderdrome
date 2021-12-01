@@ -1,6 +1,6 @@
 <template>
   <div class="pbar-wrapper has-background-white is-clipped" @click="seek($event)">
-    <div class="pbar" :style="{transform: 'translateY(' + (100 - 100 * value) + '%)'}" />
+    <div class="pbar" :style="{transform: 'translateY(' + (100 - 100 * pct) + '%)'}" />
   </div>
 </template>
 
@@ -11,6 +11,15 @@ export default {
     value: {
       type: Number,
       required: true
+    },
+    range: {
+      type: Number,
+      default: 12
+    }
+  },
+  computed: {
+    pct () {
+      return (this.value + this.range) / 24
     }
   },
   methods: {
@@ -18,7 +27,9 @@ export default {
       const container = event.target.closest('.pbar-wrapper')
       const y = container.getBoundingClientRect().bottom - event.clientY
       const pct = y / container.getBoundingClientRect().height
-      this.$emit('change', pct)
+      const db = (pct * this.range * 2) - this.range
+      const trunked = Math.round(db * 10) / 10
+      this.$emit('change', trunked)
     }
   }
 }
