@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Equalizer',
   props: {
@@ -23,38 +24,13 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      bands: [
-        { f: 32, val: 0.5, type: 'lowshelf' },
-        { f: 64, val: 0.5, type: 'peaking' },
-        { f: 125, val: 0.5, type: 'peaking' },
-        { f: 250, val: 0.5, type: 'peaking' },
-        { f: 500, val: 0.5, type: 'peaking' },
-        { f: 1000, val: 0.5, type: 'peaking' },
-        { f: 2000, val: 0.5, type: 'peaking' },
-        { f: 4000, val: 0.5, type: 'peaking' },
-        { f: 8000, val: 0.5, type: 'peaking' },
-        { f: 16000, val: 0.5, type: 'highshelf' }
-      ]
-    }
-  },
-  watch: {
-    bands (bands) {
-      const filters = this.bands.map(function (band) {
-        const filter = this.ac.createBiquadFilter()
-        filter.type = band.type
-        filter.gain.value = band.val
-        filter.Q.value = 1
-        filter.frequency.value = band.f
-        return filter
-      }.bind(this))
-      this.$emit('filters', filters)
-    }
+  computed: {
+    ...mapGetters('player', ['bands'])
   },
   methods: {
-    changeBandVal (i, v) {
-      this.$set(this.bands, i, { ...this.bands[i], val: v })
+    changeBandVal (index, value) {
+      this.$emit('filterChange', { index, value })
+      this.$store.dispatch('player/setFilterGain', { index, value })
     }
   }
 }
@@ -62,7 +38,7 @@ export default {
 
 <style scoped>
 .band-wrapper {
-  height: 100px;
+  height: 200px;
 }
 
 </style>

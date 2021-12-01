@@ -5,7 +5,19 @@ export const state = () => ({
   playing: false,
   trackDuration: 0,
   currentTime: 0,
-  activeStream: null
+  activeStream: null,
+  bands: [
+    { f: 32, val: 0.5, type: 'lowshelf' },
+    { f: 64, val: 0.5, type: 'peaking' },
+    { f: 125, val: 0.5, type: 'peaking' },
+    { f: 250, val: 0.5, type: 'peaking' },
+    { f: 500, val: 0.5, type: 'peaking' },
+    { f: 1000, val: 0.5, type: 'peaking' },
+    { f: 2000, val: 0.5, type: 'peaking' },
+    { f: 4000, val: 0.5, type: 'peaking' },
+    { f: 8000, val: 0.5, type: 'peaking' },
+    { f: 16000, val: 0.5, type: 'highshelf' }
+  ]
 })
 
 export const mutations = {
@@ -63,6 +75,9 @@ export const mutations = {
     } else if (addedIndex <= state.playlistIndex && removedIndex > state.playlistIndex) {
       state.playlistIndex = state.playlistIndex + 1
     }
+  },
+  setFilterGain (state, { index, value }) {
+    state.bands = state.bands.map((b, i) => i === index ? { ...b, val: value } : b)
   }
 }
 
@@ -163,6 +178,9 @@ export const actions = {
     if (payload >= 0 && payload <= 1) {
       commit('setVolume', payload)
     }
+  },
+  setFilterGain ({ commit }, payload) {
+    commit('setFilterGain', payload)
   }
 }
 export const getters = {
@@ -192,5 +210,6 @@ export const getters = {
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`
   },
   volume: state => state.volume,
-  activeStream: state => state.activeStream
+  activeStream: state => state.activeStream,
+  bands: state => state.bands
 }

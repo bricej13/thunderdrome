@@ -10,7 +10,7 @@
       <div class="card">
         <div class="card-content">
           <div v-if="instance" class="content">
-            <equalizer :ac="instance.backend.ac" @filters="instance.backend.setFilters($event)" />
+            <equalizer :ac="instance.backend.ac" @filterChange="updateFilter" />
           </div>
         </div>
       </div>
@@ -60,6 +60,7 @@ export default {
       height: 80,
       backend: 'WebAudio'
     })
+    this.instance.backend.setFilters(this.setupFilters())
     this.instance.on('loading', (v) => {
       console.log('loading', v)
     })
@@ -118,9 +119,18 @@ export default {
         </div>`
       })
     },
-    updateFilters (filters) {
-      console.log('setting filters')
-      this.instance.backend.setFilters(filters)
+    setupFilters () {
+      return [...this.$store.getters['player/bands']].map(function (band) {
+        const filter = this.instance.backend.ac.createBiquadFilter()
+        filter.type = band.type
+        filter.gain.value = band.val
+        filter.Q.value = 1
+        filter.frequency.value = band.f
+        return filter
+      }.bind(this))
+    },
+    updateFilter ({ index, value }) {
+      this.instance.getFilters()[index].gain.value = value
     }
   }
 }
