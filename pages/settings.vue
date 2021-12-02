@@ -57,6 +57,12 @@
         </div>
       </div>
     </section>
+    <section class="container">
+      <color-header :i="2">
+        Equalizer
+      </color-header>
+      <equalizer />
+    </section>
   </div>
 </template>
 

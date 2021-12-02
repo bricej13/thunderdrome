@@ -7,16 +7,37 @@ export const state = () => ({
   currentTime: 0,
   activeStream: null,
   bands: [
-    { f: 32, val: 0.5, type: 'lowshelf' },
-    { f: 64, val: 0.5, type: 'peaking' },
-    { f: 125, val: 0.5, type: 'peaking' },
-    { f: 250, val: 0.5, type: 'peaking' },
-    { f: 500, val: 0.5, type: 'peaking' },
-    { f: 1000, val: 0.5, type: 'peaking' },
-    { f: 2000, val: 0.5, type: 'peaking' },
-    { f: 4000, val: 0.5, type: 'peaking' },
-    { f: 8000, val: 0.5, type: 'peaking' },
-    { f: 16000, val: 0.5, type: 'highshelf' }
+    { f: 60, type: 'lowshelf' },
+    { f: 170, type: 'peaking' },
+    { f: 310, type: 'peaking' },
+    { f: 600, type: 'peaking' },
+    { f: 1000, type: 'peaking' },
+    { f: 3000, type: 'peaking' },
+    { f: 6000, type: 'peaking' },
+    { f: 12000, type: 'peaking' },
+    { f: 14000, type: 'peaking' },
+    { f: 16000, type: 'highshelf' }
+  ],
+  bandValues: { name: 'Flat', values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+  presets: [
+    { name: 'Classical', values: [0, 0, 0, 0, 0, 0, -4.73, -4.73, -4.73, -6.18] },
+    { name: 'Club', values: [0, 0, 1.82, 3.27, 3.27, 3.27, 1.82, 0, 0, 0] },
+    { name: 'Dance', values: [5.45, 4, 1.09, -0.36, -0.36, -4, -4.73, -4.73, -0.36, -0.36] },
+    { name: 'Flat', values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+    { name: 'Laptop speakers/headphones', values: [2.55, 6.18, 2.91, -2.55, -1.82, 0.73, 2.55, 5.45, 7.27, 8.36] },
+    { name: 'Large hall', values: [5.82, 5.82, 3.27, 3.27, 0, -3.27, -3.27, -3.27, 0, 0] },
+    { name: 'Party', values: [4, 4, 0, 0, 0, 0, 0, 0, 4, 4] },
+    { name: 'Pop', values: [-1.45, 2.55, 4, 4.36, 2.91, -1.09, -1.82, -1.82, -1.45, -1.45] },
+    { name: 'Reggae', values: [0, 0, -0.73, -4, 0, 3.64, 3.64, 0, 0, 0] },
+    { name: 'Rock', values: [4.36, 2.55, -3.64, -5.09, -2.55, 2.18, 5.09, 6.18, 6.18, 6.18] },
+    { name: 'Soft', values: [2.55, 0.73, -1.09, -1.82, -1.09, 2.18, 4.73, 5.45, 6.18, 6.91] },
+    { name: 'Ska', values: [-1.82, -3.27, -2.91, -0.73, 2.18, 3.27, 5.09, 5.45, 6.18, 5.45] },
+    { name: 'Full Bass', values: [5.45, 5.45, 5.45, 3.27, 0.73, -2.91, -5.45, -6.55, -6.91, -6.91] },
+    { name: 'Soft Rock', values: [2.18, 2.18, 1.09, -0.73, -2.91, -3.64, -2.55, -0.73, 1.45, 5.09] },
+    { name: 'Full Treble', values: [-6.18, -6.18, -6.18, -2.91, 1.45, 6.18, 9.09, 9.09, 9.09, 9.82] },
+    { name: 'Full Bass & Treble', values: [4, 3.27, 0, -4.73, -3.27, 0.73, 4.73, 6.18, 6.91, 6.91] },
+    { name: 'Live', values: [-3.27, 0, 2.18, 2.91, 3.27, 3.27, 2.18, 1.45, 1.45, 1.09] },
+    { name: 'Techno', values: [4.36, 3.27, 0, -3.64, -3.27, 0, 4.36, 5.45, 5.45, 5.09] }
   ]
 })
 
@@ -77,7 +98,11 @@ export const mutations = {
     }
   },
   setFilterGain (state, { index, value }) {
-    state.bands = state.bands.map((b, i) => i === index ? { ...b, val: value } : b)
+    state.bandValues.values = state.bandValues.values.map((b, i) => i === index ? value : b)
+    state.bandValues.name = 'Custom'
+  },
+  setPreset (state, preset) {
+    state.bandValues = preset
   }
 }
 
@@ -181,6 +206,9 @@ export const actions = {
   },
   setFilterGain ({ commit }, payload) {
     commit('setFilterGain', payload)
+  },
+  setPreset ({ commit }, preset) {
+    commit('setPreset', preset)
   }
 }
 export const getters = {
@@ -211,5 +239,7 @@ export const getters = {
   },
   volume: state => state.volume,
   activeStream: state => state.activeStream,
-  bands: state => state.bands
+  bands: state => state.bands,
+  presets: state => state.presets,
+  bandValues: state => state.bandValues
 }

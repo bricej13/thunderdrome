@@ -17,3 +17,10 @@ Vue.filter('playlisttime', (v) => {
   const sDisplay = s > 0 && h === 0 ? s + 's' : ''
   return hDisplay + mDisplay + sDisplay
 })
+Vue.filter('freq', (v) => {
+  if (v < 1000) {
+    return `${v}`
+  } else {
+    return `${v / 1000}K`
+  }
+})

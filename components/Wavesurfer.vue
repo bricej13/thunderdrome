@@ -1,21 +1,5 @@
 <template>
-  <section>
-    <div class="is-flex is-flex-direction-row is-align-items-center">
-      <div ref="waveform" class="waveform" />
-      <a @click="showEq = true">
-        <ion-icon name="bar-chart-outline" />
-      </a>
-    </div>
-    <b-modal v-model="showEq" :width="640" scroll="keep">
-      <div class="card">
-        <div class="card-content">
-          <div v-if="instance" class="content">
-            <equalizer :ac="instance.backend.ac" @filterChange="updateFilter" />
-          </div>
-        </div>
-      </div>
-    </b-modal>
-  </section>
+  <div ref="waveform" class="waveform" />
 </template>
 <script>
 import WaveSurfer from 'wavesurfer'
@@ -30,7 +14,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'currentStream', 'volume', 'playing', 'currentTrack', 'albumArt'])
+    ...mapGetters('player', ['activeStream', 'currentStream', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues'])
   },
   watch: {
     activeStream (v) {
@@ -48,6 +32,12 @@ export default {
         this.instance.play()
       } else {
         this.instance.pause()
+      }
+    },
+    bandValues (preset) {
+      const filters = this.instance.getFilters() // [index].gain.value = value
+      for (let i = 0; i < preset.values.length; i++) {
+        filters[i].gain.value = preset.values[i]
       }
     }
   },
@@ -120,17 +110,15 @@ export default {
       })
     },
     setupFilters () {
-      return [...this.$store.getters['player/bands']].map(function (band) {
+      const bandValues = this.$store.getters['player/bandValues']
+      return [...this.$store.getters['player/bands']].map(function (band, i) {
         const filter = this.instance.backend.ac.createBiquadFilter()
         filter.type = band.type
-        filter.gain.value = band.val
+        filter.gain.value = bandValues.values[i]
         filter.Q.value = 1
         filter.frequency.value = band.f
         return filter
       }.bind(this))
-    },
-    updateFilter ({ index, value }) {
-      this.instance.getFilters()[index].gain.value = value
     }
   }
 }

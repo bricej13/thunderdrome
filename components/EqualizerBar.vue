@@ -1,7 +1,13 @@
 <template>
-  <div class="pbar-wrapper has-background-white is-clipped" @click="seek($event)">
-    <div class="pbar" :style="{transform: 'translateY(' + (100 - 100 * pct) + '%)'}" />
-  </div>
+  <input
+    type="range"
+    :min="-range"
+    :max="range"
+    :step=".1"
+    :value="value"
+    orient="vertical"
+    @input="oninput"
+  >
 </template>
 
 <script>
@@ -17,19 +23,9 @@ export default {
       default: 12
     }
   },
-  computed: {
-    pct () {
-      return (this.value + this.range) / 24
-    }
-  },
   methods: {
-    seek (event) {
-      const container = event.target.closest('.pbar-wrapper')
-      const y = container.getBoundingClientRect().bottom - event.clientY
-      const pct = y / container.getBoundingClientRect().height
-      const db = (pct * this.range * 2) - this.range
-      const trunked = Math.round(db * 10) / 10
-      this.$emit('change', trunked)
+    oninput ({ target }) {
+      this.$emit('change', parseFloat(target.value))
     }
   }
 }
@@ -38,15 +34,20 @@ export default {
 <style lang="scss" scoped>
 @import "~/assets/scss/colors.scss";
 
-.pbar-wrapper {
-  height: 100%;
-  width: 10px;
-
-  .pbar {
-    background-color: $primary;
-    height: 100%;
-    width: 100%;
-  }
+input[type="range"] {
+  width: 20px;
+  height: 200px;
+  appearance: slider-vertical;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  background: #ccc;
+  border: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 16px;
+  width: 16px;
 }
 
 </style>

@@ -35,14 +35,18 @@ export default function ({ store, $axios }) {
         'player/dragonDrop',
         'player/setTrack',
         'player/setVolume',
-        'player/setActiveStream'
+        'player/setActiveStream',
+        'player/setPreset',
+        'player/setFilterGain'
       ].includes(mutation.type),
     reducer: (state) => {
       return {
         activeStream: state.player.activeStream,
         playlist: state.player.playlist,
         playlistIndex: state.player.playlistIndex,
-        volume: state.player.volume
+        volume: state.player.volume,
+        presets: state.player.presets,
+        bandValues: state.player.bandValues
       }
     }
   })
