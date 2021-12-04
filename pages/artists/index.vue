@@ -84,7 +84,7 @@ export default {
     updateRating (id, rating) {
       this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
-          type: 'is-dark',
+          type: 'is-text',
           message: 'Rating updated'
         })).catch(() => this.$buefy.toast.open({
           type: 'is-danger',

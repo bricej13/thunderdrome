@@ -64,7 +64,7 @@
       <b-table-column v-slot="props" width="0" sortable label="Rating" field="rating">
         <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
       </b-table-column>
-      <b-table-column v-slot="props" width="0" sortable label="Rating" field="starred">
+      <b-table-column v-slot="props" width="0" sortable label="Favorite" field="starred">
         <a @click.prevent="toggleTrackFavorite(props.row)">
           <ion-icon :name="props.row.starred ? 'heart' : 'heart-outline'" />
         </a>
@@ -93,7 +93,7 @@ export default {
     updateRating (id, rating) {
       this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
-          type: 'is-dark',
+          type: 'is-text',
           message: 'Rating updated'
         })).catch(() => this.$buefy.toast.open({
           type: 'is-danger',

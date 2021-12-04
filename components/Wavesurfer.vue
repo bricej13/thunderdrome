@@ -108,16 +108,18 @@ export default {
       this.$buefy.toast.open({
         position: 'is-top-right',
         pauseOnHover: true,
+        type: 'is-text',
+        duration: 5000,
         message: `
         <div class="media">
           <div class="media-left">
-            <figure class="image is-48x48">
+            <figure class="image is-64x64">
               <img src="${this.albumArt}" alt="Placeholder image">
             </figure>
           </div>
-          <div class="media-content has-text-left">
-            <p class="title is-4 has-text-light">${this.currentTrack.title}</p>
-            <p class="subtitle is-6 has-text-light">${this.currentTrack.artist}</p>
+          <div class="media-content has-text-left has-text-text-invert">
+            <p class="is-size-4 has-text-weight-bolder">${this.currentTrack.title}</p>
+            <p class="is-size-6">${this.currentTrack.artist}</p>
           </div>
         </div>`
       })
