@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 mt-5 mb-4 subtitle is-size-3 has-text-white" :class="[`has-background-${colors[i]}`]">
+  <div class="p-1 mt-5 mb-4 subtitle is-size-3 has-text-text-inverse" :class="[`has-background-${colors[i]}`]">
     <slot />
   </div>
 </template>

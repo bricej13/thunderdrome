@@ -12,7 +12,20 @@ export default function ({ store, $axios }) {
       }
       return state
     },
-    saveState: (key, state, storage) => localStorage.setItem(key, JSON.stringify(state))
+    saveState: (key, state, storage) => localStorage.setItem(key, JSON.stringify(state)),
+    filter: mutation => mutation.type.startsWith('user')
+  })
+  const settingsStorage = new VuexPersistence({
+    key: 'settings',
+    storage: window.localStorage,
+    modules: ['settings'],
+    restoreState: (key, storage) => {
+      return JSON.parse(localStorage.getItem(key))
+    },
+    saveState: (key, state, storage) => {
+      localStorage.setItem(key, JSON.stringify(state.settings))
+    },
+    filter: mutation => mutation.type.startsWith('settings')
   })
   const playerStorage = new VuexPersistence({
     key: 'player',
@@ -51,5 +64,6 @@ export default function ({ store, $axios }) {
     }
   })
   userStorage.plugin(store)
+  settingsStorage.plugin(store)
   playerStorage.plugin(store)
 }

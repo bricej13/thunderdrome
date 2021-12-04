@@ -63,6 +63,12 @@
       </color-header>
       <equalizer />
     </section>
+    <section class="container">
+      <color-header :i="3">
+        Player Settings
+      </color-header>
+      <player-settings />
+    </section>
   </div>
 </template>
 

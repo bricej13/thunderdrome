@@ -37,7 +37,13 @@ export default function ({ $axios }, inject) {
         '/api/song', {
           params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'title', title }
         }
-      )
+      ),
+      scrobble: trackId => $axios.$get('/rest/scrobble', {
+        params: {
+          id: trackId,
+          submission: true
+        }
+      })
     },
     playlist: {
       all: params => $axios.$get('api/playlist', {

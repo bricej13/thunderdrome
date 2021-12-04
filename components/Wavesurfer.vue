@@ -10,11 +10,12 @@ export default {
   data () {
     return {
       instance: null,
-      showEq: false
+      hasScrobbled: false
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'currentStream', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues'])
+    ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues']),
+    ...mapGetters('settings', ['scrobbleAt'])
   },
   watch: {
     activeStream (v) {
@@ -52,22 +53,29 @@ export default {
     })
     this.instance.backend.setFilters(this.setupFilters())
     this.instance.on('loading', (v) => {
-      console.log('loading', v)
+      this.$nextTick(() => {
+        this.$nuxt.$loading.increase(v - this.$nuxt.$loading.get())
+      })
     })
     this.instance.on('ready', () => {
+      this.$emit('loading', false)
       if (this.playing) {
         this.instance.play()
-        this.$emit('loading', false)
         this.showCurrentTrackToast()
       }
     })
     this.instance.on('waveform-ready', () => {
+      this.$nextTick(() => this.$nuxt.$loading.finish())
       // window.localStorage.setItem(this.currentTrack.mediaFileId || this.currentTrack.id, JSON.stringify(this.instance.backend.mergedPeaks))
     })
     this.instance.on('audioprocess', (v) => {
       this.setCurrentTime(v)
       if (!isNaN(this.instance.getDuration())) {
         this.setTrackDuration(this.instance.getDuration())
+      }
+      if (!this.hasScrobbled && this.currentTime / this.duration > this.scrobbleAt) {
+        this.hasScrobbled = true
+        this.$api.track.scrobble(this.currentTrack.id)
       }
     })
     this.instance.on('finish', () => this.nextTrack())
@@ -83,6 +91,11 @@ export default {
       this.instance.playPause()
     },
     load (url) {
+      this.hasScrobbled = false
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start()
+        console.log('$loading.start')
+      })
       this.$emit('loading', true)
       const peaks = JSON.parse(window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id))
       if (peaks && peaks.length > 100) {
