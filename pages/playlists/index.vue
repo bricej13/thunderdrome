@@ -21,6 +21,16 @@
         <div class="level-left" />
         <div class="level-right">
           <div class="level-item">
+            <button class="button is-beet is-right" @click="socializePlaylists">
+              Public
+            </button>
+          </div>
+          <div class="level-item">
+            <button class="button is-beet is-right" @click="privatizePlaylists">
+              Private
+            </button>
+          </div>
+          <div class="level-item">
             <button class="button is-beet is-right" @click="deletePlaylists">
               Delete
             </button>
@@ -152,6 +162,14 @@ export default {
     },
     async deletePlaylists () {
       await Promise.all(this.checkedPlaylists.map(p => this.deletePlaylist(p.id)))
+      this.checkedPlaylists = []
+    },
+    async socializePlaylists () {
+      await Promise.all(this.checkedPlaylists.map(p => this.updatePlaylist(Object.assign({}, p, { public: true }))))
+      this.checkedPlaylists = []
+    },
+    async privatizePlaylists () {
+      await Promise.all(this.checkedPlaylists.map(p => this.updatePlaylist(Object.assign({}, p, { public: false }))))
       this.checkedPlaylists = []
     }
   }
