@@ -4,7 +4,7 @@
       Settings
     </div>
     <section class="container">
-      <color-header :i="0">
+      <color-header :i="0" class="mt-5 mb-4">
         Server
       </color-header>
       <div class="block columns">
@@ -25,7 +25,7 @@
       </div>
     </section>
     <section class="container">
-      <color-header :i="1">
+      <color-header :i="1" class="mt-5 mb-4">
         Library
       </color-header>
       <div class="block columns">
@@ -58,13 +58,13 @@
       </div>
     </section>
     <section class="container">
-      <color-header :i="2">
+      <color-header :i="2" class="mt-5 mb-4">
         Equalizer
       </color-header>
       <equalizer />
     </section>
     <section class="container">
-      <color-header :i="3">
+      <color-header :i="3" class="mt-5 mb-4">
         Player Settings
       </color-header>
       <player-settings />

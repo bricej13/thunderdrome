@@ -60,6 +60,17 @@ export default function ({ $axios }, inject) {
       tracks: playlistId => $axios.$get(`api/playlist/${playlistId}/tracks`),
       addTracks: (playlistId, trackIds) => $axios.$post(`api/playlist/${playlistId}/tracks`, { ids: trackIds })
     },
+    directory: {
+      get: id => $axios.$get('rest/getMusicDirectory', { params: { id } }),
+      index: async (folderId) => {
+        const resp = await $axios.$get('rest/getIndexes', { params: { musicFolderId: folderId } })
+        return resp['subsonic-response'].indexes.index
+      },
+      rootDirectories: async () => {
+        const resp = await $axios.$get('rest/getMusicFolders')
+        return resp['subsonic-response'].musicFolders.musicFolder
+      }
+    },
     setRating: (id, rating) => new Promise((resolve, reject) => {
       $axios.$get('/rest/setRating', { params: { id, rating } })
         .then((res) => {
@@ -80,6 +91,5 @@ export default function ({ $axios }, inject) {
           }
         }).catch(err => reject(err))
     })
-  }
-  )
+  })
 }

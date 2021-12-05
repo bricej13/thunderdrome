@@ -5,7 +5,7 @@ export default function (context) {
       if (config.url.includes('api/')) { // native api
         config.headers['x-nd-authorization'] = 'Bearer ' + context.store.state.user.token
       } else if (config.url.includes('rest/')) { // subsonic api
-        Object.assign(config.params, {
+        config.params = Object.assign({ ...config.params }, {
           u: context.store.state.user.name,
           t: context.store.state.user.subsonicToken,
           s: context.store.state.user.subsonicSalt,
@@ -24,6 +24,7 @@ export default function (context) {
     }
   })
   context.$axios.onResponseError((err, err2) => {
+    console.log(err, err2)
     if (err.response.status === 401) {
       context.store.dispatch('user/logout')
       context.app.router.push({ name: 'login' })
