@@ -13,44 +13,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Playlist',
-  async asyncData ({ store, params }) {
-    if (store.getters['playlists/playlists'].length === 0) {
-      await store.dispatch('playlists/loadPlaylists')
-    }
-    if (!store.getters['playlists/playlistTracksLoaded'](params.id)) {
-      await store.dispatch('playlists/loadPlaylistTracks', params.id)
-    }
-    return { playlistId: params.id }
+  async asyncData ({ store, params, $api }) {
+    const playlist = await $api.playlist.get(params.id)
+    const tracks = await $api.playlist.tracks(params.id)
+    return { playlistId: params.id, tracks, playlist }
   },
   data () {
     return {
-      checked: [],
-      columns: [
-        {
-          field: 'id',
-          visible: false
-        },
-        {
-          field: 'title',
-          label: 'Title'
-        },
-        {
-          field: 'artist',
-          label: 'Artist'
-        },
-        {
-          field: 'album',
-          label: 'Album'
-        },
-        {
-          field: 'year',
-          label: 'Year'
-        }
-      ]
+      checked: []
     }
   },
   head () {
@@ -59,15 +31,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('playlists', ['getPlaylist', 'getPlaylistTracks']),
-    playlist () {
-      return this.getPlaylist(this.playlistId)
-    },
-    tracks () {
-      return this.getPlaylistTracks(this.playlistId)
-    },
     playlistDuration () {
-      return this.getPlaylistTracks(this.playlistId).reduce((acc, cur) => acc + cur.duration, 0)
+      return this.tracks.reduce((acc, cur) => acc + cur.duration, 0)
     }
   }
 }

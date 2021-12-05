@@ -54,7 +54,7 @@ export default function ({ $axios }, inject) {
         }, params)
       }),
       create: p => $axios.$post('api/playlist/', p),
-      get: playlistId => $axios.$get(`api/playlist/${playlistId}/tracks`),
+      get: playlistId => $axios.$get(`api/playlist/${playlistId}`),
       update: playlist => $axios.$put(`api/playlist/${playlist.id}`, playlist),
       delete: playlistId => $axios.$delete(`api/playlist/${playlistId}`),
       tracks: playlistId => $axios.$get(`api/playlist/${playlistId}/tracks`),

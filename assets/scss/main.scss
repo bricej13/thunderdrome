@@ -78,9 +78,52 @@ $title-weight: 800;
     letter-spacing: -.1rem;
   }
 }
+
 .has-text-weight-bolder {
   font-weight: 800 !important
 }
+
+// Inputs
+$radius: 12px;
+$input-radius: 0px;
+$input-border-color: colors.$text;
+$input-hover-border-color: colors.$text;
+$input-background-color: colors.$background;
+$input-hover-color: colors.$text-light;
+$input-focus-box-shadow-size: 0;
+$input-focus-box-shadow-color: none;
+input, textarea, select {
+  transition: all 200ms;
+
+  &:focus, &.is-focused, &:active, &.is-active {
+    background-color: colors.$text-invert;
+  }
+}
+
+;
+
+/// Buttons
+//$input-radius: 0;
+$button-background-color: colors.$background;
+$button-border-width: 2px;
+$button-border-color: colors.$text;
+$button-hover-border-color: colors.$text;
+$button-hover-color: colors.$text-invert;
+.button {
+  &:hover {
+    background-color: colors.$text;
+  }
+
+}
+
+// Checkbox
+$checkbox-active-background-color: colors.$primary;
+$checkbox-background-color: transparent;
+$checkbox-border-color: colors.$text;
+$checkbox-border-radius: 0;
+$checkbox-border-width: 2px;
+$checkbox-checkmark-color: colors.$primary-invert;
+$checkbox-size: 1.25em;
 
 // range
 .field .b-slider .b-slider-track {

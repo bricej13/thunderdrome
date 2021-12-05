@@ -12,7 +12,7 @@
         </div>
         <div class="level-right">
           <div class="level-item">
-            <b-dropdown aria-role="list">
+            <b-dropdown aria-role="list" append-to-body>
               <template #trigger>
                 <button class="button is-rounded is-right">
                   <ion-icon name="star" />
@@ -37,6 +37,35 @@
                 </button>
               </p>
             </div>
+          </div>
+          <div class="level-item">
+            <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
+              <template #trigger>
+                <button class="button is-rounded is-right">
+                  <ion-icon name="add" />
+                </button>
+              </template>
+
+              <b-dropdown-item custom class="is-size-5 dropdown-header">
+                Play Queue
+              </b-dropdown-item>
+              <b-dropdown-item>Now</b-dropdown-item>
+              <b-dropdown-item>Next</b-dropdown-item>
+              <b-dropdown-item>Add to end</b-dropdown-item>
+              <b-dropdown-item custom class="is-size-5 dropdown-header">
+                Shuffle
+              </b-dropdown-item>
+              <b-dropdown-item separator />
+              <b-dropdown-item>Now</b-dropdown-item>
+              <b-dropdown-item>Next</b-dropdown-item>
+              <b-dropdown-item>Add to end</b-dropdown-item>
+              <b-dropdown-item custom class="is-size-5 dropdown-header">
+                Add to Playlist
+              </b-dropdown-item>
+              <b-dropdown-item v-for="playlist in playlists" :key="playlist.id" aria-role="listitem" @click="addToPlaylist(playlist)">
+                {{ playlist.name }}
+              </b-dropdown-item>
+            </b-dropdown>
           </div>
         </div>
       </div>
@@ -150,7 +179,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'TrackList',
   props: {
@@ -185,28 +214,43 @@ export default {
         }))
     },
     toggleTrackFavorite (track) {
-      this.$api.setFavorite(track.id, !track.starred)
+      this.$api.setFavorite(track.mediaFileId || track.id, !track.starred)
         .then(() => {
           track.starred = !track.starred
         })
     },
     async setTracksFavorite (isFavorite) {
       for (const track of this.checkedTracks.filter(track => track.starred !== isFavorite)) {
-        await this.$api.setFavorite(track.id, isFavorite).then(() => { track.starred = isFavorite })
+        await this.$api.setFavorite(track.mediaFileId || track.id, isFavorite).then(() => { track.starred = isFavorite })
       }
       this.checkedTracks = []
     },
     async setTracksRating (rating) {
       for (const track of this.checkedTracks.filter(track => track.rating !== rating)) {
-        await this.$api.setRating(track.id, rating).then(() => { track.rating = rating })
+        await this.$api.setRating(track.mediaFileId || track.id, rating).then(() => { track.rating = rating })
       }
       this.checkedTracks = []
+    },
+    async addToPlaylist (playlist) {
+      await this.$api.playlist.addTracks(playlist.id, this.checkedTracks.map(t => t.mediaFileId || t.id))
+        .then(() => this.$buefy.toast.open({
+          type: 'is-text',
+          message: `${this.checkedTracks.length} tracks added to ${playlist.name}`
+        })).catch(() => this.$buefy.toast.open({
+          type: 'is-danger',
+          message: 'Error adding tracks to playlist'
+        }))
+      this.checkedTracks = []
     }
+  },
+  computed: {
+    ...mapGetters('playlists', ['playlists'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/scss/colors.scss";
 table.table {
   table-layout: fixed;
 }
@@ -215,6 +259,16 @@ tr .action {
 }
 tr:hover .action {
   visibility: visible;
+}
+.dropdown-content {
+  padding-top: 0 !important;
+}
+.dropdown-header {
+  position: sticky;
+  top: -8px;
+  z-index: 1;
+  color: $text-invert;
+  background-color: $text;
 }
 
 </style>

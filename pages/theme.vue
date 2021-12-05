@@ -138,34 +138,42 @@
           <div class="buttons">
             <a class="button is-focused"> Focus </a>
             <a class="button is-primary is-focused"> Focus </a>
-            <a class="button is-info is-focused"> Focus </a>
-            <a class="button is-success is-focused"> Focus </a>
-            <a class="button is-warning is-focused"> Focus </a>
-            <a class="button is-danger is-focused"> Focus </a>
+            <a class="button is-yellow is-focused"> Focus </a>
+            <a class="button is-orange is-focused"> Focus </a>
+            <a class="button is-red is-focused"> Focus </a>
+            <a class="button is-beet is-focused"> Focus </a>
+            <a class="button is-fuchsia is-focused"> Focus </a>
+            <a class="button is-text is-focused"> Focus </a>
           </div>
           <div class="buttons">
             <a class="button is-hovered"> Hover </a>
             <a class="button is-primary is-hovered"> Hover </a>
-            <a class="button is-info is-hovered"> Hover </a>
-            <a class="button is-success is-hovered"> Hover </a>
-            <a class="button is-warning is-hovered"> Hover </a>
-            <a class="button is-danger is-hovered"> Hover </a>
+            <a class="button is-yellow is-hovered"> Hover </a>
+            <a class="button is-orange is-hovered"> Hover </a>
+            <a class="button is-red is-hovered"> Hover </a>
+            <a class="button is-beet is-hovered"> Hover </a>
+            <a class="button is-fuchsia is-hovered"> Hover </a>
+            <a class="button is-text is-hovered"> Hover </a>
           </div>
           <div class="buttons">
             <a class="button is-active"> Active </a>
             <a class="button is-primary is-active"> Active </a>
-            <a class="button is-info is-active"> Active </a>
-            <a class="button is-success is-active"> Active </a>
-            <a class="button is-warning is-active"> Active </a>
-            <a class="button is-danger is-active"> Active </a>
+            <a class="button is-yellow is-active"> Active </a>
+            <a class="button is-orange is-active"> Active </a>
+            <a class="button is-red is-active"> Active </a>
+            <a class="button is-beet is-active"> Active </a>
+            <a class="button is-fuchsia is-active"> Active </a>
+            <a class="button is-text is-active"> Active </a>
           </div>
           <div class="buttons">
             <a class="button is-loading"> Loading </a>
             <a class="button is-primary is-loading"> Loading </a>
-            <a class="button is-info is-loading"> Loading </a>
-            <a class="button is-success is-loading"> Loading </a>
-            <a class="button is-warning is-loading"> Loading </a>
-            <a class="button is-danger is-loading"> Loading </a>
+            <a class="button is-yellow is-loading"> Loading </a>
+            <a class="button is-orange is-loading"> Loading </a>
+            <a class="button is-red is-loading"> Loading </a>
+            <a class="button is-beet is-loading"> Loading </a>
+            <a class="button is-fuchsia is-loading"> Loading </a>
+            <a class="button is-text is-loading"> Loading </a>
           </div>
           <p class="field">
             <a class="button">
@@ -280,21 +288,27 @@
           <div class="buttons">
             <a class="button is-outlined"> Outlined </a>
             <a class="button is-primary is-outlined"> Outlined </a>
-            <a class="button is-info is-outlined"> Outlined </a>
-            <a class="button is-success is-outlined"> Outlined </a>
-            <a class="button is-danger is-outlined"> Outlined </a>
+            <a class="button is-yellow is-outlined"> Outlined </a>
+            <a class="button is-orange is-outlined"> Outlined </a>
+            <a class="button is-red is-outlined"> Outlined </a>
+            <a class="button is-beet is-outlined"> Outlined </a>
+            <a class="button is-fuchsia is-outlined"> Outlined </a>
           </div>
           <div class="buttons notification is-primary">
             <a class="button is-primary is-inverted is-outlined"> Invert Outlined </a>
-            <a class="button is-info is-inverted is-outlined"> Invert Outlined </a>
-            <a class="button is-success is-inverted is-outlined"> Invert Outlined </a>
-            <a class="button is-danger is-inverted is-outlined"> Invert Outlined </a>
+            <a class="button is-yellow is-inverted is-outlined"> Invert Outlined </a>
+            <a class="button is-orange is-inverted is-outlined"> Invert Outlined </a>
+            <a class="button is-red is-inverted is-outlined"> Invert Outlined </a>
+            <a class="button is-beet is-inverted is-outlined"> Invert Outlined </a>
+            <a class="button is-fuchsia is-inverted is-outlined"> Invert Outlined </a>
           </div>
           <div class="buttons notification is-primary">
             <a class="button is-primary is-inverted"> Inverted </a>
-            <a class="button is-info is-inverted"> Inverted </a>
-            <a class="button is-success is-inverted"> Inverted </a>
-            <a class="button is-danger is-inverted"> Inverted </a>
+            <a class="button is-yellow is-inverted"> Inverted </a>
+            <a class="button is-orange is-inverted"> Inverted </a>
+            <a class="button is-red is-inverted"> Inverted </a>
+            <a class="button is-beet is-inverted"> Inverted </a>
+            <a class="button is-fuchsia is-inverted"> Inverted </a>
           </div>
           <p class="buttons">
             <a class="button is-small">

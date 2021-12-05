@@ -2,7 +2,7 @@
   <div class="pt-2-tablet">
     <div class="block px-2-tablet">
       <div class="columns">
-        <div class="column is-one-quarter-tablet">
+        <div class="column is-one-third-tablet">
           <figure class="image">
             <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl || '/microphone-alt.png'">
           </figure>
