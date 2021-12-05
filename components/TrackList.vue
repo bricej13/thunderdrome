@@ -1,9 +1,52 @@
 <template>
   <div>
+    <b-collapse
+      :open="checkedTracks.length > 0"
+      animation="slide"
+    >
+      <div class="level px-2">
+        <div class="level-left">
+          <div class="level-item">
+            {{ checkedTracks.length }} selected
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <b-dropdown aria-role="list">
+              <template #trigger>
+                <button class="button is-rounded is-right">
+                  <ion-icon name="star" />
+                </button>
+              </template>
+
+              <b-dropdown-item v-for="n in 6" :key="n" aria-role="listitem" @click="setTracksRating(n-1)">
+                <b-rate disabled :value="n-1" />
+              </b-dropdown-item>
+            </b-dropdown>
+          </div>
+          <div class="level-item">
+            <div class="field has-addons">
+              <p class="control">
+                <button class="button is-rounded is-right" @click="setTracksFavorite(true)">
+                  <ion-icon name="heart" />
+                </button>
+              </p>
+              <p class="control">
+                <button class="button is-rounded is-right" @click="setTracksFavorite(false)">
+                  <ion-icon name="heart-outline" />
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </b-collapse>
     <b-table
       :data="tracks"
       :hoverable="true"
       :mobile-cards="false"
+      :checked-rows.sync="checkedTracks"
+      :checkable="checkable"
     >
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
         <span class="is-uppercase has-text-weight-bold">
@@ -118,6 +161,15 @@ export default {
     hideFields: {
       type: Array,
       default: () => []
+    },
+    checkable: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data () {
+    return {
+      checkedTracks: []
     }
   },
   methods: {
@@ -137,6 +189,18 @@ export default {
         .then(() => {
           track.starred = !track.starred
         })
+    },
+    async setTracksFavorite (isFavorite) {
+      for (const track of this.checkedTracks.filter(track => track.starred !== isFavorite)) {
+        await this.$api.setFavorite(track.id, isFavorite).then(() => { track.starred = isFavorite })
+      }
+      this.checkedTracks = []
+    },
+    async setTracksRating (rating) {
+      for (const track of this.checkedTracks.filter(track => track.rating !== rating)) {
+        await this.$api.setRating(track.id, rating).then(() => { track.rating = rating })
+      }
+      this.checkedTracks = []
     }
   }
 }
