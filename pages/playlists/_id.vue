@@ -8,7 +8,7 @@
         <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
     </div>
-    <track-list :tracks="tracks" :hide-fields="['album']" />
+    <track-list :tracks="tracks" :hide-fields="['album']" :bulk-delete="removeTracks" />
   </div>
 </template>
 
@@ -33,6 +33,12 @@ export default {
   computed: {
     playlistDuration () {
       return this.tracks.reduce((acc, cur) => acc + cur.duration, 0)
+    }
+  },
+  methods: {
+    async removeTracks (tracks) {
+      await this.$api.playlist.deleteTracks(this.playlist.id, tracks.map(t => t.id))
+      this.tracks = await this.$api.playlist.tracks(this.playlist.id)
     }
   }
 }

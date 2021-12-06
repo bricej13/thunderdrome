@@ -58,7 +58,8 @@ export default function ({ $axios }, inject) {
       update: playlist => $axios.$put(`api/playlist/${playlist.id}`, playlist),
       delete: playlistId => $axios.$delete(`api/playlist/${playlistId}`),
       tracks: playlistId => $axios.$get(`api/playlist/${playlistId}/tracks`),
-      addTracks: (playlistId, trackIds) => $axios.$post(`api/playlist/${playlistId}/tracks`, { ids: trackIds })
+      addTracks: (playlistId, trackIds) => $axios.$post(`api/playlist/${playlistId}/tracks`, { ids: trackIds }),
+      deleteTracks: (playlistId, trackIds) => $axios.$delete(`api/playlist/${playlistId}/tracks?id=${trackIds.join('&id=')}`)
     },
     directory: {
       get: id => $axios.$get('rest/getMusicDirectory', { params: { id } }),

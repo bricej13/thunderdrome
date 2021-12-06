@@ -49,16 +49,19 @@
               <b-dropdown-item custom class="is-size-5 dropdown-header">
                 Play Queue
               </b-dropdown-item>
-              <b-dropdown-item>Now</b-dropdown-item>
-              <b-dropdown-item>Next</b-dropdown-item>
-              <b-dropdown-item>Add to end</b-dropdown-item>
+              <b-dropdown-item custom>
+                <a class="button is-small is-outline is-yellow">Now</a>
+                <a class="button is-small is-outline is-red">Next</a>
+                <a class="button is-small is-outline is-fuchsia">End</a>
+              </b-dropdown-item>
               <b-dropdown-item custom class="is-size-5 dropdown-header">
                 Shuffle
               </b-dropdown-item>
-              <b-dropdown-item separator />
-              <b-dropdown-item>Now</b-dropdown-item>
-              <b-dropdown-item>Next</b-dropdown-item>
-              <b-dropdown-item>Add to end</b-dropdown-item>
+              <b-dropdown-item custom>
+                <a class="button is-small is-outline is-yellow">Now</a>
+                <a class="button is-small is-outline is-red">Next</a>
+                <a class="button is-small is-outline is-fuchsia">End</a>
+              </b-dropdown-item>
               <b-dropdown-item custom class="is-size-5 dropdown-header">
                 Add to Playlist
               </b-dropdown-item>
@@ -66,6 +69,15 @@
                 {{ playlist.name }}
               </b-dropdown-item>
             </b-dropdown>
+          </div>
+          <div v-if="bulkDelete != null" class="level-item">
+            <div class="field has-addons">
+              <p class="control">
+                <button class="button is-rounded is-right" @click="callDelete">
+                  <ion-icon name="trash" />
+                </button>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -75,6 +87,7 @@
       :hoverable="true"
       :mobile-cards="false"
       :checked-rows.sync="checkedTracks"
+      :selected="checkedTracks"
       :checkable="checkable"
     >
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
@@ -194,6 +207,10 @@ export default {
     checkable: {
       type: Boolean,
       default: true
+    },
+    bulkDelete: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -240,6 +257,14 @@ export default {
           type: 'is-danger',
           message: 'Error adding tracks to playlist'
         }))
+      this.checkedTracks = []
+    },
+    async callDelete () {
+      if (this.bulkDelete instanceof Promise) {
+        await this.bulkDelete(this.checkedTracks)
+      } else {
+        this.bulkDelete(this.checkedTracks)
+      }
       this.checkedTracks = []
     }
   },
