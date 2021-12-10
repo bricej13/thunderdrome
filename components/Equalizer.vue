@@ -10,9 +10,9 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <b-dropdown aria-role="list">
+          <b-dropdown aria-role="list" append-to-body>
             <template #trigger>
-              <b-button label="Presets" size="is-small" type="is-primary" />
+              <b-button label="Presets" size="is-small" />
             </template>
 
             <b-dropdown-item v-for="(preset, i) in presets" :key="i" aria-role="listitem" @click="setPreset(preset)">

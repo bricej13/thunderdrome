@@ -61,10 +61,10 @@
       </b-table-column>
       <b-table-column v-slot="props" :visible="visibleColumns.includes('actions')">
         <div class="columns is-mobile is-vcentered">
-          <a class="column" @click="startPlaylist(props.row.id, false)">
+          <a class="column" @click="playPlaylist(props.row.id, false)">
             <ion-icon name="play" />
           </a>
-          <a class="column" @click="startPlaylist(props.row.id, true)">
+          <a class="column" @click="playPlaylist(props.row.id, true)">
             <ion-icon name="shuffle" />
           </a>
           <a class="column" @click="editingPlaylist = props.row">
@@ -136,10 +136,8 @@ export default {
   methods: {
     ...mapActions('player', ['startPlaylist', 'shufflePlaylist', 'appendToPlaylist']),
     ...mapActions('playlists', ['updatePlaylist', 'deletePlaylist']),
-    async startPlaylist (id, shuffle) {
-      const tracks = await this.$axios.$get(
-        `api/playlist/${id}/tracks`
-      )
+    async playPlaylist (id, shuffle) {
+      const tracks = await this.$api.playlist.tracks(id)
       if (shuffle) {
         await this.shufflePlaylist(tracks)
       } else {

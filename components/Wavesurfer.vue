@@ -53,9 +53,7 @@ export default {
     })
     this.instance.backend.setFilters(this.setupFilters())
     this.instance.on('loading', (v) => {
-      this.$nextTick(() => {
-        this.$nuxt.$loading.increase(v - this.$nuxt.$loading.get())
-      })
+      this.$nuxt.$loading.set(v)
     })
     this.instance.on('ready', () => {
       this.$emit('loading', false)

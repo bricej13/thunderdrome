@@ -35,7 +35,7 @@ export const mutations = {
 export const actions = {
   login ({ commit, dispatch }, { baseUrl, username, password }) {
     return new Promise((resolve, reject) => {
-      this.$axios.$post(baseUrl + '/auth/login', { username, password })
+      this.$api.login(username, password, baseUrl)
         .then((res) => {
           this.$axios.setBaseURL(baseUrl)
           commit('login', Object.assign(res, { baseUrl }))

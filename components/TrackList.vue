@@ -87,7 +87,6 @@
       :hoverable="true"
       :mobile-cards="false"
       :checked-rows.sync="checkedTracks"
-      :selected="checkedTracks"
       :checkable="checkable"
     >
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">

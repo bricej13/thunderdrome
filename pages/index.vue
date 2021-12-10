@@ -31,14 +31,14 @@
 
 export default {
   name: 'HomePage',
-  async asyncData (ctx) {
+  async asyncData ({ $api }) {
     const [recentlyPlayedAlbums, mostPlayedAlbums, topRatedAlbums, recentlyAddedAlbums] =
     await Promise.all(
       [
-        ctx.$axios.$get('/api/album?_end=8&_order=DESC&_sort=play_date&_start=0&recently_played=true'),
-        ctx.$axios.$get('/api/album?_end=8&_order=DESC&_sort=play_count&_start=0&recently_played=true'),
-        ctx.$axios.$get('/api/album?_end=12&_order=DESC&_sort=rating&_start=0&has_rating=true'),
-        ctx.$axios.$get('/api/album?_end=12&_order=DESC&_sort=recently_added&_start=0')
+        $api.album.where({ _start: 0, _end: 8, _order: 'DESC', _sort: 'play_date', recently_played: true }),
+        $api.album.where({ _start: 0, _end: 8, _order: 'DESC', _sort: 'play_count', recently_played: true }),
+        $api.album.where({ _start: 0, _end: 12, _order: 'DESC', _sort: 'rating', has_rating: true }),
+        $api.album.where({ _start: 0, _end: 12, _order: 'DESC', _sort: 'recently_added' })
       ]
     )
 

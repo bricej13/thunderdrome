@@ -3,71 +3,26 @@
     <b-menu>
       <b-menu-list>
         <b-menu-item
-          label="Albums"
-          icon="albums-outline"
+          v-for="item in menu.items"
+          :key="item.label"
+          :label="item.label"
+          :icon="item.icon"
           tag="nuxt-link"
           active-class="is-active"
-          :to="{name: 'albums'}"
+          :to="item.to"
           expanded
         >
           <b-menu-item
-            label="Random"
-            icon="shuffle"
+            v-for="child in item.children"
+            :key="child.label"
+            :label="child.label"
+            :icon="child.icon"
             tag="nuxt-link"
             exact-active-class="is-active"
-            :to="{name: 'albums', query: { _sort: 'random'}}"
-          />
-          <b-menu-item
-            label="Favorites"
-            icon="heart-outline"
-            tag="nuxt-link"
-            exact-active-class="is-active"
-            :to="{name: 'albums', query: {_sort:'starred_at', _order:'DESC', starred: true}}"
-          />
-          <b-menu-item
-            label="Top Rated"
-            icon="star-outline"
-            tag="nuxt-link"
-            exact-active-class="is-active"
-            :to="{name: 'albums', query: {_sort:'rating', _order: 'DESC', has_rating:true}}"
-          />
-          <b-menu-item
-            label="Recently Added"
-            icon="timer-outline"
-            tag="nuxt-link"
-            exact-active-class="is-active"
-            :to="{name: 'albums', query: {_sort:'recently_added', _order: 'DESC'}}"
-          />
-          <b-menu-item
-            label="Recently Played"
-            icon="play-circle-outline"
-            tag="nuxt-link"
-            exact-active-class="is-active"
-            :to="{name: 'albums', query: {_sort:'play_date', _order: 'DESC'}}"
-          />
-          <b-menu-item
-            label="Most Played"
-            icon="infinite"
-            tag="nuxt-link"
-            exact-active-class="is-active"
-            :to="{name: 'albums', query: {_sort:'play_count', _order: 'DESC'}}"
+            :to="child.to"
+            expanded
           />
         </b-menu-item>
-        <b-menu-item
-          label="Artists"
-          icon="mic-outline"
-          tag="nuxt-link"
-          active-class="is-active"
-          :to="{name: 'artists', query: { _start: 0, _end: 20, _order: 'DESC', _sort: 'playCount' }}"
-        />
-        <b-menu-item
-          label="Songs"
-          icon="musical-note-outline"
-          tag="nuxt-link"
-          exact-active-class="is-active"
-          :to="{name: 'songs', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'title' }}"
-        />
-
         <b-menu-item
           icon="reorder-four"
           tag="nuxt-link"
@@ -80,7 +35,7 @@
           </template>
 
           <b-menu-item
-            v-for="playlist of playlistLinks"
+            v-for="playlist of playlistLinks.slice(0, menu.showPlaylistCount)"
             :key="playlist.id"
             tag="nuxt-link"
             exact-active-class="is-active"
@@ -107,16 +62,15 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-// import { Container } from 'vue-smooth-dnd'
 
 export default {
   name: 'SideMenu',
-  // components: { Container },
   data () {
     return {
     }
   },
   computed: {
+    ...mapGetters(['menu']),
     ...mapGetters('playlists', [
       'playlists',
       'playlistLinks',

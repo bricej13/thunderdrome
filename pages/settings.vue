@@ -100,9 +100,7 @@ export default {
   },
   methods: {
     startScan (fullScan) {
-      this.$axios.$get('rest/startScan', {
-        params: { fullScan }
-      })
+      this.$api.startScan(fullScan)
     },
     setupInterval (serverStatus) {
       if (serverStatus.startTime != null) {

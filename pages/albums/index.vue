@@ -56,12 +56,8 @@ export default {
       }
     },
     async getAlbums (queryParams) {
-      const params = Object.assign({
-        _start: 0, _end: 20, _order: 'ASC', _sort: 'name'
-      }, this.$route.query, queryParams)
-      return await this.$axios.$get(
-        '/api/album', { params }
-      )
+      const params = Object.assign({}, this.$route.query, queryParams)
+      return await this.$api.album.where(params)
     }
   }
 }

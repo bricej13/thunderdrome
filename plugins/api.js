@@ -5,6 +5,9 @@ export default function ({ $axios }, inject) {
       tracks: albumId => $axios.$get('api/song/',
         { params: { _start: 0, _end: 0, _sort: 'trackNumber', album_id: albumId } }
       ),
+      where: params => $axios.$get('api/album', {
+        params: Object.assign({}, { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }, params)
+      }),
       search: name =>
         $axios.$get(
           '/api/album', {
@@ -15,6 +18,9 @@ export default function ({ $axios }, inject) {
     artist: {
       search: name => $axios.$get('/api/artist', {
         params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
+      }),
+      where: params => $axios.$get('api/artist', {
+        params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'name' }, params)
       }),
       get: artistId => $axios.$get(`api/artist/${artistId}`),
       albums: artistId => $axios.$get('/api/album', {
@@ -72,6 +78,7 @@ export default function ({ $axios }, inject) {
         return resp['subsonic-response'].musicFolders.musicFolder
       }
     },
+    login: (username, password, baseUrl) => $axios.$post(baseUrl + '/auth/login', { username, password }),
     setRating: (id, rating) => new Promise((resolve, reject) => {
       $axios.$get('/rest/setRating', { params: { id, rating } })
         .then((res) => {
@@ -91,6 +98,7 @@ export default function ({ $axios }, inject) {
             reject(new Error(res['subsonic-response'].error))
           }
         }).catch(err => reject(err))
-    })
+    }),
+    startScan: fullScan => $axios.$get('rest/startScan', { params: { fullScan } })
   })
 }

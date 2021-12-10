@@ -20,6 +20,60 @@ export const state = () => ({
   serverStatus: {
     startTime: null,
     version: ''
+  },
+  menu: {
+    showPlaylistCount: 5,
+    items: [
+      {
+        label: 'Albums',
+        icon: 'albums-outline',
+        to: { name: 'albums' },
+        children: [
+          {
+            label: 'Random',
+            icon: 'shuffle',
+            to: { name: 'albums', query: { _sort: 'random' } }
+          },
+          {
+            label: 'Favorites',
+            icon: 'heart-outline',
+            to: { name: 'albums', query: { _sort: 'starred_at', _order: 'DESC', starred: true } }
+          },
+          {
+            label: 'Top Rated',
+            icon: 'star-outline',
+            to: { name: 'albums', query: { _sort: 'rating', _order: 'DESC', has_rating: true } }
+          },
+          {
+            label: 'Recently Added',
+            icon: 'timer-outline',
+            to: { name: 'albums', query: { _sort: 'recently_added', _order: 'DESC' } }
+          },
+          {
+            label: 'Recently Played',
+            icon: 'play-circle-outline',
+            to: { name: 'albums', query: { _sort: 'play_date', _order: 'DESC' } }
+          },
+          {
+            label: 'Most Played',
+            icon: 'infinite',
+            to: { name: 'albums', query: { _sort: 'play_count', _order: 'DESC' } }
+          }
+        ]
+      },
+      {
+        label: 'Artists',
+        icon: 'mic-outline',
+        to: { name: 'artists', query: { _start: 0, _end: 20, _order: 'DESC', _sort: 'playCount' } },
+        children: []
+      },
+      {
+        label: 'Tracks',
+        icon: 'musical-note-outline',
+        to: { name: 'songs', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'title' } },
+        children: []
+      }
+    ]
   }
 })
 
@@ -73,5 +127,6 @@ export const getters = {
   menuOpen: state => state.menuOpen,
   queueOpen: state => state.queueOpen,
   serverStatus: state => state.serverStatus,
-  scanStatus: state => state.scanStatus
+  scanStatus: state => state.scanStatus,
+  menu: state => state.menu
 }
