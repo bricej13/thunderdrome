@@ -1,5 +1,6 @@
 export const state = () => ({
-  scrobbleAt: 0.1
+  scrobbleAt: 0.1,
+  cacheSize: 64000000
 })
 
 export const mutations = {
@@ -17,5 +18,6 @@ export const actions = {
 }
 
 export const getters = {
-  scrobbleAt: state => state.scrobbleAt
+  scrobbleAt: state => state.scrobbleAt,
+  cacheSize: state => state.cacheSize
 }

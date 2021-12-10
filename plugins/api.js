@@ -1,4 +1,4 @@
-export default function ({ $axios }, inject) {
+export default function ({ $axios, store }, inject) {
   inject('api', {
     album: {
       get: albumId => $axios.$get(`api/album/${albumId}`),
@@ -49,7 +49,11 @@ export default function ({ $axios }, inject) {
           id: trackId,
           submission: true
         }
-      })
+      }),
+      mediaFile: id => $axios.get(
+          `${store.getters['user/subsonicUrl']('stream')}&id=${id}&_${new Date().getTime()}`,
+          { responseType: 'arraybuffer' }
+      )
     },
     playlist: {
       all: params => $axios.$get('api/playlist', {

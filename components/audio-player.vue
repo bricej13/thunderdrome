@@ -15,9 +15,10 @@
               {{ currentTrack.title }}
             </div>
             <div class="is-size-7">
-              <NuxtLink :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
+              <NuxtLink v-if="currentTrack.artistId !== ''" :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
                 {{ currentTrack.artist }}
               </NuxtLink>
+              <span v-else>{{ currentTrack.artist }}</span>
             </div>
           </div>
         </div>

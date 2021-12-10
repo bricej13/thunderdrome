@@ -46,7 +46,8 @@ export default {
     '~/plugins/init.js',
     { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/vue-shortkey.js', ssr: false },
-    '~/plugins/api.js'
+    '~/plugins/api.js',
+    '~/plugins/db.js'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

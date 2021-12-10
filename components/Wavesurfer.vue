@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues']),
-    ...mapGetters('settings', ['scrobbleAt'])
+    ...mapGetters('settings', ['scrobbleAt', 'cacheSize'])
   },
   watch: {
     activeStream (v) {
@@ -88,18 +88,28 @@ export default {
     togglePlay () {
       this.instance.playPause()
     },
-    load (url) {
+    async load (url) {
+      const id = this.currentTrack.mediaFileId || this.currentTrack.id
       this.hasScrobbled = false
-      this.$nextTick(() => {
-        this.$nuxt.$loading.start()
-        console.log('$loading.start')
-      })
       this.$emit('loading', true)
-      const peaks = JSON.parse(window.localStorage.getItem(this.currentTrack.mediaFileId || this.currentTrack.id))
-      if (peaks && peaks.length > 100) {
-        this.instance.load(url, peaks)
+      const track = await this.$db.tracks.get(id)
+      if (track) {
+        this.instance.loadBlob(track.blob)
+        this.$db.tracks.update(id, { lastAccessed: new Date().getTime() })
       } else {
-        this.instance.load(url)
+        this.$nuxt.$loading.start()
+        const buffer = await this.$api.track.mediaFile(id)
+        const blob = new Blob([buffer.data])
+        this.instance.loadBlob(blob)
+
+        navigator.storage.estimate().then(async (estimate) => {
+          if (estimate.usage + blob.size > this.cacheSize) {
+            await this.clearOutOlderTracks(estimate.usage, blob.size)
+          }
+          this.$db.tracks.put({
+            id, blob, lastAccessed: new Date().getTime(), track: { ...this.currentTrack }
+          }).then(() => console.log(`inserted ${id} into db`))
+        })
       }
     },
     showCurrentTrackToast () {
@@ -132,6 +142,13 @@ export default {
         filter.frequency.value = band.f
         return filter
       }.bind(this))
+    },
+    async clearOutOlderTracks () {
+      const toDelete = await this.$db.tracks.orderBy('lastAccessed').first()
+      console.log('deleting track ', toDelete.track.title, toDelete.track.artist)
+      if (toDelete) {
+        this.$db.tracks.delete(toDelete.id)
+      }
     }
   }
 }
