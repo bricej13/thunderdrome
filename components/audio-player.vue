@@ -49,7 +49,7 @@
             <!--            <div v-if="loading" class="p-1">-->
             <!--              <ion-icon name="aperture-outline" size="large" />-->
             <!--            </div>-->
-            <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="nextTrack" @click="nextTrack">
+            <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="playNextTrack" @click="playNextTrack">
               <ion-icon name="play-skip-forward-outline" />
             </div>
             <div class="p-1 is-clickable is-hidden-desktop" @click="$store.dispatch('toggleQueue')">
@@ -101,7 +101,7 @@ export default {
       'setPlay', 'setCurrentTime', 'setTrackDuration', 'setVolume', 'setPlay'
     ]),
     ...mapActions('player', [
-      'setTrack', 'nextTrack', 'prevTrack', 'volumeUp', 'volumeDown'
+      'setTrack', 'playNextTrack', 'prevTrack', 'volumeUp', 'volumeDown'
     ]),
     togglePlay () {
       this.setPlay(!this.playing)

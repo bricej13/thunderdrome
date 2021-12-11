@@ -14,12 +14,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues']),
+    ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues', 'nextTrack']),
     ...mapGetters('settings', ['scrobbleAt', 'cacheSize'])
   },
   watch: {
     activeStream (v) {
       this.load(v)
+    },
+    nextTrack (t) {
+      console.log(`preloading: ${t.artist} - ${t.title}`)
+      this.getMediaBlob(t.mediaFileId || t.id)
     },
     volume (v) {
       this.instance.setVolume(v)
@@ -76,31 +80,35 @@ export default {
         this.$api.track.scrobble(this.currentTrack.id)
       }
     })
-    this.instance.on('finish', () => this.nextTrack())
+    this.instance.on('finish', () => this.playNextTrack())
     if (this.currentStream) { this.load(this.currentStream) }
+    this.getMediaBlob(this.nextTrack.mediaFileId || this.nextTrack.id)
   },
   beforeDestroy () {
     this.instance.destroy()
   },
   methods: {
     ...mapMutations('player', ['setCurrentTime', 'setTrackDuration']),
-    ...mapActions('player', ['nextTrack']),
+    ...mapActions('player', ['playNextTrack']),
     togglePlay () {
       this.instance.playPause()
     },
     async load (url) {
-      const id = this.currentTrack.mediaFileId || this.currentTrack.id
       this.hasScrobbled = false
       this.$emit('loading', true)
+      this.$nextTick(() => this.$nuxt.$loading.start())
+      const mediaBlob = await this.getMediaBlob(this.currentTrack.mediaFileId || this.currentTrack.id)
+      this.instance.loadBlob(mediaBlob)
+      this.$nextTick(() => this.$nuxt.$loading.finish())
+    },
+    async getMediaBlob (id) {
+      if (!id) { return }
       const track = await this.$db.tracks.get(id)
       if (track) {
-        this.instance.loadBlob(track.blob)
-        this.$db.tracks.update(id, { lastAccessed: new Date().getTime() })
+        return track.blob
       } else {
-        this.$nuxt.$loading.start()
         const buffer = await this.$api.track.mediaFile(id)
         const blob = new Blob([buffer.data])
-        this.instance.loadBlob(blob)
 
         navigator.storage.estimate().then(async (estimate) => {
           if (estimate.usage + blob.size > this.cacheSize) {
@@ -110,6 +118,8 @@ export default {
             id, blob, lastAccessed: new Date().getTime(), track: { ...this.currentTrack }
           }).then(() => console.log(`inserted ${id} into db`))
         })
+
+        return blob
       }
     },
     showCurrentTrackToast () {

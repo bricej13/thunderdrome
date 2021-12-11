@@ -129,7 +129,7 @@ export const actions = {
       navigator.mediaSession.setActionHandler('seekforward', function (a) { console.log('seekforward', a) })
       navigator.mediaSession.setActionHandler('seekto', function (seek) { console.log('seekTo', seek) })
       navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
-      navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('nextTrack') })
+      navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('playNextTrack') })
     }
   },
   setPlay ({ state, commit }, payload) {
@@ -171,7 +171,7 @@ export const actions = {
       dispatch('setTrack', state.playlistIndex - 1)
     }
   },
-  nextTrack ({ state, dispatch }) {
+  playNextTrack ({ state, dispatch }) {
     if (state.playlistIndex < (state.playlist.length - 1)) {
       dispatch('setTrack', state.playlistIndex + 1)
     }
