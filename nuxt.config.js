@@ -47,7 +47,8 @@ export default {
     { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/vue-shortkey.js', ssr: false },
     '~/plugins/api.js',
-    '~/plugins/db.js'
+    '~/plugins/db.js',
+    '~/plugins/fanarttv.js'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

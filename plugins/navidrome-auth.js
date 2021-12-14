@@ -13,8 +13,6 @@ export default function (context) {
           c: 'thunderdrome',
           v: '1.8.0'
         })
-      } else {
-        console.log('not authenticating to this endpoint!')
       }
     }
   })

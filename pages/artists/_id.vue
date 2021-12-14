@@ -1,10 +1,13 @@
 <template>
   <div class="pt-2-tablet">
     <div class="block px-2-tablet">
+      <div v-if="banner">
+        <img :src="banner">
+      </div>
       <div class="columns">
         <div class="column is-one-third-tablet">
           <figure class="image">
-            <img height="128" width="128" :alt="artist.name" :src="artist.largeImageUrl || '/microphone-alt.png'">
+            <img height="128" width="128" :alt="artist.name" :src="thumb || artist.largeImageUrl || '/microphone-alt.png'">
           </figure>
         </div>
         <div class="column px-2">
@@ -21,6 +24,12 @@
         </div>
       </div>
     </div>
+    <!--    <div>-->
+    <!--      <img :src="background">-->
+    <!--      <img :src="logo">-->
+    <!--      <img :src="thumb">-->
+    <!--      <img :src="banner">-->
+    <!--    </div>-->
     <div class="block px-2" v-html="artist.biography" />
     <div class="block px-2">
       <div class="is-size-3">
@@ -43,11 +52,12 @@
 <script>
 export default {
   name: 'Artist',
-  async asyncData ({ $api, params }) {
+  async asyncData ({ $api, params, $fanart }) {
     const [artist, allTracks, albums] = await Promise.all([
       $api.artist.get(params.id),
       $api.artist.tracks(params.id),
-      $api.artist.albums(params.id)])
+      $api.artist.albums(params.id)
+    ])
     const tracks = allTracks.reduce((acc, cur) => {
       if (!acc.find(t => t.albumId === cur.albumId && t.trackNumber === cur.trackNumber)) {
         acc.push(cur)
@@ -55,6 +65,14 @@ export default {
       return acc
     }, [])
     return { artist, albums, tracks }
+  },
+  data () {
+    return {
+      background: null,
+      logo: null,
+      thumb: null,
+      banner: null
+    }
   },
   head () {
     return {
@@ -64,12 +82,33 @@ export default {
   mounted () {
     if (this.artist.externalInfoUpdatedAt === '0001-01-01T00:00:00Z') {
       this.$api.artist.loadExternalBio(this.artist.id)
-        .then(() => this.$api.aritst.get(this.artist.id).then((res) => {
+        .then(() => this.$api.artist.get(this.artist.id).then((res) => {
           this.artist = res
+          this.loadFanart()
         }))
     }
+    this.loadFanart()
   },
   methods: {
+    async loadFanart () {
+      if (this.artist.mbzArtistId) {
+        const fanart = await this.$fanart.artist.get(this.artist.mbzArtistId)
+        if (fanart.musicbanner) {
+          this.banner = fanart.musicbanner[0].url
+        }
+        if (fanart.artistbackground) {
+          this.background = fanart.artistbackground[0].url
+        }
+        if (fanart.hdmusiclogo) {
+          this.logo = fanart.hdmusiclogo[0].url
+        } else if (fanart.musiclogo) {
+          this.logo = fanart.musiclogo[0].url
+        }
+        if (fanart.artistthumb) {
+          this.thumb = fanart.artistthumb[0].url
+        }
+      }
+    },
     updateRating (id, rating) {
       this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
