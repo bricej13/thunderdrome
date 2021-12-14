@@ -82,7 +82,9 @@ export default {
     })
     this.instance.on('finish', () => this.playNextTrack())
     if (this.currentStream) { this.load(this.currentStream) }
-    this.getMediaBlob(this.nextTrack.mediaFileId || this.nextTrack.id)
+    if (this.nextTrack) {
+      this.getMediaBlob(this.nextTrack.mediaFileId || this.nextTrack.id)
+    }
   },
   beforeDestroy () {
     this.instance.destroy()

@@ -23,11 +23,11 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'PlayerSettings',
-  methods: {
-    ...mapActions('settings', ['setScrobbleAt'])
-  },
   computed: {
     ...mapGetters('settings', ['scrobbleAt'])
+  },
+  methods: {
+    ...mapActions('settings', ['setScrobbleAt'])
   }
 }
 </script>

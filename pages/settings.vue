@@ -67,7 +67,14 @@
       <color-header :i="3" class="mt-5 mb-4">
         Player Settings
       </color-header>
-      <player-settings />
+      <div class="columns">
+        <div class="column">
+          <player-settings />
+        </div>
+        <div class="column">
+          <cache-settings />
+        </div>
+      </div>
     </section>
   </div>
 </template>
