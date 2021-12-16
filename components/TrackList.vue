@@ -89,6 +89,9 @@
       :checked-rows.sync="checkedTracks"
       :checkable="checkable"
     >
+      <b-table-column v-slot="props" sortable label="#" field="trackNumber" :visible="!hideFields.includes('trackNumber')">
+        {{ props.row.trackNumber }}
+      </b-table-column>
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
         <span class="is-uppercase has-text-weight-bold">
           {{ props.row.title }}

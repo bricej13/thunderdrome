@@ -34,7 +34,16 @@
         </div>
       </div>
     </div>
-    <track-list :tracks="tracks" :hide-fields="['artist', 'album', 'delete']" />
+    <div class="is-flex is-flex-direction-column" style="row-gap: 24px;">
+      <div v-for="(discTracks, discNumber) in discs" :key="discNumber">
+        <color-header v-if="multiDisc" :i="discNumber -1">
+          <div class="px-3 py-0 is-size-4">
+            Disc {{ discNumber }}
+          </div>
+        </color-header>
+        <track-list :tracks="discTracks" :hide-fields="['artist', 'album', 'delete']" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,16 +58,29 @@ export default {
       $api.album.tracks(params.id)
     ])
     const tracks = allTracks.reduce((acc, cur) => {
-      if (!acc.find(t => t.trackNumber === cur.trackNumber)) {
+      if (!acc.find(t => t.trackNumber === cur.trackNumber && t.discNumber === cur.discNumbe)) {
         acc.push(cur)
       }
       return acc
     }, [])
-    return { album, tracks }
+
+    const discs = tracks.reduce((acc, cur) => {
+      if (!acc[cur.discNumber]) {
+        acc[cur.discNumber] = []
+      }
+      acc[cur.discNumber].push(cur)
+      return acc
+    }, {})
+    return { album, tracks, discs }
   },
   head () {
     return {
       title: `Thunderdrome - ${this.album.name}`
+    }
+  },
+  computed: {
+    multiDisc () {
+      return Object.keys(this.discs).length > 1
     }
   },
   methods: {

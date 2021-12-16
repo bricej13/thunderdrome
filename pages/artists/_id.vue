@@ -44,7 +44,7 @@
         </div>
         <play-controls :tracks="tracks" />
       </div>
-      <track-list :tracks="tracks" :hide-fields="['artist', 'delete']" />
+      <track-list :tracks="tracks" :hide-fields="['artist', 'delete', 'trackNumber']" />
     </div>
   </div>
 </template>

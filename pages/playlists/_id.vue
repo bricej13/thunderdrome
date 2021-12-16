@@ -8,7 +8,7 @@
         <play-controls :tracks="tracks" :name="playlist.name" />
       </div>
     </div>
-    <track-list :tracks="tracks" :hide-fields="['album']" :bulk-delete="removeTracks" />
+    <track-list :tracks="tracks" :hide-fields="['album', 'trackNumber']" :bulk-delete="removeTracks" />
   </div>
 </template>
 
