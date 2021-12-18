@@ -44,6 +44,8 @@ export default {
   },
   mounted () {
     this.$store.dispatch('startEventStream')
+    this.$store.dispatch('loadGenres')
+    this.$store.dispatch('playlists/loadPlaylists')
   }
 }
 </script>

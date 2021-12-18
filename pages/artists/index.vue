@@ -21,10 +21,21 @@
       @page-change="onPageChange"
     >
       <template #top-left>
-        <div class="p-2">
+        <div class="p-2 level">
           <div class="title">
             Artists
           </div>
+          <b-tag
+            v-if="$route.query.genre_id && $store.state.genres"
+            class="pb-2 ml-6"
+            size="is-medium"
+            type="is-yellow"
+            closable
+            attached
+            @close="removeGenre"
+          >
+            {{ $store.getters.genre($route.query.genre_id).name }}
+          </b-tag>
         </div>
       </template>
       <template #top-right>
@@ -107,6 +118,11 @@ export default {
         .then(() => {
           artist.starred = !artist.starred
         })
+    },
+    removeGenre () {
+      // eslint-disable-next-line camelcase
+      const { genre_id, ...newQuery } = this.$route.query
+      this.$router.push({ name: 'artists', query: newQuery })
     }
   }
 

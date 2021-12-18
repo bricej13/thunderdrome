@@ -77,9 +77,6 @@ export default {
       'getPlaylistTracks'
     ])
   },
-  mounted () {
-    this.$store.dispatch('playlists/loadPlaylists')
-  },
   methods: {
     ...mapActions('playlists', ['addTracksToPlaylist', 'loadPlaylistTracks']),
     playPlaylist (id) {

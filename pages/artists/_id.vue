@@ -1,9 +1,9 @@
 <template>
   <div class="pt-2-tablet">
     <div class="block px-2-tablet">
-      <div v-if="banner">
-        <img :src="banner">
-      </div>
+      <!--      <div v-if="banner">-->
+      <!--        <img :src="banner">-->
+      <!--      </div>-->
       <div class="columns">
         <div class="column is-one-third-tablet">
           <figure class="image">
@@ -21,15 +21,10 @@
             {{ artist.albumCount }} Albums <span class="has-text-weight-light"> · </span> {{ artist.songCount }} Tracks
           </div>
           <b-rate v-model="artist.rating" @change="updateRating(artist.id, $event)" />
+          <genre-tags :genres="artist.genres" link-to="artists" />
         </div>
       </div>
     </div>
-    <!--    <div>-->
-    <!--      <img :src="background">-->
-    <!--      <img :src="logo">-->
-    <!--      <img :src="thumb">-->
-    <!--      <img :src="banner">-->
-    <!--    </div>-->
     <div class="block px-2" v-html="artist.biography" />
     <div class="block px-2">
       <div class="is-size-3">

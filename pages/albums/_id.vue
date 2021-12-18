@@ -27,6 +27,7 @@
           </div>
           <div>
             <b-rate v-model="album.rating" @change="updateRating(album.id, $event)" />
+            <genre-tags :genres="album.genres" link-to="albums" />
           </div>
         </div>
         <div class="column is-narrow">

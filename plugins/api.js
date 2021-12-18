@@ -20,7 +20,7 @@ export default function ({ $axios, store }, inject) {
         params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
       }),
       where: params => $axios.$get('api/artist', {
-        params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'name' }, params)
+        params: Object.assign({ _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }, params)
       }),
       get: artistId => $axios.$get(`api/artist/${artistId}`),
       albums: artistId => $axios.$get('/api/album', {
@@ -81,6 +81,12 @@ export default function ({ $axios, store }, inject) {
         const resp = await $axios.$get('rest/getMusicFolders')
         return resp['subsonic-response'].musicFolders.musicFolder
       }
+    },
+    genre: {
+      all: () => $axios.$get('api/genre', { params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'name' } }),
+      where: params => $axios.$get('api/genre', {
+        params: Object.assign({ _start: 0, _end: 0, _order: 'ASC', _sort: 'name' }, params)
+      })
     },
     login: (username, password, baseUrl) => $axios.$post(baseUrl + '/auth/login', { username, password }),
     setRating: (id, rating) => new Promise((resolve, reject) => {

@@ -1,8 +1,21 @@
 <template>
   <div class="p-2">
     <div>
-      <div class="title">
-        Albums
+      <div class="level">
+        <div class="title">
+          Albums
+        </div>
+
+        <b-tag
+          v-if="$route.query.genre_id"
+          size="is-medium"
+          type="is-yellow"
+          closable
+          attached
+          @close="removeGenre"
+        >
+          {{ $store.getters.genre($route.query.genre_id).name }}
+        </b-tag>
       </div>
     </div>
     <album-list-tiles :albums="albums" />
@@ -28,9 +41,10 @@ export default {
   name: 'Albums',
   components: { InfiniteLoading },
   layout: 'responsive',
-  asyncData ({ query }) {
+  async asyncData ({ query, $api }) {
     const pageSize = (query._end - query._start) || 20
-    return { pageSize }
+    const albums = await $api.album.where(query)
+    return { pageSize, albums }
   },
   data () {
     return {
@@ -58,6 +72,11 @@ export default {
     async getAlbums (queryParams) {
       const params = Object.assign({}, this.$route.query, queryParams)
       return await this.$api.album.where(params)
+    },
+    removeGenre () {
+      // eslint-disable-next-line camelcase
+      const { genre_id, ...newQuery } = this.$route.query
+      this.$router.push({ name: 'albums', query: newQuery })
     }
   }
 }

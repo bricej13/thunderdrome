@@ -74,7 +74,8 @@ export const state = () => ({
         children: []
       }
     ]
-  }
+  },
+  genres: null
 })
 
 export const mutations = {
@@ -95,6 +96,9 @@ export const mutations = {
       version: status.version,
       startTime: new Date(status.startTime)
     }
+  },
+  setGenres (state, genres) {
+    state.genres = genres
   }
 }
 
@@ -121,6 +125,10 @@ export const actions = {
   closeEventStream ({ commit, state }) {
     state.eventStream.close()
     commit('setEventStream', null)
+  },
+  async loadGenres ({ commit }) {
+    const genres = await this.$api.genre.all()
+    commit('setGenres', genres.reduce((acc, cur) => { return { ...acc, [cur.id]: cur } }, {}))
   }
 }
 export const getters = {
@@ -128,5 +136,6 @@ export const getters = {
   queueOpen: state => state.queueOpen,
   serverStatus: state => state.serverStatus,
   scanStatus: state => state.scanStatus,
-  menu: state => state.menu
+  menu: state => state.menu,
+  genre: state => genreId => state.genres[genreId]
 }
