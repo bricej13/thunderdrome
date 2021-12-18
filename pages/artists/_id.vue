@@ -53,17 +53,11 @@
 export default {
   name: 'Artist',
   async asyncData ({ $api, params, $fanart }) {
-    const [artist, allTracks, albums] = await Promise.all([
+    const [artist, tracks, albums] = await Promise.all([
       $api.artist.get(params.id),
       $api.artist.tracks(params.id),
       $api.artist.albums(params.id)
     ])
-    const tracks = allTracks.reduce((acc, cur) => {
-      if (!acc.find(t => t.albumId === cur.albumId && t.trackNumber === cur.trackNumber)) {
-        acc.push(cur)
-      }
-      return acc
-    }, [])
     return { artist, albums, tracks }
   },
   data () {

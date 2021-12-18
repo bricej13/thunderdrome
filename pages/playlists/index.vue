@@ -21,18 +21,22 @@
         <div class="level-left" />
         <div class="level-right">
           <div class="level-item">
-            <button class="button is-beet is-right" @click="socializePlaylists">
-              Public
-            </button>
+            <div class="field has-addons">
+              <p class="control">
+                <button class="button is-right" @click="socializePlaylists">
+                  Public
+                </button>
+              </p>
+              <p class="control">
+                <button class="button is-right" @click="privatizePlaylists">
+                  Private
+                </button>
+              </p>
+            </div>
           </div>
           <div class="level-item">
-            <button class="button is-beet is-right" @click="privatizePlaylists">
-              Private
-            </button>
-          </div>
-          <div class="level-item">
-            <button class="button is-beet is-right" @click="deletePlaylists">
-              Delete
+            <button class="button is-right" @click="deletePlaylists">
+              <ion-icon name="trash-outline" />
             </button>
           </div>
         </div>

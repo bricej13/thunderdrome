@@ -22,7 +22,7 @@ export const state = () => ({
     version: ''
   },
   menu: {
-    showPlaylistCount: 5,
+    showPlaylistCount: 25,
     items: [
       {
         label: 'Albums',
