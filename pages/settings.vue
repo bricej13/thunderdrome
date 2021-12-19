@@ -75,6 +75,48 @@
           <cache-settings />
         </div>
       </div>
+      <div class="columns">
+        <div class="column">
+          <b-field has-addons label="Logo Rotation Speed">
+            <p class="control">
+              <button
+                class="button"
+                :class="{'is-text': logoSpeed === ''}"
+                @click="$store.commit('settings/setLogoSpeed', '')"
+              >
+                Disabled
+              </button>
+            </p>
+            <p class="control">
+              <button
+                class="button"
+                :class="{'is-text': logoSpeed === 'thirty-three'}"
+                @click="$store.commit('settings/setLogoSpeed', 'thirty-three')"
+              >
+                33 ⅓
+              </button>
+            </p>
+            <p class="control">
+              <button
+                class="button"
+                :class="{'is-text': logoSpeed === 'fourty-five'}"
+                @click="$store.commit('settings/setLogoSpeed', 'fourty-five')"
+              >
+                45
+              </button>
+            </p>
+            <p class="control">
+              <button
+                class="button"
+                :class="{'is-text': logoSpeed === 'seventy-eight'}"
+                @click="$store.commit('settings/setLogoSpeed', 'seventy-eight')"
+              >
+                78
+              </button>
+            </p>
+          </b-field>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -92,7 +134,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scanStatus', 'serverStatus'])
+    ...mapGetters(['scanStatus', 'serverStatus']),
+    ...mapGetters('settings', ['logoSpeed'])
   },
   watch: {
     serverStatus (serverStatus) {

@@ -3,9 +3,13 @@
     <b-collapse
       :open="checkedTracks.length > 0"
       animation="slide"
+      style="position: sticky; top: 0; z-index: 1; border-bottom: 2px solid black;"
     >
-      <div class="level px-2">
+      <div class="level p-2 pl-3 has-background-background">
         <div class="level-left">
+          <div class="level-item is-clickable" @click="checkedTracks = []">
+            <ion-icon name="close" size="large" />
+          </div>
           <div class="level-item">
             {{ checkedTracks.length }} selected
           </div>
@@ -39,41 +43,75 @@
             </div>
           </div>
           <div class="level-item">
-            <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
-              <template #trigger>
-                <button class="button is-rounded is-right">
-                  <ion-icon name="add" />
-                </button>
-              </template>
-
-              <b-dropdown-item custom class="is-size-5 dropdown-header">
-                Play Queue
-              </b-dropdown-item>
-              <b-dropdown-item custom>
-                <a class="button is-small is-outline is-yellow">Now</a>
-                <a class="button is-small is-outline is-red">Next</a>
-                <a class="button is-small is-outline is-fuchsia">End</a>
-              </b-dropdown-item>
-              <b-dropdown-item custom class="is-size-5 dropdown-header">
-                Shuffle
-              </b-dropdown-item>
-              <b-dropdown-item custom>
-                <a class="button is-small is-outline is-yellow">Now</a>
-                <a class="button is-small is-outline is-red">Next</a>
-                <a class="button is-small is-outline is-fuchsia">End</a>
-              </b-dropdown-item>
-              <b-dropdown-item custom class="is-size-5 dropdown-header">
-                Add to Playlist
-              </b-dropdown-item>
-              <b-dropdown-item v-for="playlist in playlists" :key="playlist.id" aria-role="listitem" @click="addToPlaylist(playlist)">
-                {{ playlist.name }}
-              </b-dropdown-item>
-            </b-dropdown>
+            <div class="field has-addons">
+              <p class="control">
+                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
+                  <template #trigger>
+                    <button class="button is-rounded is-right">
+                      <ion-icon name="play" />
+                    </button>
+                  </template>
+                  <b-dropdown-item custom class="is-size-5 dropdown-header">
+                    Play Tracks
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('now', false)">
+                    Now
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('next', false)">
+                    Next
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('end', false)">
+                    End
+                  </b-dropdown-item>
+                </b-dropdown>
+              </p>
+              <p class="control">
+                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
+                  <template #trigger>
+                    <button class="button is-rounded is-right">
+                      <ion-icon name="shuffle" />
+                    </button>
+                  </template>
+                  <b-dropdown-item custom class="is-size-5 dropdown-header">
+                    Shuffle & Play
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('now', true)">
+                    Now
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('next', true)">
+                    Next
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="playChecked('end', true)">
+                    End
+                  </b-dropdown-item>
+                </b-dropdown>
+              </p>
+              <p class="control">
+                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
+                  <template #trigger>
+                    <button class="button is-rounded is-right">
+                      <ion-icon name="add" />
+                    </button>
+                  </template>
+                  <b-dropdown-item custom class="is-size-5 dropdown-header">
+                    Add to Playlist
+                  </b-dropdown-item>
+                  <b-dropdown-item
+                    v-for="playlist in playlists"
+                    :key="playlist.id"
+                    aria-role="listitem"
+                    @click="addToPlaylist(playlist)"
+                  >
+                    {{ playlist.name }}
+                  </b-dropdown-item>
+                </b-dropdown>
+              </p>
+            </div>
           </div>
           <div v-if="bulkDelete != null" class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <button class="button is-rounded is-right" @click="callDelete">
+                <button class="button is-rounded is-right" @click="deleteChecked">
                   <ion-icon name="trash" />
                 </button>
               </p>
@@ -89,7 +127,13 @@
       :checked-rows.sync="checkedTracks"
       :checkable="checkable"
     >
-      <b-table-column v-slot="props" sortable label="#" field="trackNumber" :visible="!hideFields.includes('trackNumber')">
+      <b-table-column
+        v-slot="props"
+        sortable
+        label="#"
+        field="trackNumber"
+        :visible="!hideFields.includes('trackNumber')"
+      >
         {{ props.row.trackNumber }}
       </b-table-column>
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
@@ -186,7 +230,11 @@
         <a v-if="!hideFields.includes('add')" class="px-1 action" @click="appendToPlaylist([props.row])">
           <ion-icon name="add" />
         </a>
-        <a v-if="!hideFields.includes('delete')" class="px-1 action" @click="$emit('delete', {playlist: props.row, i : props.index})">
+        <a
+          v-if="!hideFields.includes('delete')"
+          class="px-1 action"
+          @click="$emit('delete', {playlist: props.row, i : props.index})"
+        >
           <ion-icon name="trash" />
         </a>
       </b-table-column>
@@ -195,6 +243,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'TrackList',
   props: {
@@ -220,6 +269,9 @@ export default {
       checkedTracks: []
     }
   },
+  computed: {
+    ...mapGetters('playlists', ['playlists'])
+  },
   methods: {
     ...mapActions('player', ['appendToPlaylist', 'startPlaylist']),
     updateRating (id, rating) {
@@ -240,13 +292,17 @@ export default {
     },
     async setTracksFavorite (isFavorite) {
       for (const track of this.checkedTracks.filter(track => track.starred !== isFavorite)) {
-        await this.$api.setFavorite(track.mediaFileId || track.id, isFavorite).then(() => { track.starred = isFavorite })
+        await this.$api.setFavorite(track.mediaFileId || track.id, isFavorite).then(() => {
+          track.starred = isFavorite
+        })
       }
       this.checkedTracks = []
     },
     async setTracksRating (rating) {
       for (const track of this.checkedTracks.filter(track => track.rating !== rating)) {
-        await this.$api.setRating(track.mediaFileId || track.id, rating).then(() => { track.rating = rating })
+        await this.$api.setRating(track.mediaFileId || track.id, rating).then(() => {
+          track.rating = rating
+        })
       }
       this.checkedTracks = []
     },
@@ -261,35 +317,53 @@ export default {
         }))
       this.checkedTracks = []
     },
-    async callDelete () {
+    async deleteChecked () {
       if (this.bulkDelete instanceof Promise) {
         await this.bulkDelete(this.checkedTracks)
       } else {
         this.bulkDelete(this.checkedTracks)
       }
       this.checkedTracks = []
+    },
+    playChecked (when, shuffle) {
+      const tracksToAdd = [...this.checkedTracks]
+      if (shuffle) {
+        tracksToAdd.sort((a, b) => 0.5 - Math.random())
+      }
+      switch (when) {
+        case 'next':
+        case 'end':
+          this.appendToPlaylist(tracksToAdd)
+          break
+        case 'now':
+        default:
+          this.startPlaylist(tracksToAdd)
+          break
+      }
     }
-  },
-  computed: {
-    ...mapGetters('playlists', ['playlists'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~/assets/scss/colors.scss";
+
 table.table {
   table-layout: fixed;
 }
+
 tr .action {
   visibility: hidden;
 }
+
 tr:hover .action {
   visibility: visible;
 }
+
 .dropdown-content {
   padding-top: 0 !important;
 }
+
 .dropdown-header {
   position: sticky;
   top: -8px;

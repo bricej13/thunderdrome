@@ -2,7 +2,7 @@
   <b-navbar type="is-transparent" :mobile-burger="false">
     <template #brand>
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
-        <img src="/logo.svg" class="mr-2"><span class="is-size-4 title is-uppercase">Thunderdrome</span>
+        <img src="/logo.svg" class="mr-2" :class="logoClasses"><span class="is-size-4 title is-uppercase">Thunderdrome</span>
       </b-navbar-item>
       <b-navbar-item tag="div" class="is-flex-grow-1 is-hidden-mobile">
         <universal-search />
@@ -44,8 +44,16 @@
   </b-navbar>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'TopNav',
+  computed: {
+    logoClasses () {
+      return (this.playing ? 'spin ' : '') + this.$store.state.settings.logoSpeed
+    },
+    ...mapGetters('player', ['playing'])
+  },
   methods: {
     async logout () {
       await this.$store.dispatch('user/logout')
@@ -58,5 +66,27 @@ export default {
 <style>
 .navbar .navbar-brand {
   flex-grow: 1;
+}
+.spin {
+  animation-name: spin;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.spin.seventy-eight {
+  animation-duration: 769ms;
+}
+.spin.fourty-five {
+  animation-duration: 1333ms;
+}
+.spin.thirty-three {
+  animation-duration: 1818ms;
+}
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
 }
 </style>

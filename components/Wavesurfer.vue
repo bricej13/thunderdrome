@@ -22,8 +22,10 @@ export default {
       this.load(v)
     },
     nextTrack (t) {
-      console.log(`preloading: ${t.artist} - ${t.title}`)
-      this.getMediaBlob(t.mediaFileId || t.id)
+      if (t) {
+        console.log(`preloading: ${t.artist} - ${t.title}`)
+        this.getMediaBlob(t.mediaFileId || t.id)
+      }
     },
     volume (v) {
       this.instance.setVolume(v)

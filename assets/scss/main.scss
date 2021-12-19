@@ -208,6 +208,12 @@ $colors: functions.mergeColorMaps(
         colors.$primary-light,
         colors.$primary-dark,
       ),
+      "background": (
+        colors.$background,
+        functions.findColorInvert(colors.$background),
+        functions.findLightColor(colors.$background),
+        functions.findDarkColor(colors.$background)
+      ),
       "yellow": (
         colors.$color1,
         functions.findColorInvert(colors.$color1),
