@@ -273,7 +273,7 @@ export default {
     ...mapGetters('playlists', ['playlists'])
   },
   methods: {
-    ...mapActions('player', ['appendToPlaylist', 'startPlaylist']),
+    ...mapActions('player', ['appendToPlaylist', 'startPlaylist', 'addToPlaylistNext']),
     updateRating (id, rating) {
       this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
@@ -332,6 +332,8 @@ export default {
       }
       switch (when) {
         case 'next':
+          this.addToPlaylistNext(tracksToAdd)
+          break
         case 'end':
           this.appendToPlaylist(tracksToAdd)
           break

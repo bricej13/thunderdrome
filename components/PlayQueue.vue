@@ -29,7 +29,7 @@
     >
       <Draggable
         v-for="(track, j) in playlist"
-        :key="track.id"
+        :key="track.id + j"
         class="pb-1 pl-1 play-queue-track is-unselectable"
         :class="{'active': i === j}"
       >

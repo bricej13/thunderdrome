@@ -46,12 +46,11 @@ export const mutations = {
     state.activeStream = payload
   },
   startPlaylist (state, payload) {
-    state.playlist = payload.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
+    state.playlist = payload
     state.playlistIndex = 0
   },
   addToPlaylist (state, { tracks, index }) {
-    const tracksWithKey = tracks.map((t, i) => Object.assign({ key: performance.now() + Math.random() }, t))
-    state.playlist.splice(index, 0, ...tracksWithKey)
+    state.playlist.splice(index, 0, ...tracks)
     if (state.playlistIndex >= index) {
       state.playlistIndex = state.playlistIndex + tracks.length
     }
@@ -161,6 +160,9 @@ export const actions = {
     commit('startPlaylist', payload)
     dispatch('loadAudioSrc')
     dispatch('setPlay', true)
+  },
+  addToPlaylistNext ({ commit, state }, tracks) {
+    commit('addToPlaylist', { tracks, index: Math.min(state.playlistIndex + 1, state.playlist.length) })
   },
   appendToPlaylist ({ commit, state }, tracks) {
     commit('addToPlaylist', { tracks, index: state.playlist.length })

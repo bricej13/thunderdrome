@@ -37,7 +37,7 @@
           <equalizer-bar :value="bandValues.values[i]" @change="changeBandVal(i, $event)" />
         </div>
         <div class="mb-1">
-          <b-input v-model.number="bandValues.values[i]" size="is-small" />
+          <b-input :value="bandValues.values[i]" size="is-small" />
         </div>
       </div>
     </div>

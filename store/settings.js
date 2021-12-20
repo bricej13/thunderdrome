@@ -1,5 +1,5 @@
 export const state = () => ({
-  scrobbleAt: 0.1,
+  scrobbleAt: 0.4,
   cacheSize: 268435456,
   logoSpeed: 'thirty-three'
 })
