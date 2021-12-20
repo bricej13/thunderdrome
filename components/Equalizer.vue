@@ -7,6 +7,12 @@
             {{ bandValues.name }}
           </div>
         </div>
+        <div v-if="bandValues.isCustom && !bandValues.saved" class="level-item">
+          <b-button icon-left="save" @click="savePreset" />
+        </div>
+        <div v-if="bandValues.isCustom && bandValues.saved" class="level-item is-clickable" @click="deleteCustomPreset">
+          <ion-icon name="trash" />
+        </div>
       </div>
       <div class="level-right">
         <div class="level-item">
@@ -47,9 +53,24 @@ export default {
     ...mapGetters('player', ['bands', 'bandValues', 'presets'])
   },
   methods: {
-    ...mapActions('player', ['setFilterGain', 'setPreset']),
+    ...mapActions('player', ['setFilterGain', 'setPreset', 'createPreset', 'deletePreset']),
     changeBandVal (index, value) {
       this.setFilterGain({ index, value })
+    },
+    savePreset () {
+      this.$buefy.dialog.prompt({
+        message: 'Name your preset',
+        inputAttrs: {
+          placeholder: 'Clown Sounds',
+          maxlength: 100
+        },
+        trapFocus: true,
+        onConfirm: value => this.createPreset(value)
+      })
+    },
+    deleteCustomPreset () {
+      const i = this.presets.findIndex(p => p.name === this.bandValues.name)
+      this.deletePreset(i)
     }
   }
 }

@@ -77,7 +77,7 @@
       </div>
       <div class="columns">
         <div class="column">
-          <b-field has-addons label="Logo Rotation Speed">
+          <b-field has-addons label="Logo RPM">
             <p class="control">
               <button
                 class="button"

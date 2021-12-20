@@ -98,13 +98,27 @@ export const mutations = {
     }
   },
   setFilterGain (state, { index, value }) {
-    state.bandValues = {
-      name: 'Custom',
-      values: state.bandValues.values.map((b, i) => i === index ? value : b)
+    if (state.bandValues.isCustom) {
+      state.bandValues.values[index] = value
+    } else {
+      state.bandValues = {
+        name: 'Custom',
+        isCustom: true,
+        saved: false,
+        values: state.bandValues.values.map((b, i) => i === index ? value : b)
+      }
     }
   },
   setPreset (state, preset) {
     state.bandValues = preset
+  },
+  createPreset (state, name) {
+    state.bandValues.name = name
+    state.bandValues.saved = true
+    state.presets.unshift(state.bandValues)
+  },
+  deletePreset (state, i) {
+    state.presets.splice(i, 1)
   }
 }
 
@@ -199,6 +213,13 @@ export const actions = {
   },
   setPreset ({ commit }, preset) {
     commit('setPreset', preset)
+  },
+  createPreset ({ commit }, name) {
+    commit('createPreset', name)
+  },
+  deletePreset ({ commit, state }, i) {
+    commit('deletePreset', i)
+    commit('setPreset', state.presets.find(p => p.name === 'Flat'))
   }
 }
 export const getters = {
