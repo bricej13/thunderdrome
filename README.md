@@ -23,10 +23,15 @@ An alternative UI for [Navidrome](https://www.navidrome.org/) featuring:
 ## Development
 Thunderdrome is built using [Nuxt](https://nuxtjs.org/), [Vue](https://vuejs.org/), [Buefy](https://buefy.org/), and [Bulma](https://bulma.io/).
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/edecdaa8-c471-4aa0-9df6-3da9f2d373c7/deploy-status)](https://app.netlify.com/sites/thunderdrome/deploys)
 
 ### Build Setup
 
 ```bash
+# clone repo
+$ git clone git@github.com:bricej13/thunderdrome.git
+$ cd thunderdrome
+
 # install dependencies
 $ yarn install
 
