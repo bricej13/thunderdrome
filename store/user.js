@@ -64,6 +64,6 @@ export const getters = {
       `&s=${state.subsonicSalt}` +
       '&f=json' +
       '&v=1.8.0' +
-      '&c=ui3'
+      '&c=thunderdrome'
   }
 }
