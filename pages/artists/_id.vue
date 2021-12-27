@@ -1,9 +1,6 @@
 <template>
   <div class="pt-2-tablet">
     <div class="block px-2-tablet">
-      <!--      <div v-if="banner">-->
-      <!--        <img :src="banner">-->
-      <!--      </div>-->
       <div class="columns">
         <div class="column is-one-third-tablet">
           <figure class="image">
@@ -73,10 +70,8 @@ export default {
       this.$api.artist.loadExternalBio(this.artist.id)
         .then(() => this.$api.artist.get(this.artist.id).then((res) => {
           this.artist = res
-          this.loadFanart()
         }))
     }
-    this.loadFanart()
   },
   methods: {
     async loadFanart () {
