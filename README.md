@@ -1,4 +1,5 @@
-# Thunderdrome
+# <img src="https://thunderdrome.netlify.app/logo.svg" alt="thunderdrome logo" width="40px" height="40px"> **THUNDERDROME**
+
 An alternative UI for [Navidrome](https://www.navidrome.org/) featuring:
 - **Global Search:** search across artists, tracks, & albums from any page
 - **Equalizer:** Use built in presets or save your own.
