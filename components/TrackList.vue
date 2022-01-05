@@ -205,7 +205,7 @@
         width="100"
         :visible="!hideFields.includes('rating')"
       >
-        <b-rate v-model="props.row.rating" @change="updateRating(props.row.id, $event)" />
+        <b-rate v-model="props.row.rating" @change="updateRating(props.row.mediaFileId || props.row.id, $event)" />
       </b-table-column>
       <b-table-column
         v-slot="props"
