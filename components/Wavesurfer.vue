@@ -10,11 +10,12 @@ export default {
   data () {
     return {
       instance: null,
-      hasScrobbled: false
+      hasScrobbled: false,
+      drawCallback: null
     }
   },
   computed: {
-    ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues', 'nextTrack']),
+    ...mapGetters('player', ['activeStream', 'currentStream', 'currentTime', 'duration', 'volume', 'playing', 'currentTrack', 'albumArt', 'bandValues', 'nextTrack', 'compressor']),
     ...mapGetters('settings', ['scrobbleAt', 'cacheSize'])
   },
   watch: {
@@ -50,6 +51,7 @@ export default {
   },
   mounted () {
     this.instance = WaveSurfer.create({
+      audioContext: this.$audioContext,
       container: this.$refs.waveform,
       barWidth: 2,
       barHeight: 2,
@@ -58,6 +60,8 @@ export default {
       backend: 'WebAudio'
     })
     this.instance.backend.setFilters(this.setupFilters())
+    console.log(this.instance.backend.ac)
+
     this.instance.on('loading', (v) => {
       this.$nuxt.$loading.set(v)
     })
@@ -83,7 +87,9 @@ export default {
       }
     })
     this.instance.on('finish', () => this.playNextTrack())
-    if (this.currentStream) { this.load(this.currentStream) }
+    if (this.currentStream) {
+      this.load(this.currentStream)
+    }
     if (this.nextTrack) {
       this.getMediaBlob(this.nextTrack.mediaFileId || this.nextTrack.id)
     }
@@ -106,7 +112,9 @@ export default {
       this.$nextTick(() => this.$nuxt.$loading.finish())
     },
     async getMediaBlob (id) {
-      if (!id) { return }
+      if (!id) {
+        return
+      }
       const track = await this.$db.tracks.get(id)
       if (track) {
         return track.blob
@@ -114,14 +122,16 @@ export default {
         const buffer = await this.$api.track.mediaFile(id)
         const blob = new Blob([buffer.data])
 
-        navigator.storage.estimate().then(async (estimate) => {
-          if (estimate.usage + blob.size > this.cacheSize) {
-            await this.clearOutOlderTracks(estimate.usage, blob.size)
-          }
-          this.$db.tracks.put({
-            id, blob, lastAccessed: new Date().getTime(), track: { ...this.currentTrack }
-          }).then(() => console.log(`inserted ${id} into db`))
-        })
+        if (navigator.storage) {
+          navigator.storage.estimate().then(async (estimate) => {
+            if (estimate.usage + blob.size > this.cacheSize) {
+              await this.clearOutOlderTracks(estimate.usage, blob.size)
+            }
+            this.$db.tracks.put({
+              id, blob, lastAccessed: new Date().getTime(), track: { ...this.currentTrack }
+            }).then(() => console.log(`inserted ${id} into db`))
+          })
+        }
 
         return blob
       }
@@ -148,14 +158,17 @@ export default {
     },
     setupFilters () {
       const bandValues = this.$store.getters['player/bandValues']
-      return [...this.$store.getters['player/bands']].map(function (band, i) {
-        const filter = this.instance.backend.ac.createBiquadFilter()
+      const filters = [...this.$store.getters['player/bands']].map(function (band, i) {
+        const filter = this.$audioContext.createBiquadFilter()
         filter.type = band.type
         filter.gain.value = bandValues.values[i]
         filter.Q.value = 1
         filter.frequency.value = band.f
         return filter
       }.bind(this))
+      filters.push(this.$analyser)
+      filters.push(this.$loudness)
+      return filters
     },
     async clearOutOlderTracks () {
       const toDelete = await this.$db.tracks.orderBy('lastAccessed').first()
@@ -164,6 +177,29 @@ export default {
         this.$db.tracks.delete(toDelete.id)
       }
     }
+    // draw () {
+    //   this.drawCallback = requestAnimationFrame(draw);
+    //
+    //   const bufferLengthAlt = 2048
+    //   this.$audioContext.analyser.getByteFrequencyData(this.dataArray);
+    //
+    //   canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+    //   canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+    //
+    //   var barWidth = (WIDTH / bufferLengthAlt) * 2.5;
+    //   var barHeight;
+    //   var x = 0;
+    //
+    //   for(var i = 0; i < bufferLengthAlt; i++) {
+    //     barHeight = dataArrayAlt[i];
+    //
+    //     canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+    //     canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
+    //
+    //     x += barWidth + 1;
+    //   }
+    // }
+
   }
 }
 </script>

@@ -63,11 +63,13 @@ export default {
       })
     },
     refreshStorage () {
-      navigator.storage.estimate().then((r) => {
-        this.quota = r.quota
-        this.usage = r.usage
-        this.details = r.usageDetails
-      })
+      if (navigator.storage) {
+        navigator.storage.estimate().then((r) => {
+          this.quota = r.quota
+          this.usage = r.usage
+          this.details = r.usageDetails
+        })
+      }
     },
     async getCachedTracks () {
       this.cachedTrackCount = await this.$db.tracks.count()

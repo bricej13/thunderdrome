@@ -38,7 +38,14 @@ export const state = () => ({
     { name: 'Full Bass & Treble', values: [4, 3.27, 0, -4.73, -3.27, 0.73, 4.73, 6.18, 6.91, 6.91] },
     { name: 'Live', values: [-3.27, 0, 2.18, 2.91, 3.27, 3.27, 2.18, 1.45, 1.45, 1.09] },
     { name: 'Techno', values: [4.36, 3.27, 0, -3.64, -3.27, 0, 4.36, 5.45, 5.45, 5.09] }
-  ]
+  ],
+  compressor: {
+    attack: 0.003,
+    knee: 30,
+    ratio: 12,
+    release: 0.25,
+    threshold: -24
+  }
 })
 
 export const mutations = {
@@ -254,5 +261,6 @@ export const getters = {
   activeStream: state => state.activeStream,
   bands: state => state.bands,
   presets: state => state.presets,
-  bandValues: state => state.bandValues
+  bandValues: state => state.bandValues,
+  compressor: state => state.compressor
 }

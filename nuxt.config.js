@@ -48,6 +48,7 @@ export default {
     { src: '~/plugins/vue-shortkey.js', ssr: false },
     '~/plugins/api.js',
     '~/plugins/db.js',
+    '~/plugins/audioContext.js',
     '~/plugins/fanarttv.js'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
