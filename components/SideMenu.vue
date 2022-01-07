@@ -80,7 +80,7 @@ export default {
   methods: {
     ...mapActions('playlists', ['addTracksToPlaylist', 'loadPlaylistTracks']),
     playPlaylist (id) {
-      this.loadPlaylistTracks(id).then(() => this.$store.dispatch('player/startPlaylist', this.getPlaylistTracks(id)))
+      this.$api.playlist.tracks(id).then(tracks => this.$store.dispatch('player/startPlaylist', tracks))
     },
     onDrop (playlistId, dropResult) {
       if (dropResult.addedIndex != null) {

@@ -1,6 +1,6 @@
 <template>
   <div class="is-relative">
-    <viz class="" style="position: absolute;" />
+    <viz v-if="$store.getters['settings/showViz']" class="" style="position: absolute;" />
     <b-navbar type="is-transparent" style="background-color: transparent" :mobile-burger="false">
       <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
@@ -41,8 +41,7 @@
       </template>
 
       <template #end class="is-flex-grow-1">
-        <b-navbar-item tag="div">
-        </b-navbar-item>
+        <b-navbar-item tag="div" />
         <b-navbar-item tag="div">
           <div class="buttons">
             <nuxt-link :to="{name: 'settings'}" class="p-2">

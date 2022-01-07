@@ -42,72 +42,7 @@
               </p>
             </div>
           </div>
-          <div class="level-item">
-            <div class="field has-addons">
-              <p class="control">
-                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
-                  <template #trigger>
-                    <button class="button is-rounded is-right">
-                      <ion-icon name="play" />
-                    </button>
-                  </template>
-                  <b-dropdown-item custom class="is-size-5 dropdown-header">
-                    Play Tracks
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('now', false)">
-                    Now
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('next', false)">
-                    Next
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('end', false)">
-                    End
-                  </b-dropdown-item>
-                </b-dropdown>
-              </p>
-              <p class="control">
-                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
-                  <template #trigger>
-                    <button class="button is-rounded is-right">
-                      <ion-icon name="shuffle" />
-                    </button>
-                  </template>
-                  <b-dropdown-item custom class="is-size-5 dropdown-header">
-                    Shuffle & Play
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('now', true)">
-                    Now
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('next', true)">
-                    Next
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="playChecked('end', true)">
-                    End
-                  </b-dropdown-item>
-                </b-dropdown>
-              </p>
-              <p class="control">
-                <b-dropdown aria-role="list" append-to-body scrollable max-height="25vh">
-                  <template #trigger>
-                    <button class="button is-rounded is-right">
-                      <ion-icon name="add" />
-                    </button>
-                  </template>
-                  <b-dropdown-item custom class="is-size-5 dropdown-header">
-                    Add to Playlist
-                  </b-dropdown-item>
-                  <b-dropdown-item
-                    v-for="playlist in playlists"
-                    :key="playlist.id"
-                    aria-role="listitem"
-                    @click="addToPlaylist(playlist)"
-                  >
-                    {{ playlist.name }}
-                  </b-dropdown-item>
-                </b-dropdown>
-              </p>
-            </div>
-          </div>
+          <play-controls :tracks="checkedTracks" />
           <div v-if="bulkDelete != null" class="level-item">
             <div class="field has-addons">
               <p class="control">

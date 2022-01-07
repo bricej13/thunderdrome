@@ -1,7 +1,8 @@
 export const state = () => ({
   scrobbleAt: 0.4,
   cacheSize: 268435456,
-  logoSpeed: 'thirty-three'
+  logoSpeed: 'thirty-three',
+  showViz: true
 })
 
 export const mutations = {
@@ -15,6 +16,9 @@ export const mutations = {
   },
   setLogoSpeed (state, speed) {
     state.logoSpeed = speed
+  },
+  setShowViz (state, showViz) {
+    state.showViz = showViz
   }
 }
 
@@ -34,5 +38,6 @@ export const actions = {
 export const getters = {
   scrobbleAt: state => state.scrobbleAt,
   cacheSize: state => state.cacheSize,
-  logoSpeed: state => state.logoSpeed
+  logoSpeed: state => state.logoSpeed,
+  showViz: state => state.showViz
 }
