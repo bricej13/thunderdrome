@@ -54,25 +54,25 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Album',
   async asyncData ({ $api, params }) {
-    const [album, allTracks] = await Promise.all([
+    const [album, { tracks }] = await Promise.all([
       $api.album.get(params.id),
       $api.album.tracks(params.id)
     ])
-    const tracks = allTracks.reduce((acc, cur) => {
+    const dedupedTracks = tracks.reduce((acc, cur) => {
       if (!acc.find(t => t.trackNumber === cur.trackNumber && t.discNumber === cur.discNumbe)) {
         acc.push(cur)
       }
       return acc
     }, [])
 
-    const discs = tracks.reduce((acc, cur) => {
+    const discs = dedupedTracks.reduce((acc, cur) => {
       if (!acc[cur.discNumber]) {
         acc[cur.discNumber] = []
       }
       acc[cur.discNumber].push(cur)
       return acc
     }, {})
-    return { album, tracks, discs }
+    return { album, tracks: dedupedTracks, discs }
   },
   head () {
     return {

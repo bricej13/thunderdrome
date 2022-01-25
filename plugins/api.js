@@ -2,9 +2,9 @@ export default function ({ $axios, store }, inject) {
   inject('api', {
     album: {
       get: albumId => $axios.$get(`api/album/${albumId}`),
-      tracks: albumId => $axios.$get('api/song/',
+      tracks: albumId => $axios.get('api/song/',
         { params: { _start: 0, _end: 0, _sort: 'trackNumber', album_id: albumId } }
-      ),
+      ).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
       where: params => $axios.$get('api/album', {
         params: Object.assign({}, { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }, params)
       }),
@@ -16,34 +16,32 @@ export default function ({ $axios, store }, inject) {
         )
     },
     artist: {
-      search: name => $axios.$get('/api/artist', {
+      search: name => $axios.get('/api/artist', {
         params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'name', name }
-      }),
-      where: params => $axios.$get('api/artist', {
+      }).then((res) => { return { artists: res.data, total: res.headers['x-total-count'] } }),
+      where: params => $axios.get('api/artist', {
         params: Object.assign({ _start: 0, _end: 20, _order: 'ASC', _sort: 'name' }, params)
-      }),
+      }).then((res) => { return { artists: res.data, total: res.headers['x-total-count'] } }),
       get: artistId => $axios.$get(`api/artist/${artistId}`),
       albums: artistId => $axios.$get('/api/album', {
         params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'minYear', artist_id: artistId }
       }),
-      tracks: artistId => $axios.$get('/api/song', {
+      tracks: artistId => $axios.get('/api/song', {
         params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'year', artist_id: artistId }
-      }),
+      }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
       loadExternalBio: artistId =>
         $axios.$get('/rest/getArtistInfo', {
           params: { id: artistId }
         })
     },
     track: {
-      all: params => $axios.$get('api/song', {
+      all: params => $axios.get('api/song', {
         params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'title' }, params)
-      }),
+      }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
       get: () => [],
-      search: title => $axios.$get(
-        '/api/song', {
-          params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'title', title }
-        }
-      ),
+      search: title => $axios.get('/api/song', {
+        params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'title', title }
+      }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
       scrobble: trackId => $axios.$get('/rest/scrobble', {
         params: {
           id: trackId,

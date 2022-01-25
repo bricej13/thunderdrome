@@ -1,7 +1,7 @@
 <template>
   <section class="">
     <b-table
-      :data="songs"
+      :data="tracks"
       paginated
       backend-pagination
       aria-next-label="Next page"
@@ -79,9 +79,8 @@ export default {
   async asyncData ({ query, $api }) {
     const pageSize = query._end - query._start || 20
     const page = query._end / pageSize || 1
-    const songs = await $api.track.all(query)
-    const total = songs.length === pageSize ? pageSize * (page + 1) : Number(query._start) + songs.length
-    return { songs, pageSize, page, total }
+    const { tracks, total } = await $api.track.all(query)
+    return { tracks, pageSize, page, total }
   },
   head () {
     return {

@@ -45,7 +45,7 @@
 export default {
   name: 'Artist',
   async asyncData ({ $api, params, $fanart }) {
-    const [artist, tracks, albums] = await Promise.all([
+    const [artist, { tracks }, albums] = await Promise.all([
       $api.artist.get(params.id),
       $api.artist.tracks(params.id),
       $api.artist.albums(params.id)

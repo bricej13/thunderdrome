@@ -78,8 +78,7 @@ export default {
   async asyncData ({ $axios, query, $api }) {
     const pageSize = query._end - query._start || 20
     const page = query._end / pageSize || 1
-    const artists = await $api.artist.where(query)
-    const total = artists.length === pageSize ? pageSize * (page + 1) : Number(query._start) + artists.length
+    const { artists, total } = await $api.artist.where(query)
     return { artists, pageSize, page, total }
   },
   head () {
