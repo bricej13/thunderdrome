@@ -3,12 +3,12 @@ export default function (context) {
   context.$axios.onRequest((config) => {
     if (context.store.getters['user/loggedIn']) {
       if (config.url.includes('api/')) { // native api
-        config.headers['x-nd-authorization'] = 'Bearer ' + context.store.state.user.token
+        config.headers['x-nd-authorization'] = 'Bearer ' + context.store.getters['user/token']
       } else if (config.url.includes('rest/')) { // subsonic api
         config.params = Object.assign({ ...config.params }, {
-          u: context.store.state.user.name,
-          t: context.store.state.user.subsonicToken,
-          s: context.store.state.user.subsonicSalt,
+          u: context.store.getters['user/username'],
+          t: context.store.getters['user/subsonicToken'],
+          s: context.store.getters['user/subsonicSalt'],
           f: 'json',
           c: 'thunderdrome',
           v: '1.8.0'
@@ -22,15 +22,14 @@ export default function (context) {
     }
   })
   context.$axios.onResponseError((err, err2) => {
-    console.log(err, err2)
     if (err.response.status === 401) {
       context.store.dispatch('user/logout')
       context.app.router.push({ name: 'login' })
     }
   })
   context.app.router.beforeEach((to, from, next) => {
-    if (to.name !== 'login' && !context.store.state.user.token) {
-      next({ name: 'login', hash: 'timeoutReminder' })
+    if (to.name !== 'login' && !context.store.getters['user/loggedIn']) {
+      next({ name: 'login' })
     } else {
       next()
     }

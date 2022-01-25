@@ -109,9 +109,9 @@ export const actions = {
   toggleQueue ({ commit, state }) {
     commit('setQueueOpen', !state.queueOpen)
   },
-  startEventStream ({ commit, state, rootState }) {
-    if (state.eventStream === null && rootState.user.token !== null) {
-      const eventSource = new EventSource(`${state.user.baseUrl}/api/events?jwt=${rootState.user.token}`)
+  startEventStream ({ commit, state, rootState, rootGetters }) {
+    if (state.eventStream === null && rootGetters['user/token'] !== null) {
+      const eventSource = new EventSource(`${rootGetters['user/baseUrl']}/api/events?jwt=${rootGetters['user/token']}`)
       eventSource.addEventListener('scanStatus', function (e) {
         commit('setScanStatus', JSON.parse(e.data))
       })

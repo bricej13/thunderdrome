@@ -8,7 +8,7 @@ export default function ({ store, $axios }) {
     restoreState: (key, storage) => {
       const state = JSON.parse(localStorage.getItem(key))
       if (state?.user) {
-        $axios.setBaseURL(state.user.baseUrl)
+        $axios.setBaseURL(state.user.serverAuths[state.user.activeServer].baseUrl)
       }
       return state
     },

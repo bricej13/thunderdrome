@@ -41,17 +41,57 @@
       </template>
 
       <template #end class="is-flex-grow-1">
-        <b-navbar-item tag="div" />
-        <b-navbar-item tag="div">
-          <div class="buttons">
-            <nuxt-link :to="{name: 'settings'}" class="p-2">
-              <ion-icon name="settings-outline" />
-            </nuxt-link>
-            <a class="is-primary" @click.prevent="logout">
-              <strong>Log out {{ $store.state.user.name }}</strong>
-            </a>
-          </div>
+        <!--        <b-navbar-item tag="div">-->
+        <!--          <div class="buttons">-->
+        <!--            <nuxt-link :to="{name: 'settings'}" class="p-2">-->
+        <!--              <ion-icon name="settings-outline" />-->
+        <!--            </nuxt-link>-->
+        <!--          </div>-->
+        <!--        </b-navbar-item>-->
+        <b-navbar-item>
+          <b-dropdown aria-role="menu" append-to-body trap-focus position="is-bottom-right" :triggers="['hover','focus']">
+            <template #trigger>
+              <span class="navbar-item" role="button">
+                <span>{{ $store.getters["user/username"] }}</span>
+                <ion-icon name="chevron-down-outline" />
+              </span>
+            </template>
+
+            <b-dropdown-item aria-role="listitem">
+              <span @click.prevent="logout">
+                <strong>Log out {{ $store.getters["user/username"] }}</strong>
+              </span>
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" has-link>
+              <nuxt-link :to="{name: 'settings'}" class="p-2">
+                <ion-icon name="settings-outline" />
+                Settings
+              </nuxt-link>
+            </b-dropdown-item>
+          </b-dropdown>
         </b-navbar-item>
+
+        <!--        <b-navbar-item tag="div">-->
+        <!--          <b-dropdown aria-role="list">-->
+        <!--            <template #trigger="{ active }">-->
+        <!--              <b-button-->
+        <!--                label="Click me!"-->
+        <!--                type="is-primary"-->
+        <!--                :icon-right="active ? 'menu-up' : 'menu-down'"-->
+        <!--              />-->
+        <!--            </template>-->
+
+        <!--            <b-dropdown-item aria-role="listitem">-->
+        <!--              Action-->
+        <!--            </b-dropdown-item>-->
+        <!--            <b-dropdown-item aria-role="listitem">-->
+        <!--              Another action-->
+        <!--            </b-dropdown-item>-->
+        <!--            <b-dropdown-item aria-role="listitem">-->
+        <!--              Something else-->
+        <!--            </b-dropdown-item>-->
+        <!--          </b-dropdown>-->
+        <!--        </b-navbar-item>-->
       </template>
     </b-navbar>
   </div>
