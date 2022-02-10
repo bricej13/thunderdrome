@@ -43,6 +43,7 @@ export default {
 <style scoped>
 .default-layout {
   height: 100vh;
+  width: 100vw;
   display: grid;
   grid-template-columns: 1fr 4fr auto;
   grid-template-rows: auto 1fr auto;

@@ -24,13 +24,19 @@
         </div>
 
         <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column is-invisible-mobile">
-          <wavesurfer @loading="loading = $event" />
+          <!--          <wavesurfer @loading="loading = $event" />-->
           <!--          <wavesurfer-preload />-->
+          <custom-player @timeupdate="currentTime = $event" />
         </div>
 
-        <div class="px-2 has-text-grey is-hidden-mobile">
-          {{ currentTime | tracktime }} / {{ duration | tracktime }}
-        </div>
+        <!--        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile">-->
+        <!--          <div>-->
+        <!--            {{ currentTime | tracktime }}-->
+        <!--          </div>-->
+        <!--          <div>-->
+        <!--            {{ duration | tracktime }}-->
+        <!--          </div>-->
+        <!--        </div>-->
 
         <div class="pl-2 pr-2">
           <div class="is-flex is-flex-direction-row is-align-items-center">
@@ -68,13 +74,16 @@
 </template>
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import CustomPlayer from '~/components/CustomPlayer'
 
 export default {
   name: 'AudioPlayer',
+  components: { CustomPlayer },
   data () {
     return {
       listeners: [],
-      loading: false
+      loading: false,
+      currentTime: 0
     }
   },
   computed: {
@@ -86,7 +95,7 @@ export default {
       'hasNext',
       'hasPrev',
       'hasQueue',
-      'currentTime',
+      // 'currentTime',
       'duration',
       'progress',
       'playing',

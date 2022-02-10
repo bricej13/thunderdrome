@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Viz',
   data () {
@@ -32,6 +34,9 @@ export default {
   beforeDestroy () {
     window.cancelAnimationFrame(this.drawCallback)
   },
+  computed: {
+    ...mapGetters('player', ['duration', 'currentTime'])
+  },
   methods: {
     draw () {
       this.drawCallback = requestAnimationFrame(this.draw)
@@ -43,7 +48,7 @@ export default {
       this.canvasCtx.fillRect(0, 0, this.width, this.height)
 
       const gradient = this.canvasCtx.createLinearGradient(this.width / 2, 0, this.width / 2, this.height)
-      const opacity = 0.9
+      const opacity = 1
       const yellow = `hsla(43,99%,50%, ${opacity})`
       const orange = `hsla(14,100%,49%, ${opacity})`
       const red = `hsla(0,100%,49%, ${opacity})`
@@ -67,6 +72,14 @@ export default {
 
         x += barWidth + 1
       }
+      // this.canvasCtx.font = '16px Arial'
+      // this.canvasCtx.fillStyle = '#000000' // a color name or by using rgb/rgba/hex values
+      // this.canvasCtx.fillText(this.currentTime / this.duration, 10, 20) // text and position
+
+      const trackCompletion = (this.currentTime / this.duration) * this.width
+      this.canvasCtx.fillStyle = fuchsia
+      // this.canvasCtx.fillRect(trackCompletion, 0, 2, this.height)
+      this.canvasCtx.fillRect(0, this.height - 5, trackCompletion, this.height)
     }
   }
 }

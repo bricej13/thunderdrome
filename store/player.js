@@ -1,7 +1,7 @@
 export const state = () => ({
   playlist: [],
   playlistIndex: 0,
-  volume: 0.5,
+  volume: 1,
   playing: false,
   trackDuration: 0,
   currentTime: 0,
@@ -79,6 +79,9 @@ export const mutations = {
   },
   setPlay (state, payload) {
     state.playing = payload
+    if (navigator.mediaSession) {
+      navigator.mediaSession.playbackState = payload ? 'playing' : 'paused'
+    }
   },
   setVolume (state, payload) {
     state.volume = payload
@@ -145,9 +148,9 @@ export const actions = {
       navigator.mediaSession.setActionHandler('play', function () { dispatch('setPlay', true) })
       navigator.mediaSession.setActionHandler('pause', function () { dispatch('setPlay', false) })
       navigator.mediaSession.setActionHandler('stop', function () { dispatch('setPlay', false) })
-      navigator.mediaSession.setActionHandler('seekbackward', function (a) { console.log('seekbackward', a) })
-      navigator.mediaSession.setActionHandler('seekforward', function (a) { console.log('seekforward', a) })
-      navigator.mediaSession.setActionHandler('seekto', function (seek) { console.log('seekTo', seek) })
+      // navigator.mediaSession.setActionHandler('seekbackward', function (a) { console.log('seekbackward', a) })
+      // navigator.mediaSession.setActionHandler('seekforward', function (a) { console.log('seekforward', a) })
+      // navigator.mediaSession.setActionHandler('seekto', function (seek) { console.log('seekTo', seek) })
       navigator.mediaSession.setActionHandler('previoustrack', function () { dispatch('prevTrack') })
       navigator.mediaSession.setActionHandler('nexttrack', function () { dispatch('playNextTrack') })
     }
@@ -197,6 +200,8 @@ export const actions = {
   playNextTrack ({ state, dispatch }) {
     if (state.playlistIndex < (state.playlist.length - 1)) {
       dispatch('setTrack', state.playlistIndex + 1)
+    } else {
+      dispatch('setPlay', null)
     }
   },
   setTrack ({ state, commit, getters, dispatch }, i) {

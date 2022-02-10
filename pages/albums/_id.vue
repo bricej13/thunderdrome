@@ -30,7 +30,7 @@
             <genre-tags :genres="album.genres" link-to="albums" />
           </div>
         </div>
-        <div class="column is-narrow">
+        <div class="column is-narrow p-4">
           <play-controls :tracks="tracks" />
         </div>
       </div>

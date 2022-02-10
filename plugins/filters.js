@@ -2,9 +2,12 @@ import Vue from 'vue'
 import { format } from 'date-fns'
 
 Vue.filter('tracktime', (v) => {
-  const d = new Date(0)
-  d.setSeconds(v)
-  return format(d, 'm:ss')
+  try {
+    const d = new Date(0)
+    d.setSeconds(v)
+    return format(d, 'm:ss')
+  } catch (e) {
+  }
 })
 Vue.filter('playlisttime', (v) => {
   const d = Number(v)
