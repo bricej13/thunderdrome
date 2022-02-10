@@ -29,14 +29,14 @@
           <custom-player @timeupdate="currentTime = $event" />
         </div>
 
-        <!--        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile">-->
-        <!--          <div>-->
-        <!--            {{ currentTime | tracktime }}-->
-        <!--          </div>-->
-        <!--          <div>-->
-        <!--            {{ duration | tracktime }}-->
-        <!--          </div>-->
-        <!--        </div>-->
+        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile">
+          <div>
+            {{ currentTime | tracktime }}
+          </div>
+          <div>
+            {{ duration | tracktime }}
+          </div>
+        </div>
 
         <div class="pl-2 pr-2">
           <div class="is-flex is-flex-direction-row is-align-items-center">
