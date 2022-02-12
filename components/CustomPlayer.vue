@@ -1,9 +1,9 @@
 <template>
   <div>
-    <audio ref="player1" crossorigin="anonymous">
+    <audio ref="player1" controls crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
-    <audio ref="player2" crossorigin="anonymous">
+    <audio ref="player2" controls crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
     <viz v-if="$store.getters['settings/showViz']" />
