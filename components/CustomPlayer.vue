@@ -46,6 +46,8 @@ export default {
     playing (playing) {
       if (playing) {
         this.player.play()
+          .then(e => console.log('successfully started playback'))
+          .catch(e => console.error('error starting playback', e))
       } else {
         this.player.pause()
       }
@@ -92,6 +94,8 @@ export default {
       }
       if (this.playing) {
         this.player.play()
+          .then(e => console.log('successfully started playback'))
+          .catch(e => console.error('error starting playback', e))
         this.onDeckPlayer.pause()
       }
     },
