@@ -43,11 +43,16 @@ export default {
     nextStream (url) {
       this.queue(url)
     },
-    playing (playing) {
+    async playing (playing) {
       if (playing) {
-        this.player.play()
-          .then(e => console.log('successfully started playback'))
-          .catch(e => console.error('error starting playback', e))
+        if (this.$audioContext.state === 'suspended') {
+          console.log('audio context was suspended')
+          await this.$audioContext.resume().then(() => this.player.play())
+            .catch(e => console.error('could not resume audio context', e))
+        } else {
+          console.log('audio context was _not_ suspended')
+          this.player.play()
+        }
       } else {
         this.player.pause()
       }
@@ -94,8 +99,6 @@ export default {
       }
       if (this.playing) {
         this.player.play()
-          .then(e => console.log('successfully started playback'))
-          .catch(e => console.error('error starting playback', e))
         this.onDeckPlayer.pause()
       }
     },
