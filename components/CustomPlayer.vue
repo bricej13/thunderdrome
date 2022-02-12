@@ -1,9 +1,9 @@
 <template>
   <div>
-    <audio ref="player1" controls crossorigin="anonymous">
+    <audio ref="player1" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
-    <audio ref="player2" controls crossorigin="anonymous">
+    <audio ref="player2" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
     <viz v-if="$store.getters['settings/showViz']" />
@@ -46,13 +46,10 @@ export default {
     async playing (playing) {
       if (playing) {
         if (this.$audioContext.state === 'suspended') {
-          console.log('audio context was suspended')
-          await this.$audioContext.resume().then(() => this.player.play())
-            .catch(e => console.error('could not resume audio context', e))
-        } else {
-          console.log('audio context was _not_ suspended')
-          this.player.play()
+          // https://developer.chrome.com/blog/autoplay/#web-audio
+          await this.$audioContext.resume()
         }
+        this.player.play()
       } else {
         this.player.pause()
       }
