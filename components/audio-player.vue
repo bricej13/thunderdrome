@@ -9,7 +9,7 @@
             </figure>
           </NuxtLink>
         </div>
-        <div class="px-2">
+        <div class="px-2" style="max-width: 200px;">
           <div v-if="currentTrack">
             <div class="is-size-6 is-uppercase has-text-weight-bold" style="line-height: 1.5rem">
               {{ currentTrack.title }}

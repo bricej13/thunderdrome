@@ -94,7 +94,9 @@ export default {
     })
     this.resizeObserver.observe(this.$refs.wrapper)
     this.$refs.wrapper.addEventListener('click', (e) => {
-      console.log(e.target.clientX, e.target.clientY)
+      const pct = (e.clientX - e.target.offsetLeft) / e.target.offsetWidth
+      const newTime = pct * this.duration
+      this.player.currentTime = newTime
     })
   },
   unmounted () {
