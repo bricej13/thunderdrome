@@ -1,6 +1,5 @@
 <template>
   <div class="is-relative">
-    <!--    <viz v-if="$store.getters['settings/showViz']" class="" style="position: absolute;" />-->
     <b-navbar type="is-transparent" style="background-color: transparent" :mobile-burger="false">
       <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/' }">

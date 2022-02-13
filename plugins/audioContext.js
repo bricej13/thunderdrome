@@ -4,7 +4,7 @@ export default function (ctx, inject) {
 
   const analyser = new AnalyserNode(audioCtx, {
     fftSize: 256,
-    minDecibels: -90,
+    minDecibels: -120,
     maxDecibels: -10,
     smoothingTimeConstant: 0.85
   })

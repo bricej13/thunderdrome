@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div ref="wrapper">
     <audio ref="player1" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
     <audio ref="player2" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
-    <viz v-if="$store.getters['settings/showViz']" />
+    <viz v-if="$store.getters['settings/showViz']" style="position: absolute; bottom: 0;" :height="vizHeight" :width="vizWidth" />
   </div>
 </template>
 
@@ -22,7 +22,9 @@ export default {
       activePlayer: true,
       gainNode: null,
       source1: null,
-      source2: null
+      source2: null,
+      vizWidth: 100,
+      vizHeight: 80
     }
   },
   computed: {
@@ -49,6 +51,7 @@ export default {
           // https://developer.chrome.com/blog/autoplay/#web-audio
           await this.$audioContext.resume()
         }
+        console.log(this.$audioContext)
         this.player.play()
       } else {
         this.player.pause()
@@ -77,7 +80,7 @@ export default {
     for (const player of [this.$refs.player1, this.$refs.player2]) {
       player.addEventListener('ended', event => this.playNextTrack())
       player.addEventListener('play', event => this.setTrackDuration(player.duration))
-      player.addEventListener('timeupdate', event => this.$emit('timeupdate', player.currentTime))
+      player.addEventListener('timeupdate', event => this.setCurrentTime(player.currentTime))
     }
 
     if (this.currentStream) {
@@ -86,6 +89,16 @@ export default {
     if (this.nextStream) {
       this.queue(this.nextStream)
     }
+    this.resizeObserver = new ResizeObserver((entries) => {
+      this.vizWidth = entries[0].contentRect.width
+    })
+    this.resizeObserver.observe(this.$refs.wrapper)
+    this.$refs.wrapper.addEventListener('click', (e) => {
+      console.log(e.target.clientX, e.target.clientY)
+    })
+  },
+  unmounted () {
+    this.resizeObserver.unobserve(this.$refs.wrapper)
   },
   methods: {
     ...mapMutations('player', ['setCurrentTime', 'setTrackDuration']),

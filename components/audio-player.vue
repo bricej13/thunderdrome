@@ -23,13 +23,13 @@
           </div>
         </div>
 
-        <div class="is-flex-grow-1 px-2 is-flex is-flex-direction-column is-invisible-mobile">
+        <div class="is-flex-grow-1 px-2 is-invisible-mobile">
           <!--          <wavesurfer @loading="loading = $event" />-->
           <!--          <wavesurfer-preload />-->
           <custom-player @timeupdate="currentTime = $event" />
         </div>
 
-        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile">
+        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile" style="min-width: 50px">
           <div>
             {{ currentTime | tracktime }}
           </div>
@@ -82,8 +82,7 @@ export default {
   data () {
     return {
       listeners: [],
-      loading: false,
-      currentTime: 0
+      loading: false
     }
   },
   computed: {
@@ -91,6 +90,7 @@ export default {
       'i',
       'currentTrack',
       'currentStream',
+      'currentTime',
       'streamList',
       'hasNext',
       'hasPrev',
