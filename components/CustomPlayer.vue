@@ -108,6 +108,7 @@ export default {
     load (url) {
       if (this.player.src !== url) {
         this.player.src = url
+        this.setTrackDuration(this.player.duration)
       }
       if (this.playing) {
         this.player.play()
