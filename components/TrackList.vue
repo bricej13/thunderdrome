@@ -61,6 +61,7 @@
       :mobile-cards="false"
       :checked-rows.sync="checkedTracks"
       :checkable="checkable"
+      :selected="currentTrack"
     >
       <b-table-column
         v-slot="props"
@@ -72,9 +73,12 @@
         {{ props.row.trackNumber }}
       </b-table-column>
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
-        <span class="is-uppercase has-text-weight-bold">
-          {{ props.row.title }}
-        </span>
+        <div class="is-flex is-align-items-center">
+          <ion-icon v-if="currentTrack.path === props.row.path" name="play" type="is-primary" class="mr-1" />
+          <span class="is-uppercase has-text-weight-bold">
+            {{ props.row.title }}
+          </span>
+        </div>
       </b-table-column>
       <b-table-column v-slot="props" sortable label="Artist" field="artist" :visible="!hideFields.includes('artist')">
         <NuxtLink :to="`/artists/${props.row.artistId}`">
@@ -205,7 +209,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('playlists', ['playlists'])
+    ...mapGetters('playlists', ['playlists']),
+    ...mapGetters('player', ['currentTrack'])
   },
   methods: {
     ...mapActions('player', ['appendToPlaylist', 'startPlaylist', 'addToPlaylistNext']),
