@@ -61,7 +61,6 @@
       :mobile-cards="false"
       :checked-rows.sync="checkedTracks"
       :checkable="checkable"
-      :selected="currentTrack"
     >
       <b-table-column
         v-slot="props"
@@ -74,7 +73,12 @@
       </b-table-column>
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
         <div class="is-flex is-align-items-center">
-          <ion-icon v-if="currentTrack.path === props.row.path" name="play" type="is-primary" class="mr-1" />
+          <ion-icon
+            v-if="currentTrack.path === props.row.path"
+            :name="playing ? 'play' : 'pause'"
+            type="is-primary"
+            class="mr-1"
+          />
           <span class="is-uppercase has-text-weight-bold">
             {{ props.row.title }}
           </span>
@@ -210,7 +214,7 @@ export default {
   },
   computed: {
     ...mapGetters('playlists', ['playlists']),
-    ...mapGetters('player', ['currentTrack'])
+    ...mapGetters('player', ['currentTrack', 'playing'])
   },
   methods: {
     ...mapActions('player', ['appendToPlaylist', 'startPlaylist', 'addToPlaylistNext']),
