@@ -27,7 +27,7 @@ export default function ({ $axios, store }, inject) {
         params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'minYear', artist_id: artistId }
       }),
       tracks: artistId => $axios.get('/api/song', {
-        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'year', artist_id: artistId }
+        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'year,albumId,trackNumber', artist_id: artistId }
       }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
       loadExternalBio: artistId =>
         $axios.$get('/rest/getArtistInfo', {

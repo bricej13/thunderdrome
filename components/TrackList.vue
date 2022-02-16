@@ -56,11 +56,16 @@
       </div>
     </b-collapse>
     <b-table
-      :data="tracks"
+      :data="groupedTracks"
       :hoverable="true"
       :mobile-cards="false"
       :checked-rows.sync="checkedTracks"
       :checkable="checkable"
+      :detailed="hideDupes"
+      custom-detail-row
+      detail-key="id"
+      detail-icon="add-outline"
+      :has-detailed-visible="showDetailIcon"
     >
       <b-table-column
         v-slot="props"
@@ -181,6 +186,43 @@
           <ion-icon name="trash" />
         </a>
       </b-table-column>
+      <template slot="detail" slot-scope="props">
+        <tr v-for="(dupe, i) in props.row.dupes" :key="i">
+          <td />
+          <td />
+          <td v-if="!hideFields.includes('trackNumber')" />
+          <td v-if="!hideFields.includes('title')">
+            {{ dupe.title }}
+          </td>
+          <td v-if="!hideFields.includes('album')">
+            {{ dupe.album }}
+          </td>
+          <td v-if="!hideFields.includes('year')">
+            {{ dupe.year }}
+          </td>
+          <td v-if="!hideFields.includes('playCount')">
+            {{ dupe.playCount }}
+          </td>
+          <td v-if="!hideFields.includes('duration')">
+            {{ dupe.duration | tracktime }}
+          </td>
+          <td v-if="!hideFields.includes('bitRate')">
+            <bitrate :bit-rate="dupe.bitRate" :suffix="dupe.suffix" />
+          </td>
+          <td v-if="!hideFields.includes('rating')">
+            <b-rate v-model="dupe.rating" @change="updateRating(dupe.mediaFileId || dupe.id, $event)" />
+          </td>
+          <td v-if="!hideFields.includes('starred')">
+            <a @click.prevent="toggleTrackFavorite(dupe)">
+              <ion-icon :name="dupe.starred ? 'heart' : 'heart-outline'" />
+            </a>
+          </td>
+          <td v-if="!hideFields.includes('path')">
+            {{ dupe.path }}
+          </td>
+          <!--          <td><pre>{{ props.row }}</pre></td>-->
+        </tr>
+      </template>
     </b-table>
   </div>
 </template>
@@ -205,19 +247,54 @@ export default {
     bulkDelete: {
       type: Function,
       default: null
+    },
+    hideDupes: {
+      type: Boolean,
+      default: true
+    },
+    groupByFields: {
+      type: Array,
+      default: () => ['artistId', 'albumId', 'discNumber', 'trackNumber']
+    },
+    groupSortBy: {
+      type: String,
+      default: 'bitRate'
     }
   },
   data () {
     return {
-      checkedTracks: []
+      checkedTracks: [],
+      selected: null
     }
   },
   computed: {
     ...mapGetters('playlists', ['playlists']),
-    ...mapGetters('player', ['currentTrack', 'playing'])
+    ...mapGetters('player', ['currentTrack', 'playing']),
+    groupedTracks () {
+      const grouped = this.tracks.reduce((acc, cur) => {
+        const key = this.groupByFields.map(k => cur[k]).join('-')
+        return acc[key]
+          ? { ...acc, ...{ [key]: [...acc[key], cur] } }
+          : { ...acc, ...{ [key]: [cur] } }
+      }, {})
+
+      return Object.values(grouped)
+        .map(dupes => dupes.sort((a, b) => b[this.groupSortBy] === a[this.groupSortBy]
+          ? b.playCount - a.playCount
+          : b[this.groupSortBy] - a[this.groupSortBy]))
+        .map((dupes) => {
+          const playCount = dupes.reduce((acc, cur) => acc + cur.playCount, 0)
+          // const [first, ...rest] = dupes
+          const first = { ...dupes[0] }
+          return Object.assign(first, { dupes, playCount })
+        })
+    }
   },
   methods: {
     ...mapActions('player', ['appendToPlaylist', 'startPlaylist', 'addToPlaylistNext']),
+    showDetailIcon (track) {
+      return track.dupes && track.dupes.length > 1
+    },
     updateRating (id, rating) {
       this.$api.setRating(id, rating)
         .then(() => this.$buefy.toast.open({
