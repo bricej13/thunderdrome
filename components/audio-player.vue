@@ -1,7 +1,7 @@
 <template>
   <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
     <div>
-      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center" style="position: relative;">
         <div class="pl-4 p-2">
           <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
             <figure class="image is-64x64">

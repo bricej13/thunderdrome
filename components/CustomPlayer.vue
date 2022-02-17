@@ -6,7 +6,7 @@
     <audio ref="player2" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
-    <viz v-if="$store.getters['settings/showViz']" style="position: absolute; bottom: 0;" :height="vizHeight" :width="vizWidth" />
+    <viz v-if="$store.getters['settings/showViz']" style="position: absolute; top: 2px;" :height="vizHeight" :width="vizWidth" />
   </div>
 </template>
 

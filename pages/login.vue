@@ -2,11 +2,11 @@
   <div>
     <div class="is-flex is-justify-content-center is-flex-direction-column" style="height: 100vh">
       <div class="section columns">
-        <div class="column is-6 is-offset-3 is-one-third-widescreen is-offset-one-third-widescreen">
+        <div class="column is-8 is-offset-2 is-one-third-widescreen is-offset-one-third-widescreen">
           <div class="is-size-2 has-text-weight-bold has-text-centered">
             welcome to the
           </div>
-          <div class="title is-size-1 has-text-centered is-uppercase">
+          <div class="title is-size-2 has-text-centered is-uppercase">
             Thunderdrome
           </div>
           <b-field>
@@ -21,7 +21,7 @@
               type="password"
               password-reveal
               placeholder="Password"
-              @keyup.enter="login"
+              @keyup.native.enter="login"
             />
           </b-field>
           <div v-if="error">

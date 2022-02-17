@@ -79,7 +79,7 @@
       <b-table-column v-slot="props" sortable label="Title" field="title" :visible="!hideFields.includes('title')">
         <div class="is-flex is-align-items-center">
           <ion-icon
-            v-if="currentTrack.path === props.row.path"
+            v-if="currentTrack && currentTrack.path === props.row.path"
             :name="playing ? 'play' : 'pause'"
             type="is-primary"
             class="mr-1"
