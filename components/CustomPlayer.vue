@@ -110,7 +110,6 @@ export default {
     ...mapMutations('player', ['setCurrentTime', 'setTrackDuration']),
     ...mapActions('player', ['playNextTrack', 'prevTrack', 'setBuffering']),
     load (url) {
-      console.log('load')
       // const bufferingTimeout = setTimeout(() => {
       this.setBuffering(true)
       // }, 100)
