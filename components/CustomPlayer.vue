@@ -6,7 +6,12 @@
     <audio ref="player2" crossorigin="anonymous">
       Audio tag is not supported in this browser.
     </audio>
-    <viz v-if="$store.getters['settings/showViz']" style="position: absolute; top: 2px;" :height="vizHeight" :width="vizWidth" />
+    <viz
+      v-if="$store.getters['settings/showViz']"
+      style="position: absolute; top: 2px;"
+      :height="vizHeight"
+      :width="vizWidth"
+    />
   </div>
 </template>
 
@@ -51,7 +56,6 @@ export default {
           // https://developer.chrome.com/blog/autoplay/#web-audio
           await this.$audioContext.resume()
         }
-        console.log(this.$audioContext)
         this.player.play()
       } else {
         this.player.pause()
@@ -104,16 +108,24 @@ export default {
   },
   methods: {
     ...mapMutations('player', ['setCurrentTime', 'setTrackDuration']),
-    ...mapActions('player', ['playNextTrack', 'prevTrack']),
+    ...mapActions('player', ['playNextTrack', 'prevTrack', 'setBuffering']),
     load (url) {
+      console.log('load')
+      // const bufferingTimeout = setTimeout(() => {
+      this.setBuffering(true)
+      // }, 100)
       if (this.player.src !== url) {
         this.player.src = url
-        this.setTrackDuration(this.player.duration)
       }
       if (this.playing) {
         this.player.play()
         this.onDeckPlayer.pause()
       }
+      this.player.addEventListener('durationchange', e => this.setTrackDuration(e.target.duration), { once: true })
+      this.player.addEventListener('canplaythrough', (e) => {
+        // clearTimeout(bufferingTimeout)
+        this.setBuffering(false)
+      }, { once: true })
     },
     queue (url) {
       if (this.onDeckPlayer.src !== url) {

@@ -5,20 +5,22 @@
       :key="album.id + i"
       class="column is-4-mobile is-3-tablet is-2-widescreen"
     >
-      <NuxtLink
-        :to="{name: 'albums-id', params: {id: album.id}}"
-        class="album-link"
-      >
-        <div class="album">
+      <div class="album">
+        <NuxtLink
+          :to="{name: 'albums-id', params: {id: album.id}}"
+          class="album-link"
+        >
           <album-art :album="album" />
           <div class="is-uppercase title has-text-weight-semibold is-size-6">
             {{ album.name }}
           </div>
+        </NuxtLink>
+        <NuxtLink :to="{name: 'artists-id', params: {id: album.artistId}}">
           <div class="subtitle is-size-7">
             {{ album[subtitleProperty] }}
           </div>
-        </div>
-      </NuxtLink>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>

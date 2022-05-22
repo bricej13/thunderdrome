@@ -3,6 +3,7 @@ export const state = () => ({
   playlistIndex: 0,
   volume: 1,
   playing: false,
+  buffering: false,
   trackDuration: 0,
   currentTime: 0,
   activeStream: null,
@@ -82,6 +83,9 @@ export const mutations = {
     if (navigator.mediaSession) {
       navigator.mediaSession.playbackState = payload ? 'playing' : 'paused'
     }
+  },
+  setBuffering (state, payload) {
+    state.buffering = payload
   },
   setVolume (state, payload) {
     state.volume = payload
@@ -165,6 +169,9 @@ export const actions = {
       navigator.mediaSession.playbackState = 'none'
     }
     commit('setPlay', payload)
+  },
+  setBuffering ({ commit }, buffering) {
+    commit('setBuffering', buffering)
   },
   startPlaylist ({ commit, getters, state, dispatch }, payload) {
     commit('startPlaylist', payload)
@@ -258,6 +265,7 @@ export const getters = {
     return (state.currentTime / state.trackDuration) * 100
   },
   playing: state => state.playing,
+  buffering: state => state.buffering,
   albumArt: (state, getters, rootState, rootGetters) => {
     if (getters.currentTrack == null) { return null }
     return `${rootGetters['user/subsonicUrl']('getCoverArt')}&id=${getters.currentTrack.albumId}&size=300`

@@ -1,7 +1,10 @@
 <template>
   <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
     <div>
-      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center" style="position: relative;">
+      <div
+        class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center"
+        style="position: relative;"
+      >
         <div class="pl-4 p-2">
           <NuxtLink v-if="currentTrack" :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
             <figure class="image is-64x64">
@@ -12,10 +15,15 @@
         <div class="px-2" style="max-width: 200px;">
           <div v-if="currentTrack">
             <div class="is-size-6 is-uppercase has-text-weight-bold" style="line-height: 1.5rem">
-              {{ currentTrack.title }}
+              <NuxtLink :to="{name: 'albums-id', params: {id: currentTrack.albumId}}">
+                {{ currentTrack.title }}
+              </NuxtLink>
             </div>
             <div class="is-size-7">
-              <NuxtLink v-if="currentTrack.artistId !== ''" :to="{name: 'artists-id', params: {id: currentTrack.artistId}}">
+              <NuxtLink
+                v-if="currentTrack.artistId !== ''"
+                :to="{name: 'artists-id', params: {id: currentTrack.artistId}}"
+              >
                 {{ currentTrack.artist }}
               </NuxtLink>
               <span v-else>{{ currentTrack.artist }}</span>
@@ -29,7 +37,10 @@
           <custom-player @timeupdate="currentTime = $event" />
         </div>
 
-        <div class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile" style="min-width: 50px">
+        <div
+          class="px-2 has-text-grey is-flex is-flex-direction-column is-align-items-center is-hidden-mobile"
+          style="min-width: 50px"
+        >
           <div>
             {{ currentTime | tracktime }}
           </div>
@@ -40,7 +51,13 @@
 
         <div class="pl-2 pr-2">
           <div class="is-flex is-flex-direction-row is-align-items-center">
-            <div v-shortkey="['arrowleft']" class="p-1 is-clickable" :disabled="!hasPrev" @shortkey="prevTrack" @click="prevTrack">
+            <div
+              v-shortkey="['arrowleft']"
+              class="p-1 is-clickable"
+              :disabled="!hasPrev"
+              @shortkey="prevTrack"
+              @click="prevTrack"
+            >
               <ion-icon name="play-skip-back-outline" />
             </div>
 
@@ -52,10 +69,13 @@
             >
               <ion-icon :name="playing ? 'pause' : 'play'" size="large" />
             </div>
-            <!--            <div v-if="loading" class="p-1">-->
-            <!--              <ion-icon name="aperture-outline" size="large" />-->
-            <!--            </div>-->
-            <div v-shortkey="['arrowright']" class="p-1 is-clickable" :disabled="!hasNext" @shortkey="playNextTrack" @click="playNextTrack">
+            <div
+              v-shortkey="['arrowright']"
+              class="p-1 is-clickable"
+              :disabled="!hasNext"
+              @shortkey="playNextTrack"
+              @click="playNextTrack"
+            >
               <ion-icon name="play-skip-forward-outline" />
             </div>
             <div class="p-1 is-clickable is-hidden-desktop" @click="$store.dispatch('toggleQueue')">
@@ -64,7 +84,11 @@
           </div>
         </div>
 
-        <div v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" class="is-align-self-stretch p-2 pr-4 is-hidden-touch" @shortkey="changeVolume">
+        <div
+          v-shortkey="{up: ['arrowup'], down: ['arrowdown']}"
+          class="is-align-self-stretch p-2 pr-4 is-hidden-touch"
+          @shortkey="changeVolume"
+        >
           <vertical-progress-bar :value="volume" @change=" $store.dispatch('player/volumeTo', $event)" />
         </div>
       </div>
@@ -99,6 +123,7 @@ export default {
       'duration',
       'progress',
       'playing',
+      'buffering',
       'albumArt',
       'volume'
     ])
@@ -134,10 +159,23 @@ export default {
 
 <style lang="scss" scoped>
 @use "~/assets/scss/colors.scss";
+
 .audio-player {
   background-color: colors.$background;
   border-top: 2px solid colors.$text;
   width: 100%;
 }
 
+.spin {
+  animation: spin 4s linear infinite
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
