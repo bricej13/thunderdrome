@@ -25,7 +25,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('player', ['duration', 'currentTime'])
+    ...mapGetters('player', ['duration', 'currentTime', 'playing'])
+  },
+  watch: {
+    playing (val) {
+      if (val) {
+        this.draw()
+      }
+    }
   },
   mounted () {
     this.canvasCtx = this.$refs.canvas.getContext('2d')
@@ -38,7 +45,9 @@ export default {
   },
   methods: {
     draw () {
-      this.drawCallback = requestAnimationFrame(this.draw)
+      if (this.playing) {
+        this.drawCallback = requestAnimationFrame(this.draw)
+      }
       const bufferLength = this.$analyser.frequencyBinCount
 
       this.$analyser.getByteFrequencyData(this.dataArray)
