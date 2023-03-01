@@ -33,7 +33,8 @@ export default {
     ],
     script: [
       { type: 'module', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js' },
-      { nomodule: '', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js' }
+      { nomodule: '', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js' },
+      { defer: true, src: 'https://plausible.bj13.us/js/script.local.js' }
     ]
   },
 
@@ -104,8 +105,7 @@ export default {
   formulate: {
     configPath: '~/plugins/formulate.config.js'
   },
-  router: {
-  },
+  router: {},
   pwa: {
     manifest: {
       lang: 'en'
