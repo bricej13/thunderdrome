@@ -31,7 +31,7 @@
             <div class="level-left">
               <div class="level-item">
                 <b-button class="is-ghost" @click="setDemoCreds">
-                  demo login
+                  try demo
                 </b-button>
               </div>
             </div>

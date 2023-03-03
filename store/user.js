@@ -1,20 +1,37 @@
 export const state = () => ({
-  activeServer: 0,
-  serverAuths: []
+  baseUrl: null,
+  id: null,
+  isAdmin: false,
+  name: null,
+  subsonicSalt: null,
+  subsonicToken: null,
+  token: null,
+  username: null
 })
 
 export const mutations = {
   setToken (state, token) {
-    state.serverAuths[state.activeServer].token = token
+    state.token = token
   },
   login (state, payload) {
-    state.serverAuths.push({ ...payload })
+    state.baseUrl = payload.baseUrl
+    state.id = payload.id
+    state.isAdmin = payload.isAdmin
+    state.name = payload.name
+    state.subsonicSalt = payload.subsonicSalt
+    state.subsonicToken = payload.subsonicToken
+    state.token = payload.token
+    state.username = payload.username
   },
-  logout (state, i) {
-    state.serverAuths.splice(i, 1)
-    state.activeServer = state.serverAuths.length > 0
-      ? state.activeServer - 1
-      : 0
+  logout (state) {
+    state.baseUrl = null
+    state.id = null
+    state.isAdmin = false
+    state.name = null
+    state.subsonicSalt = null
+    state.subsonicToken = null
+    state.token = null
+    state.username = null
   }
 }
 
@@ -40,17 +57,16 @@ export const actions = {
   },
   async logout ({ dispatch, commit }) {
     await dispatch('closeEventStream', { root: true })
-    commit('logout', 0)
+    commit('logout')
   }
 }
 export const getters = {
-  loggedIn: state => state.serverAuths.length > 0,
-  auth: state => state.serverAuths[state.activeServer],
-  username: state => state.serverAuths[state.activeServer].username,
-  baseUrl: state => state.serverAuths[state.activeServer].baseUrl,
-  token: state => state.serverAuths[state.activeServer].token,
-  subsonicSalt: state => state.serverAuths[state.activeServer].subsonicSalt,
-  subsonicToken: state => state.serverAuths[state.activeServer].subsonicToken,
+  loggedIn: state => state.token !== null,
+  username: state => state.username,
+  baseUrl: state => state.baseUrl,
+  token: state => state.token,
+  subsonicSalt: state => state.subsonicSalt,
+  subsonicToken: state => state.subsonicToken,
   subsonicUrl: (state, getters) => (path) => {
     return getters.baseUrl + '/rest/' + path +
       `?u=${getters.username}` +
