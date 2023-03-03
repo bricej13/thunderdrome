@@ -20,12 +20,17 @@ export const mutations = {
 
 export const actions = {
   login ({ commit, dispatch }, { baseUrl, username, password }) {
+    baseUrl = baseUrl.endsWith('/') ? baseUrl.substr(0, baseUrl.length - 1) : baseUrl
     return new Promise((resolve, reject) => {
       this.$api.login(username, password, baseUrl)
         .then((res) => {
           this.$axios.setBaseURL(baseUrl)
           commit('login', Object.assign(res, { baseUrl }))
           dispatch('startEventStream', { root: true })
+          const plausible = window.plausible
+          if (plausible) {
+            plausible('Login', { props: { baseUrl } })
+          }
           resolve(res)
         }).catch((err) => {
           dispatch('closeEventStream', { root: true })

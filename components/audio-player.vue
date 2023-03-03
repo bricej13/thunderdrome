@@ -128,6 +128,14 @@ export default {
       'volume'
     ])
   },
+  watch: {
+    currentTrack (track) {
+      const plausible = window.plausible
+      if (plausible) {
+        plausible('PlayTrack')
+      }
+    }
+  },
   mounted () {
   },
   methods: {

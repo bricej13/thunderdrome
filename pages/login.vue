@@ -10,26 +10,39 @@
             Thunderdrome
           </div>
           <b-field>
-            <b-input v-model="creds.baseUrl" placeholder="Navidrome URL" autofocus />
+            <b-input v-model="creds.baseUrl" placeholder="Navidrome URL (i.e. https://demo.navidrome.org/)" autofocus />
           </b-field>
           <b-field>
-            <b-input v-model="creds.username" placeholder="Username" />
+            <b-input v-model="creds.username" placeholder="Username (i.e. demo)" />
           </b-field>
           <b-field>
             <b-input
               v-model="creds.password"
               type="password"
               password-reveal
-              placeholder="Password"
+              placeholder="Password (i.e. demo)"
               @keyup.native.enter="login"
             />
           </b-field>
           <div v-if="error">
             {{ error }}
           </div>
-          <b-button :loading="loading" :disabled="!canSubmit" @click="login">
-            Login
-          </b-button>
+          <div class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-button class="is-ghost" @click="setDemoCreds">
+                  demo login
+                </b-button>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <b-button :loading="loading" :disabled="!canSubmit" @click="login">
+                  Login
+                </b-button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <rainbow />
@@ -70,6 +83,14 @@ export default {
         }).finally(() => {
           this.loading = false
         })
+    },
+    setDemoCreds () {
+      this.creds = {
+        username: 'demo',
+        password: 'demo',
+        baseUrl: 'https://demo.navidrome.org'
+      }
+      this.login()
     }
   }
 }
