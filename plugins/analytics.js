@@ -4,8 +4,6 @@ export default function (context) {
     const plausible = window.plausible
     if (path && plausible) {
       const u = window.location.origin + path
-      const domain = window.location.host
-      document.querySelector('script[src*="plausible"]').setAttribute('data-domain', domain)
       plausible('pageview', { u })
     }
 

@@ -34,7 +34,7 @@ export default {
     script: [
       { type: 'module', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js' },
       { nomodule: '', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js' },
-      { defer: true, src: 'https://plausible.bj13.us/js/script.local.manual.js' }
+      { defer: true, src: 'https://plausible.bj13.us/js/script.local.manual.js', 'data-domain': process.env.HOST }
     ]
   },
 
