@@ -34,7 +34,7 @@ export default {
     script: [
       { type: 'module', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js' },
       { nomodule: '', src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js' },
-      { defer: true, src: 'https://plausible.bj13.us/js/script.local.js' }
+      { defer: true, src: 'https://plausible.bj13.us/js/script.local.manual.js' }
     ]
   },
 
@@ -49,6 +49,7 @@ export default {
     { src: '~/plugins/vue-shortkey.js', ssr: false },
     '~/plugins/api.js',
     '~/plugins/db.js',
+    '~/plugins/analytics.js',
     '~/plugins/audioContext.js',
     '~/plugins/fanarttv.js'
   ],
