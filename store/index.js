@@ -72,6 +72,18 @@ export const state = () => ({
         icon: 'musical-note-outline',
         to: { name: 'songs', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'title' } },
         children: []
+      },
+      {
+        label: 'Stations',
+        icon: 'radio-outline',
+        to: { name: 'stations', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' } },
+        children: []
+      },
+      {
+        label: 'Shares',
+        icon: 'share-social-outline',
+        to: { name: 'shares', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' } },
+        children: []
       }
     ]
   },

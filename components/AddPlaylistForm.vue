@@ -1,9 +1,9 @@
 <template>
   <FormulateForm
-    v-model="data"
+    v-model="initialData"
     @submit="create($event)"
   >
-    <div class="columns">
+    <div class="columns" style="align-items: flex-end">
       <div class="column">
         <FormulateInput
           name="name"
@@ -27,9 +27,10 @@
       </div>
       <div class="column is-narrow">
         <FormulateInput
-          label="Submit"
+          label="Create"
           type="submit"
-          name="Submit this form!"
+          name="Create Playlist"
+          input-class="button"
         />
 
         <!--        <b-field label="Create">-->
@@ -49,13 +50,21 @@
 <script>
 export default {
   name: 'AddPlaylistForm',
+  props: {
+    station: {
+      type: Object,
+      default: () => {
+        return {
+          name: null,
+          comment: null,
+          public: true
+        }
+      }
+    }
+  },
   data () {
     return {
-      data: {
-        name: null,
-        comment: null,
-        public: true
-      }
+      initialData: this.station
     }
   },
   methods: {

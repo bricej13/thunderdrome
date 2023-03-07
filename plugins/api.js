@@ -34,6 +34,20 @@ export default function ({ $axios, store }, inject) {
           params: { id: artistId }
         })
     },
+    share: {
+      where: artistId => $axios.get('/api/share', {
+        params: { _start: 0, _end: 0, _order: 'ASC', _sort: 'createdAt', artist_id: artistId }
+      }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
+      create: (description, resourceIds, resourceType, format = null, maxBitrate = null) =>
+        $axios.$post('api/radio', { description, resourceIds, resourceType, format, maxBitrate }) // song | playlist | artist | album, resourceIds are comma delimited
+    },
+    station: {
+      all: query => $axios.get('/api/radio', {
+        params: Object.assign({ _start: 0, _end: 0, _order: 'ASC', _sort: 'name' }, query)
+      }).then((res) => { return { stations: res.data, total: res.headers['x-total-count'] } }),
+      create: ({ homepageUrl, name, streamUrl }) => $axios.$post('api/radio', { homepageUrl, name, streamUrl }),
+      delete: stationId => $axios.$delete(`api/radio/${stationId}`)
+    },
     track: {
       all: params => $axios.get('api/song', {
         params: Object.assign({ _start: 0, _end: 10, _order: 'ASC', _sort: 'title' }, params)
