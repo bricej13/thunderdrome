@@ -1,5 +1,7 @@
-@use "~bulma/sass/utilities/derived-variables";
-@use "~bulma/sass/utilities/functions";
+@use "/node_modules/bulma/sass/utilities/derived-variables";
+@use "/node_modules/bulma/sass/utilities/functions";
+//@use "~bulma/sass/utilities/derived-variables";
+//@use "~bulma/sass/utilities/functions";
 $ui3-lightYellow: #fefbe5;
 $ui3-yellow: #feb601;
 $ui3-orange: #fc3b00;

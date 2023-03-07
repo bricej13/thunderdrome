@@ -1,6 +1,6 @@
 @use "./colors";
-@use "~bulma/sass/utilities/derived-variables";
-@use "~bulma/sass/utilities/functions";
+@use "/node_modules/bulma/sass/utilities/derived-variables";
+@use "/node_modules/bulma/sass/utilities/functions";
 
 @font-face {
   font-family: "Karla";
@@ -260,6 +260,6 @@ $link-invert: colors.$primary-invert;
 $link-focus-border: colors.$primary;
 
 // Import Bulma and Buefy styles
-@import "~bulma/sass/utilities/_all";
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
+@import "/node_modules/bulma/sass/utilities/_all";
+@import "/node_modules/bulma/bulma";
+@import "/node_modules/buefy/src/scss/buefy";
