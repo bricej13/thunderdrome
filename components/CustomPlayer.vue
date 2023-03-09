@@ -29,7 +29,8 @@ export default {
       source1: null,
       source2: null,
       vizWidth: 100,
-      vizHeight: 80
+      vizHeight: 80,
+      hasScrobbled: false
     }
   },
   computed: {
@@ -45,6 +46,7 @@ export default {
   watch: {
     activeStream (url) {
       this.activePlayer = !this.activePlayer
+      this.hasScrobbled = false
       this.load(url)
     },
     nextStream (url) {
@@ -84,7 +86,17 @@ export default {
     for (const player of [this.$refs.player1, this.$refs.player2]) {
       player.addEventListener('ended', event => this.playNextTrack())
       player.addEventListener('play', event => this.setTrackDuration(player.duration))
-      player.addEventListener('timeupdate', event => this.setCurrentTime(player.currentTime))
+      player.addEventListener('timeupdate', (event) => {
+        if (!this.hasScrobbled && player.currentTime / this.duration > this.scrobbleAt) {
+          this.hasScrobbled = true
+          this.$api.track.scrobble(this.currentTrack.id, true)
+            .catch((e) => {
+              console.error('error scrobbling', e)
+              this.hasScrobbled = false
+            })
+        }
+        return this.setCurrentTime(player.currentTime)
+      })
     }
 
     if (this.currentStream) {
@@ -99,8 +111,7 @@ export default {
     this.resizeObserver.observe(this.$refs.wrapper)
     this.$refs.wrapper.addEventListener('click', (e) => {
       const pct = (e.clientX - e.target.offsetLeft) / e.target.offsetWidth
-      const newTime = pct * this.duration
-      this.player.currentTime = newTime
+      this.player.currentTime = pct * this.duration
     })
   },
   unmounted () {
@@ -121,6 +132,9 @@ export default {
         this.onDeckPlayer.pause()
       }
       this.player.addEventListener('durationchange', e => this.setTrackDuration(e.target.duration), { once: true })
+      this.player.addEventListener('play', (e) => {
+        this.$api.track.scrobble(this.currentTrack.mediaFileId ?? this.currentTrack.id, false)
+      }, { once: true })
       this.player.addEventListener('canplaythrough', (e) => {
         // clearTimeout(bufferingTimeout)
         this.setBuffering(false)

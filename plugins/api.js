@@ -56,11 +56,8 @@ export default function ({ $axios, store }, inject) {
       search: title => $axios.get('/api/song', {
         params: { _start: 0, _end: 12, _order: 'ASC', _sort: 'title', title }
       }).then((res) => { return { tracks: res.data, total: res.headers['x-total-count'] } }),
-      scrobble: trackId => $axios.$get('/rest/scrobble', {
-        params: {
-          id: trackId,
-          submission: true
-        }
+      scrobble: (id, submission = true) => $axios.$get('/rest/scrobble', {
+        params: { id, submission, time: new Date().getTime() }
       }),
       mediaFile: id => $axios.get(
           `${store.getters['user/subsonicUrl']('stream')}&id=${id}&_${new Date().getTime()}`,

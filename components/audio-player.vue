@@ -1,5 +1,5 @@
 <template>
-  <div class="audio-player" :style="{'height': hasQueue ? 'auto' : 0}">
+  <div class="audio-player" :style="{'height': currentStream ? 'auto' : 0}">
     <div>
       <div
         class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center"
