@@ -64,7 +64,7 @@ export const state = () => ({
       {
         label: 'Artists',
         icon: 'mic-outline',
-        to: { name: 'artists', query: { _start: 0, _end: 20, _order: 'DESC', _sort: 'playCount' } },
+        to: { name: 'artists', query: { _start: 0, _end: 20, _order: 'ASC', _sort: 'name' } },
         children: []
       },
       {
